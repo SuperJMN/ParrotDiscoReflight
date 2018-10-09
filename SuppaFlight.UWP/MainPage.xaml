@@ -26,7 +26,7 @@
             </controls:MenuItem>
         </controls:Menu>
         <MediaElement x:Name="MediaElement" Grid.Row="1" Position="{Binding Position, Mode=TwoWay}" />
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <StackPanel VerticalAlignment="Center" Grid.Row="2" Orientation="Horizontal">
             <TextBlock Text="{Binding CurrentStatus.TimeElapsed.Seconds}"  />
             <controls:HeaderedContentControl Header="Speed">
                 <controls:RadialGauge Value="{Binding CurrentStatus.Speed}" TickSpacing="1" NeedleBrush="Blue" Minimum="0" Maximum="30"  Unit="m/s" />

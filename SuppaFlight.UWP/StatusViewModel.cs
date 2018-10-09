@@ -13,7 +13,7 @@ namespace SuppaFlight.UWP
         }
 
         public double Speed => status.Speed.L2Norm();
-        public TimeSpan TimeElapsed => TimeSpan.FromMilliseconds(status.TimeElapsed);
+        public TimeSpan TimeElapsed => status.TimeElapsed;
 
         public double Altitude => status.Altitude;
 

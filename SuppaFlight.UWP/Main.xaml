@@ -1,0 +1,90 @@
+﻿<Page
+    x:Class="SuppaFlight.UWP.Main"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SuppaFlight.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance local:MainViewModel2}">
+
+    <Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding IsRunning}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SourceSelector.Visibility" Value="Collapsed" />
+                        <Setter Target="Viewer.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid x:Name="SourceSelector">
+            <Grid.Resources>
+                <Style x:Key="ButtonStyle" TargetType="Button">
+                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Select video" Style="{StaticResource ButtonStyle}" Command="{Binding FileOpenCommands.OpenVideoCommand}" />
+            <Button Grid.Row="1" Grid.Column="0" Content="Select flight data" Command="{Binding FileOpenCommands.OpenDataCommand}" Style="{StaticResource ButtonStyle}" />
+            <Button Grid.Row="2" Grid.Column="0" Content="Run" Command="{Binding RunCommand}" Style="{StaticResource ButtonStyle}"></Button>
+
+            <CheckBox Grid.Row="0" Grid.Column="1" />
+            <CheckBox Grid.Row="1" Grid.Column="1" />
+
+        </Grid>
+
+        <Grid x:Name="Viewer" d:IsHidden="false" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <MediaElement x:Name="MediaElement" AutoPlay="False" Position="{Binding Position, Mode=TwoWay}" />
+            <TextBlock Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Foreground="White" Text="{Binding Status.TimeElapsed}"  />
+            <controls:GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="10" />
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal"  Margin="10" VerticalAlignment="Center">
+                    <controls:HeaderedContentControl Header="Speed">
+                        <controls:RadialGauge Value="{Binding Status.Speed}" TickSpacing="1"  ScaleWidth="10" ScaleTickBrush="#44000000" ValueStringFormat="F" TickWidth="2" TrailBrush="CornflowerBlue" ScaleBrush="LightBlue" NeedleBrush="Blue"
+                                              Minimum="0" Maximum="30" Unit="m/s" />
+                    </controls:HeaderedContentControl>
+                    <controls:HeaderedContentControl Header="Altitude">
+                        <controls:RadialGauge Value="{Binding Status.Altitude}" Minimum="0" NeedleBrush="Red"
+                                              TickSpacing="20" Maximum="300" Unit="m" />
+                    </controls:HeaderedContentControl>
+                    <controls:HeaderedContentControl Header="Wind Speed">
+                        <controls:RadialGauge Value="{Binding Status.PitotSpeed}" TickSpacing="1" NeedleBrush="Green"
+                                              ValueStringFormat="F"
+                                              Minimum="0" Maximum="30" Unit="m/s" />
+                    </controls:HeaderedContentControl>
+                </StackPanel>
+                <maps:MapControl Grid.Column="1" x:Name="MapControl" Style="AerialWithRoads" />
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Page>

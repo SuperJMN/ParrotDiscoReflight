@@ -39,6 +39,8 @@ namespace SuppaFlight.UWP
             statusOh = statusObs
                 .ToProperty(this, x => x.CurrentStatus);
 
+
+
             statusObs.Subscribe(x => MessageBus.Current.SendMessage(new BasicGeoposition()
             {
                 Altitude = x.Altitude,

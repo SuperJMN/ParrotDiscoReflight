@@ -4,6 +4,6 @@ namespace FlightVisualizer.Core
 {
     public class FlightData
     {
-        public IEnumerable<Status> Statuses { get; set; }
+        public ICollection<Status> Statuses { get; set; }
     }
 }

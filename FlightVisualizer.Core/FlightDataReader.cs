@@ -52,7 +52,7 @@ namespace FlightVisualizer.Core
             var statuses = Enumerable.Range(0, times.Count())
                 .Select(i => new Status
                 {
-                    TimeElapsed = times[i],
+                    TimeElapsed = TimeSpan.FromMilliseconds(times[i]),
                     Speed = Vector<double>.Build.Dense(new[] { spdX[i], spdY[i], spdZ[i] }),
                     Altitude = altitude[i] >= 0 ? altitude[i] / (double)1000 : 0,
                     PitotSpeed = pitotSpeed[i],
@@ -67,7 +67,7 @@ namespace FlightVisualizer.Core
 
     public class Status
     {
-        public long TimeElapsed { get; set; }
+        public TimeSpan TimeElapsed { get; set; }
         public Vector<double> Speed { get; set; }
         public double Altitude { get; set; }
         public double PitotSpeed { get; set; }

@@ -34,22 +34,19 @@ namespace SuppaFlight.UWP
             {
                 var mediaSource = MediaSource.CreateFromStorageFile(file);
                 MediaElement.SetPlaybackSource(mediaSource);
-            });
-
-           
+            });          
 
             MessageBus.Current.Listen<BasicGeoposition>().Subscribe(x =>
             {
                 var myLandmarks = new List<MapElement>();
 
-                var snPoint = new Geopoint(x);
+                var point = new Geopoint(x);
 
                 var spaceNeedleIcon = new MapIcon
                 {
-                    Location = snPoint,
+                    Location = point,
                     NormalizedAnchorPoint = new Point(0.5, 1.0),
                     ZIndex = 0,
-                    Title = "Space Needle"
                 };
 
                 myLandmarks.Add(spaceNeedleIcon);
@@ -60,9 +57,10 @@ namespace SuppaFlight.UWP
                     MapElements = myLandmarks
                 };
 
+                MapControl.Layers.Clear();
                 MapControl.Layers.Add(landmarksLayer);
 
-                MapControl.Center = snPoint;
+                MapControl.Center = point;
             });
 
             MapControl.MapServiceToken = "2ywvE5Sf0Oc0N1S53Jj2~fbOf4w-CQmaDPXG11-Lx-A~Au6RnaxhBKpKQc79NkfwbrdFrrSr1NHNolZKDcpVFKk1eIWqYubIC3eTZsezamPm";
