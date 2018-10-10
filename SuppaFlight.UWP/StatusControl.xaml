@@ -45,7 +45,7 @@
                     </DataTemplate>
                 </controls:HeaderedTextBlock.HeaderTemplate>
             </controls:HeaderedTextBlock>
-            <uwp:BatteryControl VerticalAlignment="Bottom"/>
+            <uwp:BatteryControl Margin="10" VerticalAlignment="Bottom"/>
         </controls:UniformGrid>
         <controls:RadialGauge Grid.Column="4" Value="{Binding Status.Altitude}" Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
                                       TickSpacing="20" Maximum="300" Unit="m Altitude" Style="{StaticResource RadialGaugeStyle}" />

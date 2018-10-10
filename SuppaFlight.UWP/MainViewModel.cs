@@ -44,7 +44,14 @@ namespace SuppaFlight.UWP
                 MessageBus.Current.SendMessage(Unit.Default, "Play");
                 IsRunning = true;
             });
+
+            hasDataHelper = flightDataObs.Any().ToProperty(this, x => x.HasData);
+            hasVideoHelper = fileObs.Any().ToProperty(this, x => x.HasVideo);
         }
+
+        public bool HasVideo => hasVideoHelper.Value;
+
+        public bool HasData => hasDataHelper.Value;
 
 
         public StatusViewModel Status =>statusHelper.Value;
@@ -62,6 +69,8 @@ namespace SuppaFlight.UWP
         private bool isRunning;
         private TimeSpan position;
         private readonly ObservableAsPropertyHelper<StatusViewModel> statusHelper;
+        private ObservableAsPropertyHelper<bool> hasDataHelper;
+        private ObservableAsPropertyHelper<bool> hasVideoHelper;
 
         public bool IsRunning
         {
