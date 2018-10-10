@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Numerics;
-using FlightVisualizer.Core;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Complex;
-using MathNet.Numerics.LinearAlgebra.Storage;
 using Newtonsoft.Json;
 
 namespace FlightVisualizer.Core
@@ -54,7 +46,7 @@ namespace FlightVisualizer.Core
                 .Select(i => new Status
                 {
                     TimeElapsed = TimeSpan.FromMilliseconds(times[i]).Add(TimeCorrection),
-                    Speed = Vector<double>.Build.Dense(new[] { spdX[i], spdY[i], spdZ[i] }),
+                    Speed = new Vector(spdX[i], spdY[i], spdZ[i]),
                     Altitude = altitude[i] >= 0 ? altitude[i] / (double)1000 : 0,
                     PitotSpeed = pitotSpeed[i],
                     Longitude = lng[i],

@@ -1,12 +1,11 @@
 ﻿using System;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace FlightVisualizer.Core
 {
     public class Status
     {
         public TimeSpan TimeElapsed { get; set; }
-        public Vector<double> Speed { get; set; }
+        public Vector Speed { get; set; }
         public double Altitude { get; set; }
         public double PitotSpeed { get; set; }
         public double Longitude { get; set; }
