@@ -1,0 +1,56 @@
+﻿<UserControl
+    x:Class="SuppaFlight.UWP.StatusControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:uwp="using:SuppaFlight.UWP"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    Foreground="White"
+    RequestedTheme="Dark"
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance uwp:MainViewModel}">
+
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="RadialGaugeStyle" TargetType="controls:RadialGauge">
+                <Setter Property="TickBrush" Value="White" />
+                <Setter Property="TickSpacing" Value="1" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="ScaleWidth" Value="10" />
+                <Setter Property="ScaleTickBrush" Value="#44000000" />
+                <Setter Property="ValueStringFormat" Value="F" />
+                <Setter Property="TickWidth" Value="2" />
+                <Setter Property="TrailBrush" Value="CornflowerBlue" />
+                <Setter Property="ScaleBrush" Value="LightBlue" />
+                <Setter Property="NeedleBrush" Value="Blue" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <controls:RadialGauge Value="{Binding Status.Speed}"
+                                      Minimum="0" Maximum="30" Unit="m/s Speed" Style="{StaticResource RadialGaugeStyle}" />
+        <controls:UniformGrid Grid.Column="1" VerticalAlignment="Bottom" Rows="1">
+            <controls:HeaderedTextBlock VerticalAlignment="Bottom" Foreground="White" Header="AirSpeed" Text="{Binding Status.PitotSpeed, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:F} m/s'}">
+                <controls:HeaderedTextBlock.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="White" Text="{Binding}" />
+                    </DataTemplate>
+                </controls:HeaderedTextBlock.HeaderTemplate>
+            </controls:HeaderedTextBlock>
+            <uwp:BatteryControl VerticalAlignment="Bottom"/>
+        </controls:UniformGrid>
+        <controls:RadialGauge Grid.Column="4" Value="{Binding Status.Altitude}" Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
+                                      TickSpacing="20" Maximum="300" Unit="m Altitude" Style="{StaticResource RadialGaugeStyle}" />
+        <uwp:AnglesControl Grid.Column="2" />
+
+        <maps:MapControl Grid.Column="1" x:Name="MapControl" Style="AerialWithRoads" Visibility="Collapsed" />
+    </Grid>
+</UserControl>

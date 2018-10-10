@@ -1,46 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive;
 using System.Reactive.Linq;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
-using Windows.Media.Core;
-using Windows.Storage;
 using Windows.UI.Xaml.Controls.Maps;
 using ReactiveUI;
 
 namespace SuppaFlight.UWP
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class Main
+    public sealed partial class StatusControl
     {
         private MapIcon spaceNeedleIcon;
 
-        public Main()
+
+        public StatusControl()
         {
             InitializeComponent();
-            DataContext = new MainViewModel2(new FileOpenCommands());
-
-            MessageBus.Current.Listen<Unit>("Play").Subscribe(x => MediaElement.Play());
-
-            MessageBus.Current.Listen<StorageFile>().Subscribe(file =>
-            {
-                var mediaSource = MediaSource.CreateFromStorageFile(file);
-                MediaElement.SetPlaybackSource(mediaSource);
-            });
-
-            AddPin();
 
             MessageBus.Current.Listen<BasicGeoposition>("First")
                 .Do(TrySetLocation)
-                .Do(_ => MapControl.ZoomLevel = 14)
+                .Do(_ => MapControl.ZoomLevel = 20)
                 .Subscribe(p => MapControl.Center = new Geopoint(p));
 
             MessageBus.Current.Listen<BasicGeoposition>().Subscribe(TrySetLocation);
 
             MapControl.MapServiceToken = "2ywvE5Sf0Oc0N1S53Jj2~fbOf4w-CQmaDPXG11-Lx-A~Au6RnaxhBKpKQc79NkfwbrdFrrSr1NHNolZKDcpVFKk1eIWqYubIC3eTZsezamPm";
+
+            AddPin();
         }
 
         private void TrySetLocation(BasicGeoposition x)

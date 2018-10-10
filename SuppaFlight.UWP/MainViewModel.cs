@@ -1,69 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
-using Windows.Devices.Geolocation;
-using Windows.Storage.Pickers;
-using FlightVisualizer.Core;
-using Microsoft.Toolkit.Uwp.Helpers;
 using ReactiveUI;
 
 namespace SuppaFlight.UWP
 {
     public class MainViewModel : ReactiveObject
     {
-        private IList<StatusViewModel> data;
-
-        public MainViewModel()
+        public MainViewModel(FileOpenCommands fileOpenCommands)
         {
-            OpenFileCommand = ReactiveCommand.CreateFromTask(Load);
-            OpenVideoCommand = ReactiveCommand.CreateFromTask(LoadVideo);
+            FileOpenCommands = fileOpenCommands;
 
-            statuses = OpenFileCommand
-                .Select(x => x.Statuses.Select(y => new StatusViewModel(y)))
-                .ToProperty(this, x => x.Statuses);
+            var flightDataObs = fileOpenCommands.OpenDataCommand;
+            var dataBatch = flightDataObs.Select(data => data.Statuses);
+            var fileObs = fileOpenCommands.OpenVideoCommand
+                .Do(sf => MessageBus.Current.SendMessage(sf));
 
             var positionObs = this.WhenAnyValue(x => x.Position);
 
-            var hasDataObs = OpenFileCommand.Any();
+            var isRunningObs = this.WhenAnyValue(x => x.IsRunning);
 
-            var statusObs = positionObs
-                .CombineLatest(hasDataObs, OpenVideoCommand.Any(), (position, dataLoaded, videoLoaded) => new { position, dataLoaded, videoLoaded })
-                .Where(x => x.dataLoaded && x.videoLoaded)
-                .Select(x => x.position)
-                .Select(GetStatus);
+            var statusObs = dataBatch
+                .CombineLatest(fileObs, positionObs, isRunningObs, (statuses, file, pos, isRunning) => new { statuses, file, pos, isRunning })
+                .Where(x => x.file != null && x.statuses != null && isRunning)
+                .Select(arg => arg.statuses.SkipWhile(x => x.TimeElapsed < arg.pos).Take(1).First());
 
-            statusOh = statusObs
-                .ToProperty(this, x => x.CurrentStatus);
+            dataBatch
+                .Where(x => x != null)
+                .Subscribe(x => MessageBus.Current.SendMessage(x.First().Geoposition(), "First"));
 
+            var canRunObs = FileOpenCommands.OpenDataCommand.Any().CombineLatest(FileOpenCommands.OpenVideoCommand.Any(), (a, b) => a && b);
+            RunCommand = ReactiveCommand.Create(() => { }, canRunObs);
 
+            statusHelper = statusObs
+                .Select(x => new StatusViewModel(x))
+                .ToProperty(this, x => x.Status);
 
-            statusObs.Subscribe(x => MessageBus.Current.SendMessage(new BasicGeoposition()
+            statusObs.Subscribe(x => MessageBus.Current.SendMessage(x.Geoposition()));
+
+            RunCommand.Subscribe(unit =>
             {
-                Altitude = x.Altitude,
-                Latitude = x.Latitude,
-                Longitude = x.Longitude,
-            }));
+                MessageBus.Current.SendMessage(Unit.Default, "Play");
+                IsRunning = true;
+            });
         }
 
-        public StatusViewModel CurrentStatus => statusOh.Value;
 
-        private StatusViewModel GetStatus(TimeSpan pos)
-        {
-            return Statuses.SkipWhile(x => x.TimeElapsed < pos).Take(1).First();            
-        }
+        public StatusViewModel Status =>statusHelper.Value;
 
-        public ReactiveCommand<Unit, Unit> OpenVideoCommand { get; }
+        public ReactiveCommand<Unit, Unit> RunCommand { get; }
 
-        public IEnumerable<StatusViewModel> Statuses => statuses.Value;
-        private readonly ObservableAsPropertyHelper<IEnumerable<StatusViewModel>> statuses;
-        private TimeSpan position;
-        private ObservableAsPropertyHelper<StatusViewModel> statusOh;
-
-        public ReactiveCommand<Unit, FlightData> OpenFileCommand { get; }
+        public FileOpenCommands FileOpenCommands { get; }
 
         public TimeSpan Position
         {
@@ -71,37 +59,14 @@ namespace SuppaFlight.UWP
             set => this.RaiseAndSetIfChanged(ref position, value);
         }
 
-        public Uri Uri { get; set; }
+        private bool isRunning;
+        private TimeSpan position;
+        private readonly ObservableAsPropertyHelper<StatusViewModel> statusHelper;
 
-        private async Task<FlightData> Load()
+        public bool IsRunning
         {
-            var picker = new FileOpenPicker()
-            {
-                ViewMode = PickerViewMode.List,
-                CommitButtonText = "Seleccionar",
-                FileTypeFilter = { ".json"},
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
-            };
-
-            var file = await picker.PickSingleFileAsync();
-            using (var stream = await file.OpenStreamForReadAsync())
-            {
-                return FlightDataReader.Read(stream);                
-            }           
-        }
-
-        private async Task LoadVideo()
-        {
-            var picker = new FileOpenPicker()
-            {
-                ViewMode = PickerViewMode.List,
-                CommitButtonText = "Seleccionar",
-                FileTypeFilter = { ".mp4" },
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
-            };
-
-            var file = await picker.PickSingleFileAsync();
-            MessageBus.Current.SendMessage(file);
+            get => isRunning;
+            set => this.RaiseAndSetIfChanged(ref isRunning, value);
         }
     }
 }

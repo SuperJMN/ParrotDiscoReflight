@@ -5,39 +5,30 @@
     xmlns:local="using:SuppaFlight.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance local:MainViewModel}">
 
-    <Page.DataContext>
-        <local:MainViewModel />
-    </Page.DataContext>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <controls:Menu>
-            <controls:MenuItem Header="File">
-                <MenuFlyoutItem Text="Open Flight Data" Command="{Binding OpenFileCommand}" />
-                <MenuFlyoutItem Text="Open Video" Command="{Binding OpenVideoCommand}" />
-            </controls:MenuItem>
-        </controls:Menu>
-        <MediaElement x:Name="MediaElement" Grid.Row="1" Position="{Binding Position, Mode=TwoWay}" />
-        <StackPanel VerticalAlignment="Center" Grid.Row="2" Orientation="Horizontal">
-            <TextBlock Text="{Binding CurrentStatus.TimeElapsed.Seconds}"  />
-            <controls:HeaderedContentControl Header="Speed">
-                <controls:RadialGauge Value="{Binding CurrentStatus.Speed}" TickSpacing="1" NeedleBrush="Blue" Minimum="0" Maximum="30"  Unit="m/s" />
-            </controls:HeaderedContentControl>
-            <controls:HeaderedContentControl Header="Altitude">
-                <controls:RadialGauge Value="{Binding CurrentStatus.Altitude}" Minimum="0" NeedleBrush="Red" TickSpacing="20" Maximum="300" Unit="m" />
-            </controls:HeaderedContentControl>
-            <controls:HeaderedContentControl Header="Wind Speed">
-                <controls:RadialGauge Value="{Binding CurrentStatus.PitotSpeed}" TickSpacing="1" NeedleBrush="Green" Minimum="0" Maximum="30"  Unit="m/s" />
-            </controls:HeaderedContentControl>
-            <maps:MapControl x:Name="MapControl" Width="400" Style="AerialWithRoads" />
-        </StackPanel>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding IsRunning}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SourceSelector.Visibility" Value="Collapsed" />
+                        <Setter Target="Viewer.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <local:SourceSelector x:Name="SourceSelector" />
+
+        <local:FlightViewer x:Name="Viewer" Visibility="Collapsed" />
+
     </Grid>
 </Page>

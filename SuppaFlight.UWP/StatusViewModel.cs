@@ -20,5 +20,9 @@ namespace SuppaFlight.UWP
         public double PitotSpeed => status.PitotSpeed;
         public double Longitude => status.Longitude;
         public double Latitude => status.Latitude;
+        public double AnglePhi => status.AnglePhi;
+        public double AngleTheta => status.AngleTheta;
+        public double AnglePsi => status.AnglePsi;
+        public double BatteryLevel => status.BatteryLevel;
     }
 }

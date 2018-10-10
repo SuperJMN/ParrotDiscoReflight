@@ -2,6 +2,11 @@
     x:Class="SuppaFlight.UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SuppaFlight.UWP">
+    xmlns:local="using:SuppaFlight.UWP"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters">
 
+    <Application.Resources>
+        <local:AngleRadianConverter x:Key="AngleRadianConverter" />
+        <converters:StringFormatConverter x:Key="StringFormatConverter" />
+    </Application.Resources>
 </Application>

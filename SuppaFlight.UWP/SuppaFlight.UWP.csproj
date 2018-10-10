@@ -92,20 +92,32 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AngleRadianConverter.cs" />
+    <Compile Include="AnglesControl.xaml.cs">
+      <DependentUpon>AnglesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BatteryControl.xaml.cs">
+      <DependentUpon>BatteryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileOpenCommands.cs" />
-    <Compile Include="Main.xaml.cs">
-      <DependentUpon>Main.xaml</DependentUpon>
+    <Compile Include="FlightViewer.xaml.cs">
+      <DependentUpon>FlightViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="MainViewModel2.cs" />
     <Compile Include="Mixin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SourceSelector.xaml.cs">
+      <DependentUpon>SourceSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StatusControl.xaml.cs">
+      <DependentUpon>StatusControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StatusViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +127,13 @@
     <None Include="SuppaFlight.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\bitmap.png" />
+    <Content Include="Assets\front.png" />
+    <Content Include="Assets\front.svg" />
+    <Content Include="Assets\otra.png" />
+    <Content Include="Assets\side.png" />
+    <Content Include="Assets\side.svg" />
+    <Content Include="Assets\treeicon.svg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -129,13 +148,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Main.xaml">
+    <Page Include="AnglesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BatteryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FlightViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SourceSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StatusControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
