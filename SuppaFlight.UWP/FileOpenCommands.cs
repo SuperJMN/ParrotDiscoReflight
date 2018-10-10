@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -11,23 +12,22 @@ namespace SuppaFlight.UWP
 {
     public class FileOpenCommands
     {
-
         public FileOpenCommands()
         {
-            OpenDataCommand = ReactiveCommand.CreateFromTask(Load);
-            OpenVideoCommand = ReactiveCommand.CreateFromTask(LoadVideo);           
+            OpenDataCommand = ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(LoadData).Where(x => x != null));
+            OpenVideoCommand = ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(LoadVideo).Where(x => x != null));           
         }
 
         public ReactiveCommand<Unit, StorageFile> OpenVideoCommand { get; }
 
         public ReactiveCommand<Unit, FlightData> OpenDataCommand { get; }
 
-        private async Task<FlightData> Load()
+        private static async Task<FlightData> LoadData()
         {
             var picker = new FileOpenPicker()
             {
                 ViewMode = PickerViewMode.List,
-                CommitButtonText = "Seleccionar",
+                CommitButtonText = "Load",
                 FileTypeFilter = { ".json" },
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
             };
@@ -39,12 +39,12 @@ namespace SuppaFlight.UWP
             }
         }
 
-        private async Task<StorageFile> LoadVideo()
+        private static async Task<StorageFile> LoadVideo()
         {
-            var picker = new FileOpenPicker()
+            var picker = new FileOpenPicker
             {
                 ViewMode = PickerViewMode.List,
-                CommitButtonText = "Seleccionar",
+                CommitButtonText = "Load",
                 FileTypeFilter = { ".mp4" },
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
             };
