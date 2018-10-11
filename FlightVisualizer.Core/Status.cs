@@ -4,6 +4,24 @@ namespace FlightVisualizer.Core
 {
     public class Status
     {
+        public Status()
+        {
+        }
+
+        public Status(Status other)
+        {
+            TimeElapsed = other.TimeElapsed;
+            Speed = other.Speed;
+            Altitude = other.Altitude;
+            PitotSpeed = other.PitotSpeed;
+            Longitude = other.Longitude;
+            Latitude = other.Latitude;
+            AnglePhi = other.AnglePhi;
+            AngleTheta = other.AngleTheta;
+            AnglePsi = other.AnglePsi;
+            BatteryLevel = other.BatteryLevel;
+        }
+
         public TimeSpan TimeElapsed { get; set; }
         public Vector Speed { get; set; }
         public double Altitude { get; set; }

@@ -12,7 +12,7 @@
 
     <Viewbox Stretch="Uniform">
         <StackPanel>
-            <Border Height="6" Width="9" HorizontalAlignment="Center" Background="White" />
+            <Border Height="6" Width="15" HorizontalAlignment="Center" Background="White" />
             <Border Height="90" Width="45" Background="White" HorizontalAlignment="Center" Padding="2">
                 <Grid>
                     <controls:LayoutTransformControl>
