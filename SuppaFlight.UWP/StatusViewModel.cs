@@ -24,5 +24,7 @@ namespace SuppaFlight.UWP
         public double AngleTheta => status.AngleTheta;
         public double AnglePsi => status.AnglePsi;
         public double BatteryLevel => status.BatteryLevel;
+
+        public double WifiStrength => status.WifiStregth;
     }
 }

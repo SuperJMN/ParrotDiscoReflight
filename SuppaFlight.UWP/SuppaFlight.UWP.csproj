@@ -109,6 +109,7 @@
     <Compile Include="BatteryControl.xaml.cs">
       <DependentUpon>BatteryControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BindableStringFormatConverter.cs" />
     <Compile Include="FileOpenCommands.cs" />
     <Compile Include="FlightViewer.xaml.cs">
       <DependentUpon>FlightViewer.xaml</DependentUpon>
@@ -127,6 +128,7 @@
       <DependentUpon>StatusControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="StatusViewModel.cs" />
+    <Compile Include="UnitSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

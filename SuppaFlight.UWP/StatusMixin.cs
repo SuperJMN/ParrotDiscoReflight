@@ -16,12 +16,13 @@ namespace SuppaFlight.UWP
             };
         }
 
-        public static Status ConvertTo(this Status x, IMeasurementUnit unit)
+        public static Status ConvertTo(this Status x, UnitPack unitPack)
         {
             return new Status(x)
             {
-                Speed = new Vector(x.Speed.Coordinates.Select(s => s.ConvertTo(unit)).ToArray()),
-                PitotSpeed = x.PitotSpeed.ConvertTo(unit),
+                Speed = new Vector(x.Speed.Coordinates.Select(s => s.ConvertTo(unitPack.Speed)).ToArray()),
+                PitotSpeed = x.PitotSpeed.ConvertTo(unitPack.Speed),
+                Altitude = x.Altitude.ConvertTo(unitPack.Longitude),
             };
         }
 

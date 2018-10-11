@@ -41,7 +41,8 @@ namespace FlightVisualizer.Core
             var anglePhi = dataProvider.GetData<object, double>("angle_phi", Convert.ToDouble).ToList();
             var angleTheta = dataProvider.GetData<object, double>("angle_theta", Convert.ToDouble).ToList();
             var anglePsi = dataProvider.GetData<object, double>("angle_psi", Convert.ToDouble).ToList();
-
+            var wifiStrength = dataProvider.GetData<object, double>("wifi_signal", Convert.ToDouble).ToList();
+            
             var statuses = Enumerable.Range(0, times.Count)
                 .Select(i => new Status
                 {
@@ -55,6 +56,7 @@ namespace FlightVisualizer.Core
                     AngleTheta = angleTheta[i],
                     AnglePsi = anglePsi[i],
                     BatteryLevel = battLevel[i] / 100D,
+                    WifiStregth = wifiStrength[i],
                 });
 
             return new FlightData { Statuses = statuses.ToList(), };

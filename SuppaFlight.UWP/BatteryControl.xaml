@@ -13,13 +13,13 @@
     <Viewbox Stretch="Uniform">
         <StackPanel>
             <Border Height="6" Width="15" HorizontalAlignment="Center" Background="White" />
-            <Border Height="90" Width="45" Background="White" HorizontalAlignment="Center" Padding="2">
+            <Border Height="90" Width="55" Background="White" HorizontalAlignment="Center" Padding="2">
                 <Grid>
                     <controls:LayoutTransformControl>
                         <controls:LayoutTransformControl.Transform>
                             <RotateTransform Angle="-90" />
                         </controls:LayoutTransformControl.Transform>
-                        <ProgressBar Margin="4" Foreground="Green" Height="35" Value="{Binding Status.BatteryLevel}"
+                        <ProgressBar Margin="4" Foreground="LightGreen" Background="DarkGray" VerticalAlignment="Stretch" Value="{Binding Status.BatteryLevel}"
                                      Maximum="1"
                                      Minimum="0" />
                     </controls:LayoutTransformControl>

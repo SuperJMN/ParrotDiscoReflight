@@ -7,6 +7,6 @@
 
     <Application.Resources>
         <local:AngleRadianConverter x:Key="AngleRadianConverter" />
-        <converters:StringFormatConverter x:Key="StringFormatConverter" />
+        <converters:StringFormatConverter x:Key="StringFormatConverter" />        
     </Application.Resources>
 </Application>

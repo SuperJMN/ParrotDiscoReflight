@@ -20,6 +20,7 @@ namespace FlightVisualizer.Core
             AngleTheta = other.AngleTheta;
             AnglePsi = other.AnglePsi;
             BatteryLevel = other.BatteryLevel;
+            WifiStregth = other.WifiStregth;
         }
 
         public TimeSpan TimeElapsed { get; set; }
@@ -32,5 +33,6 @@ namespace FlightVisualizer.Core
         public double AngleTheta { get; set; }
         public double AnglePsi { get; set; }
         public double BatteryLevel { get; set; }
+        public double WifiStregth { get; set; }
     }
 }

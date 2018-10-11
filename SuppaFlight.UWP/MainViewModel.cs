@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using FlightVisualizer.Core;
 using ReactiveUI;
 
 namespace SuppaFlight.UWP
@@ -12,7 +11,7 @@ namespace SuppaFlight.UWP
     {
         public MainViewModel(FileOpenCommands fileOpenCommands)
         {
-            MeasurementUnit = MeasurementUnits.First(x => x.Abbreviation.Equals("Km/h", StringComparison.InvariantCultureIgnoreCase));
+            UnitPack = UnitPacks.First();
             FileOpenCommands = fileOpenCommands;
 
             var flightDataObs = fileOpenCommands.OpenDataCommand;
@@ -23,7 +22,7 @@ namespace SuppaFlight.UWP
             var positionObs = this.WhenAnyValue(x => x.Position);
 
             var isRunningObs = this.WhenAnyValue(x => x.IsRunning);
-            var measurementUnitObs = this.WhenAnyValue(x => x.MeasurementUnit);
+            var measurementUnitObs = this.WhenAnyValue(x => x.UnitPack);
 
             var statusObs = dataBatch
                 .CombineLatest(fileObs, positionObs, isRunningObs, measurementUnitObs, (statuses, file, pos, isRunning, unit) => new { statuses, file, pos, isRunning, unit })
@@ -74,12 +73,12 @@ namespace SuppaFlight.UWP
         private readonly ObservableAsPropertyHelper<StatusViewModel> statusHelper;
         private readonly ObservableAsPropertyHelper<bool> hasDataHelper;
         private readonly ObservableAsPropertyHelper<bool> hasVideoHelper;
-        private IMeasurementUnit measurementUnit;
+        private UnitPack unitPack;
 
-        public IMeasurementUnit MeasurementUnit
+        public UnitPack UnitPack
         {
-            get => measurementUnit;
-            set => this.RaiseAndSetIfChanged(ref measurementUnit, value);
+            get => unitPack;
+            set => this.RaiseAndSetIfChanged(ref unitPack, value);
         }
 
         public bool IsRunning
@@ -88,10 +87,6 @@ namespace SuppaFlight.UWP
             set => this.RaiseAndSetIfChanged(ref isRunning, value);
         }
 
-        public ICollection<IMeasurementUnit> MeasurementUnits { get; } = new List<IMeasurementUnit>()
-        {
-            new MetersSecondUnit(),
-            new KilometersHourUnit(),
-        };
+        public ICollection<UnitPack> UnitPacks => UnitSource.UnitPacks;
     }
 }

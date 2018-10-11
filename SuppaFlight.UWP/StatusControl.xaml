@@ -8,10 +8,14 @@
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:uwp="using:SuppaFlight.UWP"
     mc:Ignorable="d"
-    d:DesignHeight="300"
     Foreground="White"
-    RequestedTheme="Dark"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance uwp:MainViewModel}">
+    RequestedTheme="Dark" d:DataContext="{d:DesignInstance uwp:MainViewModel}">
+
+    <UserControl.Resources>
+        <uwp:BindableStringFormatConverter x:Key="SpeedConverter" StringFormat="{Binding UnitPack.Speed.StringFormat}" />
+        <uwp:BindableStringFormatConverter x:Key="LongitudeConverter"
+                                           StringFormat="{Binding UnitPack.Longitude.StringFormat}" />
+    </UserControl.Resources>
 
     <Grid>
         <Grid.Resources>
@@ -28,29 +32,46 @@
                 <Setter Property="NeedleBrush" Value="Blue" />
             </Style>
         </Grid.Resources>
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
+
         <controls:RadialGauge Value="{Binding Status.Speed}"
-                                      Minimum="0" TickSpacing="{Binding MeasurementUnit.Tick}" Maximum="{Binding MeasurementUnit.Maximum}" Unit="m/s Speed" Style="{StaticResource RadialGaugeStyle}" />
-        <controls:UniformGrid Grid.Column="1" VerticalAlignment="Bottom" Rows="1">
-            <controls:HeaderedTextBlock VerticalAlignment="Bottom" Foreground="White" Header="AirSpeed" Text="{Binding Status.PitotSpeed, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:F} m/s'}">
+                              Minimum="0" TickSpacing="{Binding UnitPack.Speed.Tick}"
+                              Maximum="{Binding UnitPack.Speed.Maximum}" Unit="{Binding UnitPack.Speed.Abbreviation}"
+                              Style="{StaticResource RadialGaugeStyle}" />
+        <controls:UniformGrid Grid.Column="1" Columns="1" HorizontalAlignment="Center">
+            <controls:HeaderedTextBlock Foreground="White" Header="Air Speed" VerticalAlignment="Center"
+                                        Text="{Binding Status.PitotSpeed, Converter={StaticResource SpeedConverter}}">
                 <controls:HeaderedTextBlock.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Foreground="White" Text="{Binding}" />
                     </DataTemplate>
                 </controls:HeaderedTextBlock.HeaderTemplate>
             </controls:HeaderedTextBlock>
-            <uwp:BatteryControl Margin="10" MaxHeight="80" VerticalAlignment="Bottom"/>
+            <controls:HeaderedTextBlock Foreground="White" Header="Wifi Signal"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Status.WifiStrength, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} dbi'}">
+                <controls:HeaderedTextBlock.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="White" Text="{Binding}" />
+                    </DataTemplate>
+                </controls:HeaderedTextBlock.HeaderTemplate>
+            </controls:HeaderedTextBlock>
         </controls:UniformGrid>
-        <controls:RadialGauge Grid.Column="4" Value="{Binding Status.Altitude}" Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
-                                      TickSpacing="20" Maximum="300" Unit="m Altitude" Style="{StaticResource RadialGaugeStyle}" />
         <uwp:AnglesControl Grid.Column="2" />
+        <controls:RadialGauge Grid.Column="3"
+                              Value="{Binding Status.Altitude, Converter={StaticResource LongitudeConverter}}"
+                              Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
+                              TickSpacing="{Binding UnitPack.Longitude.Tick}"
+                              Maximum="{Binding UnitPack.Longitude.Maximum}"
+                              Unit="{Binding UnitPack.Longitude.Abbreviation}"
+                              Style="{StaticResource RadialGaugeStyle}" />
 
-        <maps:MapControl Grid.Column="1" x:Name="MapControl" Style="AerialWithRoads" Visibility="Collapsed" />
+        <maps:MapControl x:Name="MapControl" Style="AerialWithRoads" Visibility="Collapsed" />
     </Grid>
 </UserControl>
