@@ -8,7 +8,7 @@ using Windows.Storage.Pickers;
 using FlightVisualizer.Core;
 using ReactiveUI;
 
-namespace SuppaFlight.UWP
+namespace SuppaFlight.UWP.Code
 {
     public class FileOpenCommands
     {

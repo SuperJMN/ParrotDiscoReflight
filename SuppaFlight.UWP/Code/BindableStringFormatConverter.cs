@@ -2,7 +2,7 @@ using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace SuppaFlight.UWP
+namespace SuppaFlight.UWP.Code
 {
     public class BindableStringFormatConverter : DependencyObject, IValueConverter
     {

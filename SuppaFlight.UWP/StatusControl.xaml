@@ -7,17 +7,18 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:uwp="using:SuppaFlight.UWP"
+    xmlns:code="using:SuppaFlight.UWP.Code"
     mc:Ignorable="d"
     Foreground="White"
-    RequestedTheme="Dark" d:DataContext="{d:DesignInstance uwp:MainViewModel}">
+    RequestedTheme="Dark" d:DataContext="{d:DesignInstance code:DataViewModel}">
 
     <UserControl.Resources>
-        <uwp:BindableStringFormatConverter x:Key="SpeedConverter" StringFormat="{Binding UnitPack.Speed.StringFormat}" />
-        <uwp:BindableStringFormatConverter x:Key="LongitudeConverter"
+        <code:BindableStringFormatConverter x:Key="SpeedConverter" StringFormat="{Binding UnitPack.Speed.StringFormat}" />
+        <code:BindableStringFormatConverter x:Key="LongitudeConverter"
                                            StringFormat="{Binding UnitPack.Longitude.StringFormat}" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid ColumnSpacing="20">
         <Grid.Resources>
             <Style x:Key="RadialGaugeStyle" TargetType="controls:RadialGauge">
                 <Setter Property="TickBrush" Value="White" />
@@ -34,17 +35,17 @@
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <controls:RadialGauge Value="{Binding Status.Speed}"
                               Minimum="0" TickSpacing="{Binding UnitPack.Speed.Tick}"
                               Maximum="{Binding UnitPack.Speed.Maximum}" Unit="{Binding UnitPack.Speed.Abbreviation}"
                               Style="{StaticResource RadialGaugeStyle}" />
-        <controls:UniformGrid Grid.Column="1" Columns="1" HorizontalAlignment="Center">
+        <controls:UniformGrid Grid.Column="1" Columns="1" VerticalAlignment="Center" RowSpacing="15">
             <controls:HeaderedTextBlock Foreground="White" Header="Air Speed" VerticalAlignment="Center"
                                         Text="{Binding Status.PitotSpeed, Converter={StaticResource SpeedConverter}}">
                 <controls:HeaderedTextBlock.HeaderTemplate>
@@ -55,7 +56,7 @@
             </controls:HeaderedTextBlock>
             <controls:HeaderedTextBlock Foreground="White" Header="Wifi Signal"
                                         VerticalAlignment="Center"
-                                        Text="{Binding Status.WifiStrength, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} dbi'}">
+                                        Text="{Binding Status.WifiStrength, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} dBi'}">
                 <controls:HeaderedTextBlock.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Foreground="White" Text="{Binding}" />

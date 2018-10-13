@@ -1,7 +1,7 @@
 using System;
 using Windows.UI.Xaml.Data;
 
-namespace SuppaFlight.UWP
+namespace SuppaFlight.UWP.Code
 {
     public class AngleRadianConverter : IValueConverter
     {

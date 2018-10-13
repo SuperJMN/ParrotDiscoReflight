@@ -1,30 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive;
-using System.Reactive.Linq;
-using Windows.Devices.Geolocation;
-using Windows.Foundation;
-using Windows.Media.Core;
-using Windows.Storage;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Maps;
-using ReactiveUI;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
+using SuppaFlight.UWP.Code;
 
 namespace SuppaFlight.UWP
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage
     {
-        private MapIcon spaceNeedleIcon;
-
         public MainPage()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(new FileOpenCommands());            
+            DataContext = new MainViewModel(new FileOpenCommands(), new Code.NavigationService(this.FindParent<Frame>()));            
+
+            Loaded += OnLoaded;
         }
 
-       
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var frame = (Frame) Window.Current.Content;
+            DataContext = new MainViewModel(new FileOpenCommands(), new NavigationService(frame));
+        }
     }
 }

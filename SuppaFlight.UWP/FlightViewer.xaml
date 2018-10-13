@@ -6,26 +6,30 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
+    xmlns:code="using:SuppaFlight.UWP.Code"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance local:MainViewModel}">
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance code:FlightViewModel}">
 
     <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="150" />
         </Grid.RowDefinitions>
-        <MediaElement x:Name="MediaElement" AutoPlay="False" Position="{Binding Position, Mode=TwoWay}" />
-        <TextBlock Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10"
-                   Text="{Binding Status.TimeElapsed, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:hh\\:mm\\:ss}'}">
-            <TextBlock.Foreground>
-                <media:BackdropInvertBrush />
-            </TextBlock.Foreground>
-        </TextBlock>
-        <local:BatteryControl VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" MaxHeight="60" />
-        <controls:GridSplitter VerticalAlignment="Top" Background="Transparent" Grid.Row="1" HorizontalAlignment="Stretch" Height="10" />
-        <local:StatusControl Grid.Row="1" />
+        <MediaElement x:Name="MediaElement" Position="{Binding Position, Mode=TwoWay}" />
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBlock
+                Text="{Binding DataViewModel.Status.TimeElapsed, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:hh\\:mm\\:ss}'}">
+                <TextBlock.Foreground>
+                    <media:BackdropInvertBrush />
+                </TextBlock.Foreground>
+            </TextBlock>
+            <local:BatteryControl DataContext="{Binding DataViewModel}" VerticalAlignment="Top"
+                                  HorizontalAlignment="Left" Margin="10" MaxHeight="60" />
+        </StackPanel>
+        <controls:GridSplitter VerticalAlignment="Top" Background="Transparent" Grid.Row="1"
+                               HorizontalAlignment="Stretch" Height="10" />
+        <local:StatusControl DataContext="{Binding DataViewModel}" Margin="0,15,0,15" Grid.Row="1" />
     </Grid>
 </UserControl>

@@ -99,7 +99,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AngleRadianConverter.cs" />
+    <Compile Include="Code\AngleRadianConverter.cs" />
     <Compile Include="AnglesControl.xaml.cs">
       <DependentUpon>AnglesControl.xaml</DependentUpon>
     </Compile>
@@ -109,17 +109,30 @@
     <Compile Include="BatteryControl.xaml.cs">
       <DependentUpon>BatteryControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BindableStringFormatConverter.cs" />
-    <Compile Include="FileOpenCommands.cs" />
+    <Compile Include="Code\BindableStringFormatConverter.cs" />
+    <Compile Include="Code\DataViewModel.cs" />
+    <Compile Include="Code\FlightViewModel.cs" />
+    <Compile Include="Code\Units\FeetUnit.cs" />
+    <Compile Include="Code\FileOpenCommands.cs" />
+    <Compile Include="Code\IMeasurementUnit.cs" />
+    <Compile Include="Code\Units\KilometersPerHourUnit.cs" />
+    <Compile Include="Code\Units\MetersPerSecondUnit.cs" />
+    <Compile Include="Code\Units\MetersUnit.cs" />
+    <Compile Include="Code\Units\MilesPerHourUnit.cs" />
+    <Compile Include="FlightReplayPage.xaml.cs">
+      <DependentUpon>FlightReplayPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FlightViewer.xaml.cs">
       <DependentUpon>FlightViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Code\INavigationService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="MeasurementUnit.cs" />
-    <Compile Include="StatusMixin.cs" />
+    <Compile Include="Code\MainViewModel.cs" />
+    <Compile Include="Code\Units\UnitPack.cs" />
+    <Compile Include="Code\NavigationService.cs" />
+    <Compile Include="Code\StatusMixin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceSelector.xaml.cs">
       <DependentUpon>SourceSelector.xaml</DependentUpon>
@@ -127,8 +140,8 @@
     <Compile Include="StatusControl.xaml.cs">
       <DependentUpon>StatusControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StatusViewModel.cs" />
-    <Compile Include="UnitSource.cs" />
+    <Compile Include="Code\StatusViewModel.cs" />
+    <Compile Include="Code\Units\UnitSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -141,7 +154,7 @@
     <Content Include="Assets\bitmap.png" />
     <Content Include="Assets\data.svg" />
     <Content Include="Assets\front.png" />
-    <Content Include="Assets\front.svg" />
+    <Content Include="Assets\back.svg" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -207,6 +220,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BatteryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FlightReplayPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

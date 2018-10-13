@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Windows.Devices.Geolocation;
 using FlightVisualizer.Core;
+using SuppaFlight.UWP.Code.Units;
 
-namespace SuppaFlight.UWP
+namespace SuppaFlight.UWP.Code
 {
     public static class StatusMixin
     {

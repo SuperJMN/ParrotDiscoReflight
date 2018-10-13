@@ -1,7 +1,7 @@
 ﻿using System;
 using FlightVisualizer.Core;
 
-namespace SuppaFlight.UWP
+namespace SuppaFlight.UWP.Code
 {
     public class StatusViewModel
     {

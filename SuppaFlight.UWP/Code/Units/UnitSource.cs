@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SuppaFlight.UWP
+namespace SuppaFlight.UWP.Code.Units
 {
     public static class UnitSource
     {

@@ -5,9 +5,10 @@
     xmlns:local="using:SuppaFlight.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:code="using:SuppaFlight.UWP.Code"
     mc:Ignorable="d"
     d:DesignHeight="600"
-    d:DesignWidth="700" d:DataContext="{d:DesignInstance local:MainViewModel}">
+    d:DesignWidth="700" d:DataContext="{d:DesignInstance code:MainViewModel}">
 
     <Grid ColumnSpacing="20" RowSpacing="20">
 

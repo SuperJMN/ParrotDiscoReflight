@@ -5,28 +5,14 @@
     xmlns:local="using:SuppaFlight.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:code="using:SuppaFlight.UWP.Code"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance local:MainViewModel}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance code:MainViewModel}">
 
-    <Grid>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{Binding IsRunning}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="SourceSelector.Visibility" Value="Collapsed" />
-                        <Setter Target="Viewer.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
-        <local:SourceSelector x:Name="SourceSelector" />
-
-        <local:FlightViewer x:Name="Viewer" Visibility="Collapsed" />
-
-    </Grid>
+    <Frame>
+        <Grid>
+            <local:SourceSelector x:Name="SourceSelector" />
+            <local:FlightViewer x:Name="Viewer" Visibility="Collapsed" />
+        </Grid>
+    </Frame>
 </Page>
