@@ -1,10 +1,13 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System;
+using System.Collections.Generic;
+using Windows.UI.Xaml.Controls;
 
 namespace SuppaFlight.UWP.Code
 {
-    partial class NavigationService : INavigationService
+    class NavigationService : INavigationService
     {
         private readonly Frame frame;
+        private readonly IDictionary<Type, Type> mapping = new Dictionary<Type, Type>();
 
         public NavigationService(Frame frame)
         {
@@ -13,7 +16,13 @@ namespace SuppaFlight.UWP.Code
 
         public void Navigate<T>(T viewModel)
         {
-            frame.Navigate(typeof(FlightReplayPage), viewModel);
+            var pageType = mapping[typeof(T)];
+            frame.Navigate(pageType, viewModel);
+        }
+
+        public void Register<TViewModel, TPage>()
+        {
+            mapping.Add(typeof(TViewModel), typeof(TPage));
         }
     }
 }

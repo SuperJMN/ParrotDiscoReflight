@@ -6,18 +6,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:code="using:SuppaFlight.UWP.Code"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:flightAcademy="using:FlightVisualizer.Core.FlightAcademy"
     mc:Ignorable="d"
-    d:DesignHeight="600"
-    d:DesignWidth="700" d:DataContext="{d:DesignInstance code:MainViewModel}">
+    d:DesignHeight="1000"
+    d:DesignWidth="1900" d:DataContext="{d:DesignInstance code:MainViewModel}">
 
-    <Grid ColumnSpacing="20" RowSpacing="20">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
         <Grid.Resources>
-            <Style x:Key="ButtonStyle" TargetType="Button">
+            <Style x:Key="BigButtonStyle" TargetType="Button">
                 <Setter Property="VerticalAlignment" Value="Stretch" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="Height" Value="120" />
             </Style>
             <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
                 <Setter Property="VerticalAlignment" Value="Top" />
@@ -31,34 +44,72 @@
             </Style>
         </Grid.Resources>
 
-        <StackPanel Spacing="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Command="{Binding FileOpenCommands.OpenVideoCommand}" Style="{StaticResource ButtonStyle}" Width="400">
-                <Grid>
+        <Grid Grid.Column="1" Grid.Row="1" RowSpacing="40">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <ComboBox Header="Units" DisplayMemberPath="Name" HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding UnitPacks}" SelectedItem="{Binding UnitPack, Mode=TwoWay}" />
+            <controls:HeaderedContentControl Grid.Row="1">
+                <controls:HeaderedContentControl.Header>
+                    <CheckBox IsHitTestVisible="False" Content="Source Video" IsChecked="{Binding HasVideo}" />
+                </controls:HeaderedContentControl.Header>
+                <Button Command="{Binding FileCommands.OpenVideoCommand}" Style="{StaticResource BigButtonStyle}">
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Width="100" Height="100" Source="Assets/video.svg" />
+                        <TextBlock Grid.Column="1" Text="Video File" Style="{StaticResource TextBlockStyle}" />
+                    </Grid>
+                </Button>
+            </controls:HeaderedContentControl>
+            <controls:HeaderedContentControl Grid.Row="2" HorizontalContentAlignment="Stretch">
+                <controls:HeaderedContentControl.Header>
+                    <CheckBox IsHitTestVisible="False" Content="Flight Data" IsChecked="{Binding HasData}" />
+                </controls:HeaderedContentControl.Header>
+                <Grid ColumnSpacing="10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
+                        <ColumnDefinition></ColumnDefinition>
+                        <!--<ColumnDefinition></ColumnDefinition>-->
                     </Grid.ColumnDefinitions>
-                    <CheckBox IsChecked="{Binding HasVideo}" Style="{StaticResource CheckBoxStyle}" />
-                    <Image Width="100" Height="100" Source="Assets/video.svg" />
-                    <TextBlock Grid.Column="1" Text="Video File" Style="{StaticResource TextBlockStyle}"></TextBlock>
+                    <controls:HeaderedContentControl Header="Local">
+                        <Button Command="{Binding FileCommands.OpenDataCommand}" VerticalAlignment="Top"
+                                Style="{StaticResource BigButtonStyle}">
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Image Width="90" Height="90" Source="Assets/data.svg" />
+                                <TextBlock Grid.Column="1" Text="Select file" Style="{StaticResource TextBlockStyle}" />
+                            </Grid>
+                        </Button>
+                    </controls:HeaderedContentControl>
+                    <!--<controls:HeaderedContentControl Grid.Column="1" Header="Flight Academy" Height="400" HorizontalContentAlignment="Stretch">
+                        <local:FlightAcademyControl />
+                    </controls:HeaderedContentControl>-->
                 </Grid>
+            </controls:HeaderedContentControl>
+
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    Grid.Column="1" HorizontalAlignment="Right" >
+            <Button Command="{Binding RunCommand}" ToolTipService.ToolTip="Play the flight!" Height="100" Width="100">
+                <Image Source="Assets/play.svg" />
             </Button>
-            <Button Command="{Binding FileOpenCommands.OpenDataCommand}"
-                    Style="{StaticResource ButtonStyle}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox IsChecked="{Binding HasData}" Style="{StaticResource CheckBoxStyle}" />
-                    <Image Width="100" Height="100" Source="Assets/data.svg" />
-                    <TextBlock Grid.Column="1" Text="Flight Data File" Style="{StaticResource TextBlockStyle}"></TextBlock>
-                </Grid>
-            </Button>
-            <ComboBox Header="Speed Unit" DisplayMemberPath="Name" HorizontalAlignment="Stretch" ItemsSource="{Binding UnitPacks}" SelectedItem="{Binding UnitPack, Mode=TwoWay}"></ComboBox>
-        </StackPanel >
-        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="0" Command="{Binding RunCommand}" Style="{StaticResource ButtonStyle}">
-            <Image Width="100" Height="100" Source="Assets/play.svg" />
-        </Button>
+            <!--<Button Command="{Binding ExportVideoCommand}" Width="100" Height="100">
+                <Image  Source="Assets/export.svg" />
+            </Button>-->
+        </StackPanel>
+
+
+
     </Grid>
 </UserControl>

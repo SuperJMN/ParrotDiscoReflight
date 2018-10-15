@@ -7,11 +7,11 @@ using SuppaFlight.UWP.Code.Units;
 
 namespace SuppaFlight.UWP.Code
 {
-    public class FlightViewModel : ReactiveObject
+    public class FlightReplayViewModel : ReactiveObject
     {
         private TimeSpan position;
 
-        public FlightViewModel(IEnumerable<Status> statusObservable, StorageFile video, UnitPack unitPack)
+        public FlightReplayViewModel(IEnumerable<Status> statusObservable, StorageFile video, UnitPack unitPack)
         {
             Video = video;
             DataViewModel = new DataViewModel(statusObservable, this.WhenAnyValue(model => model.Position), unitPack);

@@ -32,7 +32,7 @@ namespace SuppaFlight.UWP
         {
             base.OnNavigatedTo(e);
 
-            var vm = (FlightViewModel)e.Parameter;
+            var vm = (FlightReplayViewModel)e.Parameter;
             this.DataContext = vm;
             FlightViewer.Video = vm.Video;
         }

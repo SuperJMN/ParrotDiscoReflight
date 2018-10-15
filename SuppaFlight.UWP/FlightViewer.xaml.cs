@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Media.Core;
+using Windows.Media.Editing;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,7 +29,7 @@ namespace SuppaFlight.UWP
             {
                 var mediaSource = MediaSource.CreateFromStorageFile(file);
                 MediaElement.SetPlaybackSource(mediaSource);
-            });          
+            });
         }
 
 
@@ -37,14 +38,16 @@ namespace SuppaFlight.UWP
 
         private static void VideoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var flightViewer = (FlightViewer) d;
-            var file = (IStorageFile) e.NewValue;
-            flightViewer.MediaElement.SetPlaybackSource(MediaSource.CreateFromStorageFile(file));
+            var flightViewer = (FlightViewer)d;
+            var file = (IStorageFile)e.NewValue;
+            var mediaPlaybackSource = MediaSource.CreateFromStorageFile(file);
+            
+            flightViewer.MediaElement.SetPlaybackSource(mediaPlaybackSource);
         }
 
         public StorageFile Video
         {
-            get { return (StorageFile) GetValue(VideoProperty); }
+            get { return (StorageFile)GetValue(VideoProperty); }
             set { SetValue(VideoProperty, value); }
         }
     }

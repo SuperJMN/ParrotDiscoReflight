@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:uwp="using:SuppaFlight.UWP"
     xmlns:code="using:SuppaFlight.UWP.Code"
     mc:Ignorable="d"
@@ -16,6 +15,24 @@
         <code:BindableStringFormatConverter x:Key="SpeedConverter" StringFormat="{Binding UnitPack.Speed.StringFormat}" />
         <code:BindableStringFormatConverter x:Key="LongitudeConverter"
                                            StringFormat="{Binding UnitPack.Longitude.StringFormat}" />
+        <Style x:Key="BottomHeaderStyle" TargetType="controls:HeaderedContentControl">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="controls:HeaderedContentControl">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter HorizontalContentAlignment="Center" Grid.Row="1" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}"/>                            
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>        
     </UserControl.Resources>
 
     <Grid ColumnSpacing="20">
@@ -41,10 +58,13 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <controls:RadialGauge Value="{Binding Status.Speed}"
-                              Minimum="0" TickSpacing="{Binding UnitPack.Speed.Tick}"
-                              Maximum="{Binding UnitPack.Speed.Maximum}" Unit="{Binding UnitPack.Speed.Abbreviation}"
-                              Style="{StaticResource RadialGaugeStyle}" />
+        <controls:HeaderedContentControl Style="{StaticResource BottomHeaderStyle}" Header="Speed">
+            <controls:RadialGauge Value="{Binding Status.Speed}"
+                                  Minimum="0" TickSpacing="{Binding UnitPack.Speed.Tick}"
+                                  Maximum="{Binding UnitPack.Speed.Maximum}"
+                                  Unit="{Binding UnitPack.Speed.Abbreviation}"
+                                  Style="{StaticResource RadialGaugeStyle}" />
+        </controls:HeaderedContentControl>
         <controls:UniformGrid Grid.Column="1" Columns="1" VerticalAlignment="Center" RowSpacing="15">
             <controls:HeaderedTextBlock Foreground="White" Header="Air Speed" VerticalAlignment="Center"
                                         Text="{Binding Status.PitotSpeed, Converter={StaticResource SpeedConverter}}">
@@ -65,14 +85,15 @@
             </controls:HeaderedTextBlock>
         </controls:UniformGrid>
         <uwp:AnglesControl Grid.Column="2" />
-        <controls:RadialGauge Grid.Column="3"
-                              Value="{Binding Status.Altitude, Converter={StaticResource LongitudeConverter}}"
-                              Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
-                              TickSpacing="{Binding UnitPack.Longitude.Tick}"
-                              Maximum="{Binding UnitPack.Longitude.Maximum}"
-                              Unit="{Binding UnitPack.Longitude.Abbreviation}"
-                              Style="{StaticResource RadialGaugeStyle}" />
+        <controls:HeaderedContentControl Header="Altitude" Style="{StaticResource BottomHeaderStyle}" Grid.Column="3">
+            <controls:RadialGauge 
+                                  Value="{Binding Status.Altitude, Converter={StaticResource LongitudeConverter}}"
+                                  Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
+                                  TickSpacing="{Binding UnitPack.Longitude.Tick}"
+                                  Maximum="{Binding UnitPack.Longitude.Maximum}"
+                                  Unit="{Binding UnitPack.Longitude.Abbreviation}"
+                                  Style="{StaticResource RadialGaugeStyle}" /></controls:HeaderedContentControl>
 
-        <maps:MapControl x:Name="MapControl" Style="AerialWithRoads" Visibility="Collapsed" />
+        <!--<maps:MapControl x:Name="MapControl" Style="AerialWithRoads" Visibility="Collapsed" />-->
     </Grid>
 </UserControl>

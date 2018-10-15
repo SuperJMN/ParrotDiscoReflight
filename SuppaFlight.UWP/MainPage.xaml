@@ -10,9 +10,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance code:MainViewModel}">
 
     <Frame>
-        <Grid>
-            <local:SourceSelector x:Name="SourceSelector" />
-            <local:FlightViewer x:Name="Viewer" Visibility="Collapsed" />
-        </Grid>
+        <local:SourceSelector Margin="30" />
     </Frame>
 </Page>

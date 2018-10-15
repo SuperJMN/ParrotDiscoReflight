@@ -10,26 +10,39 @@
     xmlns:code="using:SuppaFlight.UWP.Code"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance code:FlightViewModel}">
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance code:FlightReplayViewModel}">
 
     <Grid Background="Black">
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="150" />
-        </Grid.RowDefinitions>
-        <MediaElement x:Name="MediaElement" Position="{Binding Position, Mode=TwoWay}" />
-        <StackPanel Grid.Row="0" Margin="10">
-            <TextBlock
-                Text="{Binding DataViewModel.Status.TimeElapsed, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:hh\\:mm\\:ss}'}">
-                <TextBlock.Foreground>
-                    <media:BackdropInvertBrush />
-                </TextBlock.Foreground>
-            </TextBlock>
-            <local:BatteryControl DataContext="{Binding DataViewModel}" VerticalAlignment="Top"
-                                  HorizontalAlignment="Left" Margin="10" MaxHeight="60" />
-        </StackPanel>
-        <controls:GridSplitter VerticalAlignment="Top" Background="Transparent" Grid.Row="1"
-                               HorizontalAlignment="Stretch" Height="10" />
-        <local:StatusControl DataContext="{Binding DataViewModel}" Margin="0,15,0,15" Grid.Row="1" />
+        <MediaElement x:Name="MediaElement" Position="{Binding Position, Mode=TwoWay}" Grid.RowSpan="2" />
+        <Viewbox>
+            <Grid
+                Width="{Binding ElementName=MediaElement, Path=NaturalVideoWidth, Converter={StaticResource VideoSizeConverter}}"
+                Height="{Binding ElementName=MediaElement, Path=NaturalVideoHeight, Converter={StaticResource VideoSizeConverter}}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="10">
+                    <TextBlock
+                        Text="{Binding DataViewModel.Status.TimeElapsed, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:hh\\:mm\\:ss}'}">
+                        <TextBlock.Foreground>
+                            <media:BackdropInvertBrush />
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <local:BatteryControl DataContext="{Binding DataViewModel}" VerticalAlignment="Top"
+                                          HorizontalAlignment="Left" Margin="10" MaxHeight="60" />
+                </StackPanel>
+
+                <controls:GridSplitter Grid.Row="1" Height="4" Foreground="Transparent" Background="Transparent" VerticalAlignment="Top">
+                    <controls:GridSplitter.Element>
+                        <Border />
+                    </controls:GridSplitter.Element>
+                </controls:GridSplitter>
+                <local:StatusControl Grid.Row="1" DataContext="{Binding DataViewModel}" Margin="0,15,0,15"
+                                     VerticalAlignment="Bottom" />
+            </Grid>
+        </Viewbox>
     </Grid>
 </UserControl>

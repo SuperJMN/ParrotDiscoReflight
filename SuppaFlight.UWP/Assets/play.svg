@@ -19,6 +19,7 @@
     inkscape:output_extension="org.inkscape.output.svg.inkscape"
     inkscape:export-ydpi="90"
     inkscape:version="0.46"
+    preserveAspectRatio="xMinYMin"
     sodipodi:docbase="/home/jimmac/src/cvs/tango-icon-theme/scalable/actions"
   >
   <defs

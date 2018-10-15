@@ -3,10 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
-    xmlns:code="using:SuppaFlight.UWP.Code" RequestedTheme="Dark">
+    xmlns:code="using:SuppaFlight.UWP.Code"
+    xmlns:uwp="using:SuppaFlight.UWP"
+    RequestedTheme="Dark">
 
     <Application.Resources>
         <code:AngleRadianConverter x:Key="AngleRadianConverter" />
-        <converters:StringFormatConverter x:Key="StringFormatConverter" />        
+        <converters:StringFormatConverter x:Key="StringFormatConverter" />
+        <uwp:VideoSizeConverter x:Key="VideoSizeConverter" />
     </Application.Resources>
 </Application>

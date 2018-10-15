@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
+using Windows.Storage;
+using FlightVisualizer.Core;
+using FlightVisualizer.Core.FlightAcademy;
 using ReactiveUI;
 using SuppaFlight.UWP.Code.Units;
 
@@ -12,53 +14,74 @@ namespace SuppaFlight.UWP.Code
 {
     public class MainViewModel : ReactiveObject, IDisposable
     {
-        public MainViewModel(FileOpenCommands fileOpenCommands, INavigationService navigationService)
+        public MainViewModel(FileOpenCommands fileCommands, INavigationService navigationService, IVideoExportService exportService)
         {
+            var client = FlightAcademyClient.Create("bla", "ble", new Uri("http://academy.ardrone.com/api3"));
+
             UnitPack = UnitPacks.First();
-            FileOpenCommands = fileOpenCommands;
+            FileCommands = fileCommands;
 
-            var flightDataObs = fileOpenCommands.OpenDataCommand;
-            var videoObs = fileOpenCommands.OpenVideoCommand;
+            var selectedFromFlightAcademy = this.WhenAnyValue(x => x.SelectedFlight)
+                .Where(x => x != null)
+                .SelectMany(f => client.GetFlight(f.Id))
+                .ObserveOnDispatcher()
+                .Select(x => x.ToFlightData());
 
-            var dataBatch = flightDataObs.Select(data => data.Statuses);
-            var measurementUnitObs = this.WhenAnyValue(x => x.UnitPack);
+            var datasMerged = fileCommands.OpenDataCommand.Merge(selectedFromFlightAcademy);
+            dataOh = datasMerged.ToProperty(this, x => x.Data);
+            videoOh = fileCommands.OpenVideoCommand.ToProperty(this, x => x.InputVideo);
 
-            ISubject<Unit> runSubject = new Subject<Unit>();
+            RunCommand = ReactiveCommand.Create(() =>
+            {
+                navigationService.Navigate(new FlightReplayViewModel(Data.Statuses, InputVideo, unitPack));
+                MessageBus.Current.SendMessage(Unit.Default, "Play");
+            }, this.WhenAnyValue(x => x.Data, x => x.InputVideo, (data, file) => data != null && file != null));
 
-            dataBatch.CombineLatest(videoObs, measurementUnitObs, (statuses, file, unit) => new {statuses, file, unit})
-                .Where(x => x.file != null && x.statuses != null)
-                .Zip(runSubject, (x, _) => new { x.statuses, x.file, x.unit})
-                .Subscribe(obj =>
-                {
-                    navigationService.Navigate(new FlightViewModel(obj.statuses, obj.file, unitPack));
-                    MessageBus.Current.SendMessage(Unit.Default, "Play");
-                })
-                .DisposeWith(disposables);
+            hasDataOh = this.WhenAnyValue(x => x.Data).Any(data => data != null).ToProperty(this, x => x.HasData);
+            hasVideoOh = this.WhenAnyValue(x => x.InputVideo).Any(data => data != null).ToProperty(this, x => x.HasVideo);
 
-            var canRunObs = FileOpenCommands.OpenDataCommand.Any().CombineLatest(FileOpenCommands.OpenVideoCommand.Any(), (a, b) => a && b);
-            RunCommand = ReactiveCommand.Create(() => { }, canRunObs);
-            RunCommand
-                .Subscribe(runSubject)
-                .DisposeWith(disposables);
+            var selectMany = FileCommands.SaveObs()
+                .ObserveOnDispatcher()
+                .Select(s => new ExportInput(InputVideo, Data, s));
 
-            hasDataHelper = flightDataObs.Any().ToProperty(this, x => x.HasData);
-            var someVideo = videoObs.Any();
-            someVideo.Subscribe(_ => { });
-            hasVideoHelper = someVideo.ToProperty(this, x => x.HasVideo);
+            ExportVideoCommand = ReactiveCommand.CreateFromObservable(() => selectMany);
+            ExportVideoCommand.Subscribe(input =>
+            {
+                var vm = new ExportViewModel(exportService, input);
+                navigationService.Navigate(vm);
+            });
+
+            
+            LoadFlightsCommand = ReactiveCommand.CreateFromTask(() => client.GetFlights(0, 2000));
+            flightsOh = LoadFlightsCommand.ToProperty(this, x => x.Flights);
         }
 
-        public bool HasVideo => hasVideoHelper.Value;
+        public ICollection<Flight> Flights => flightsOh.Value;
 
-        public bool HasData => hasDataHelper.Value;
+        public ReactiveCommand<Unit, ICollection<Flight>> LoadFlightsCommand { get; }
+
+        public StorageFile InputVideo => videoOh.Value;
+
+        public FlightData Data => dataOh.Value;
+
+        public ReactiveCommand<Unit, ExportInput> ExportVideoCommand { get; }
+
+        public bool HasVideo => hasVideoOh.Value;
+
+        public bool HasData => hasDataOh.Value;
 
         public ReactiveCommand<Unit, Unit> RunCommand { get; }
 
-        public FileOpenCommands FileOpenCommands { get; }
+        public FileOpenCommands FileCommands { get; }
 
-        private readonly ObservableAsPropertyHelper<bool> hasDataHelper;
-        private readonly ObservableAsPropertyHelper<bool> hasVideoHelper;
+        private readonly ObservableAsPropertyHelper<bool> hasDataOh;
+        private readonly ObservableAsPropertyHelper<bool> hasVideoOh;
         private UnitPack unitPack;
         private readonly CompositeDisposable disposables = new CompositeDisposable();
+        private readonly ObservableAsPropertyHelper<StorageFile> videoOh;
+        private readonly ObservableAsPropertyHelper<FlightData> dataOh;
+        private readonly ObservableAsPropertyHelper<ICollection<Flight>> flightsOh;
+        private Flight selectedFlight;
 
         public UnitPack UnitPack
         {
@@ -68,10 +91,16 @@ namespace SuppaFlight.UWP.Code
 
         public ICollection<UnitPack> UnitPacks => UnitSource.UnitPacks;
 
+        public Flight SelectedFlight
+        {
+            get => selectedFlight;
+            set => this.RaiseAndSetIfChanged(ref selectedFlight, value);
+        }
+
         public void Dispose()
         {
-            hasDataHelper?.Dispose();
-            hasVideoHelper?.Dispose();
+            hasDataOh?.Dispose();
+            hasVideoOh?.Dispose();
             disposables?.Dispose();
             RunCommand?.Dispose();
         }

@@ -8,7 +8,7 @@ using SuppaFlight.UWP.Code.Units;
 
 namespace SuppaFlight.UWP.Code
 {
-    public class DataViewModel : ReactiveObject
+    public class DataViewModel : ReactiveObject, IDataViewModel
     {
         public UnitPack UnitPack { get; }
         private readonly ObservableAsPropertyHelper<StatusViewModel> statusHelper;

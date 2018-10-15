@@ -111,7 +111,12 @@
     </Compile>
     <Compile Include="Code\BindableStringFormatConverter.cs" />
     <Compile Include="Code\DataViewModel.cs" />
-    <Compile Include="Code\FlightViewModel.cs" />
+    <Compile Include="Code\ExportInput.cs" />
+    <Compile Include="Code\FlightReplayViewModel.cs" />
+    <Compile Include="Code\IDataViewModel.cs" />
+    <Compile Include="Code\LoadedMessage.cs" />
+    <Compile Include="Code\SimulationDataViewModel.cs" />
+    <Compile Include="Code\SizeMessage.cs" />
     <Compile Include="Code\Units\FeetUnit.cs" />
     <Compile Include="Code\FileOpenCommands.cs" />
     <Compile Include="Code\IMeasurementUnit.cs" />
@@ -119,6 +124,14 @@
     <Compile Include="Code\Units\MetersPerSecondUnit.cs" />
     <Compile Include="Code\Units\MetersUnit.cs" />
     <Compile Include="Code\Units\MilesPerHourUnit.cs" />
+    <Compile Include="ExportPage.xaml.cs">
+      <DependentUpon>ExportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExportService.cs" />
+    <Compile Include="Code\ExportViewModel.cs" />
+    <Compile Include="FlightAcademyControl.xaml.cs">
+      <DependentUpon>FlightAcademyControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FlightReplayPage.xaml.cs">
       <DependentUpon>FlightReplayPage.xaml</DependentUpon>
     </Compile>
@@ -126,6 +139,7 @@
       <DependentUpon>FlightViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Code\INavigationService.cs" />
+    <Compile Include="Frame.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -142,6 +156,7 @@
     </Compile>
     <Compile Include="Code\StatusViewModel.cs" />
     <Compile Include="Code\Units\UnitSource.cs" />
+    <Compile Include="VideoSizeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -151,9 +166,8 @@
     <None Include="SuppaFlight.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\bitmap.png" />
     <Content Include="Assets\data.svg" />
-    <Content Include="Assets\front.png" />
+    <Content Include="Assets\export.svg" />
     <Content Include="Assets\back.svg" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
@@ -162,7 +176,6 @@
     <Content Include="Assets\LargeTile.scale-400.png" />
     <Content Include="Assets\play.svg" />
     <Content Include="Assets\otra.png" />
-    <Content Include="Assets\side.png" />
     <Content Include="Assets\side.svg" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
@@ -223,6 +236,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ExportPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FlightAcademyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FlightReplayPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -245,8 +266,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DynamicData">
+      <Version>6.6.0.2492</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.7</Version>
+      <Version>6.1.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>4.0.0</Version>

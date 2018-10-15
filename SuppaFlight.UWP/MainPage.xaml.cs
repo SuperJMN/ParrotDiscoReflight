@@ -1,7 +1,8 @@
-﻿using Windows.UI.Xaml;
+﻿using System.Linq;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using SuppaFlight.UWP.Code;
+using SuppaFlight.UWP.Code.Units;
 
 namespace SuppaFlight.UWP
 {
@@ -10,15 +11,18 @@ namespace SuppaFlight.UWP
         public MainPage()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(new FileOpenCommands(), new Code.NavigationService(this.FindParent<Frame>()));            
 
-            Loaded += OnLoaded;
-        }
+            var frame = (Frame)Window.Current.Content;
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var frame = (Frame) Window.Current.Content;
-            DataContext = new MainViewModel(new FileOpenCommands(), new NavigationService(frame));
+            var navigationService = new NavigationService(frame);
+            navigationService.Register<FlightReplayViewModel, FlightReplayPage>();
+            navigationService.Register<ExportViewModel, ExportPage>();
+
+            DataContext = new MainViewModel(new FileOpenCommands(), navigationService, new ExportService(status => new SimulationDataViewModel
+            {                
+                UnitPack = UnitSource.UnitPacks.First(),
+                Status = new StatusViewModel(status.ConvertTo(UnitSource.UnitPacks.First()))
+            }));
         }
     }
 }
