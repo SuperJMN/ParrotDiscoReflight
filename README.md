@@ -1,5 +1,5 @@
 # Parrot Disco Reflight
-## The application that will relive your most exciting flights
+The application that will relive your most exciting flights
 
 If you own a Parrot Disco, I'm sure you look for a better way to enjoy you videos. This applications makes them more enjoyable because it will display an overlay with the data from your flight over your video 😃
 
