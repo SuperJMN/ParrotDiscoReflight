@@ -1,13 +1,20 @@
 # Parrot Disco Reflight
 The application that will relive your most exciting flights
 
-If you own a Parrot Disco, I'm sure you look for a better way to enjoy you videos. This applications makes them more enjoyable because it will display an overlay with the data from your flight over your video 😃
+If you own a Parrot Disco, I'm sure you're looking for a better way to enjoy your awesome videos. This applications makes them more enjoyable, enriching them with all kinds of interesting data from your flight 😃
+
+Let's see a snapshot. 
 
 ![image](https://user-images.githubusercontent.com/3109851/47085923-6f1cb300-d218-11e8-9847-1019fa722fcf.png)
 
-I'm working hard to improve it.
+As you can see, it shows different data gathered from the sensors. Altitude, speed, distance from the controller... The nice overlay will tell you the complete story about your flight 😃
 
-Stay tuned, because it may be available soon in **the Windows 10 Store**.
+# This is a work in progress
+Yes, and I'm working hard to improve it.
+
+# Get it! 
+ - You can build it from the sources
+ - *(pending)* or your can just get it from the Microsoft Store.  
 
 # Donations are welcome!
 If you find this useful, feel free to [buy me a coffee](http://paypal.me/superjmn). Thanks in advance!!
