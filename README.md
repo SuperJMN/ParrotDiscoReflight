@@ -1,5 +1,5 @@
-# ParrotDiscoReflight
-Application to replay Parrot Disco flights (video+data)
+# Parrot Disco Reflight
+## The application that will relive your most exciting flights
 
 If you own a Parrot Disco, I'm sure you look for a better way to enjoy you videos. This applications makes them more enjoyable because it will display an overlay with the data from your flight over your video 😃
 
@@ -11,4 +11,3 @@ Stay tuned, because it may be available soon in **the Windows 10 Store**.
 
 # Donations are welcome!
 If you find this useful, feel free to [buy me a coffee](http://paypal.me/superjmn). Thanks in advance!!
-
