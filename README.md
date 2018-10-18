@@ -12,9 +12,9 @@ As you can see, it shows different data gathered from the sensors. Altitude, spe
 # This is a work in progress
 Yes, and I'm working hard to improve it.
 
-# Get it! 
- - You can build it from the sources
- - *(pending)* or your can just get it from the Microsoft Store.  
+# Run it!
+ - [Get it](https://www.microsoft.com/en-us/p/parrot-disco-reflight/9nfm9m32kb72) from the Microsoft Store
+ - Or build it from the sources 😁
 
 # Donations are welcome!
 If you find this useful, feel free to [buy me a coffee](http://paypal.me/superjmn). Thanks in advance!!
