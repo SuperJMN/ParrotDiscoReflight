@@ -1,0 +1,35 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.AnglesControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    mc:Ignorable="d"
+    
+    d:DataContext="{d:DesignInstance viewModels:DataViewModel}">
+
+    <Grid ColumnSpacing="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Image Source="/Assets/back.svg" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <RotateTransform Angle="{Binding Status.AnglePhi, Converter={StaticResource AngleRadianConverter}}" />
+            </Image.RenderTransform>
+        </Image>
+        <Image Grid.Column="1" Source="/Assets/side.svg" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <CompositeTransform Rotation="{Binding Status.AngleTheta, Converter={StaticResource AngleRadianConverter}}" ScaleX="0.6" ScaleY="0.6" />
+            </Image.RenderTransform>
+        </Image>
+        <Image Grid.Column="2" Margin="20" Source="/Assets/otra.png" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <RotateTransform Angle="{Binding Status.AnglePsi, Converter={StaticResource AngleRadianConverter}}" />
+            </Image.RenderTransform>
+        </Image>
+    </Grid>
+
+</UserControl>

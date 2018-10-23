@@ -1,0 +1,119 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.StatusControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:code="using:ParrotDiscoReflight.Code"
+    xmlns:views="using:ParrotDiscoReflight.Views"
+    xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    mc:Ignorable="d"
+    Foreground="White"
+    d:DataContext="{d:DesignInstance viewModels:DataViewModel}">
+
+    <UserControl.Resources>
+        <code:BindableStringFormatConverter x:Key="SpeedConverter" StringFormat="{Binding UnitPack.Speed.StringFormat}" />
+        <code:BindableStringFormatConverter x:Key="LongitudeConverter"
+                                           StringFormat="{Binding UnitPack.Longitude.StringFormat}" />
+        <Style x:Key="BottomHeaderStyle" TargetType="controls:HeaderedContentControl">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="controls:HeaderedContentControl">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter HorizontalContentAlignment="Center" Grid.Row="1" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid ColumnSpacing="20">
+        <Grid.Resources>
+            <Style x:Key="RadialGaugeStyle" TargetType="controls:RadialGauge">
+                <Setter Property="TickBrush" Value="White" />
+                <Setter Property="TickSpacing" Value="1" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="ScaleWidth" Value="10" />
+                <Setter Property="ScaleTickBrush" Value="#44000000" />
+                <Setter Property="ValueStringFormat" Value="F" />
+                <Setter Property="TickWidth" Value="2" />
+                <Setter Property="TrailBrush" Value="CornflowerBlue" />
+                <Setter Property="ScaleBrush" Value="LightBlue" />
+                <Setter Property="NeedleBrush" Value="Blue" />
+            </Style>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <controls:HeaderedContentControl Style="{StaticResource BottomHeaderStyle}" Header="Speed">
+            <controls:RadialGauge Value="{Binding Status.Speed}"
+                                  Minimum="0" TickSpacing="{Binding UnitPack.Speed.Tick}"
+                                  Maximum="{Binding UnitPack.Speed.Maximum}"
+                                  Unit="{Binding UnitPack.Speed.Abbreviation}"
+                                  Style="{StaticResource RadialGaugeStyle}" />
+        </controls:HeaderedContentControl>
+        <controls:AdaptiveGridView Grid.Column="1" VerticalAlignment="Bottom" ItemHeight="50" DesiredWidth="120">
+            <controls:HeaderedTextBlock Foreground="White" Header="Air Speed" VerticalAlignment="Center"
+                                        Text="{Binding Status.PitotSpeed, Converter={StaticResource SpeedConverter}}">
+                <controls:HeaderedTextBlock.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="White" Text="{Binding}" />
+                    </DataTemplate>
+                </controls:HeaderedTextBlock.HeaderTemplate>
+            </controls:HeaderedTextBlock>
+            <controls:HeaderedTextBlock Header="Wifi Signal"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Status.WifiStrength, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} dBi'}">
+                <controls:HeaderedTextBlock.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="White" Text="{Binding}" />
+                    </DataTemplate>
+                </controls:HeaderedTextBlock.HeaderTemplate>
+            </controls:HeaderedTextBlock>
+            <controls:HeaderedTextBlock Header="Distance"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Status.DistanceToDrone, Converter={StaticResource LongitudeConverter}}">
+                <controls:HeaderedTextBlock.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="White" Text="{Binding}" />
+                    </DataTemplate>
+                </controls:HeaderedTextBlock.HeaderTemplate>
+            </controls:HeaderedTextBlock>
+            <controls:HeaderedTextBlock Header="Total Distance"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Status.TotalDistance, Converter={StaticResource LongitudeConverter}}">
+                <controls:HeaderedTextBlock.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </controls:HeaderedTextBlock.HeaderTemplate>
+            </controls:HeaderedTextBlock>
+        </controls:AdaptiveGridView>
+        <views:AnglesControl Grid.Column="2" />
+        <controls:HeaderedContentControl Header="Altitude" Style="{StaticResource BottomHeaderStyle}" Grid.Column="3">
+            <controls:RadialGauge 
+                                  Value="{Binding Status.DronePosition.Altitude, Converter={StaticResource LongitudeConverter}}"
+                                  Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
+                                  TickSpacing="{Binding UnitPack.Longitude.Tick}"
+                                  Maximum="{Binding UnitPack.Longitude.Maximum}"
+                                  Unit="{Binding UnitPack.Longitude.Abbreviation}"
+                                  Style="{StaticResource RadialGaugeStyle}" />
+        </controls:HeaderedContentControl>
+
+        <!--<maps:MapControl x:Name="MapControl" Style="AerialWithRoads" Visibility="Collapsed" />-->
+    </Grid>
+</UserControl>
