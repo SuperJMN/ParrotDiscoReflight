@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 using Windows.Storage;
 using ParrotDiscoReflight.Code;
 using ParrotDiscoReflight.Code.Settings;
@@ -14,66 +15,65 @@ namespace ParrotDiscoReflight.ViewModels
 {
     public class ManualPickViewModel : ReactiveObject, IFlightSimulationPicker
     {
-        private readonly ObservableAsPropertyHelper<Flight> flightOh;
-
-        private readonly ObservableAsPropertyHelper<ICollection<FlightSummary>> flightsOh;
-        private readonly ObservableAsPropertyHelper<bool> hasDataOh;
-        private readonly ObservableAsPropertyHelper<bool> hasVideoOh;
-
-        private readonly ObservableAsPropertyHelper<StorageFile> videoOh;
+        private readonly ObservableAsPropertyHelper<Video> video;
+        private readonly ObservableAsPropertyHelper<StorageFile> flightFile;
+        private readonly ObservableAsPropertyHelper<ICollection<FlightSummary>> summaries;
         private FlightSummary selectedFlightSummary;
-        private readonly ObservableAsPropertyHelper<SimulationUnit> selectedFlightOh;
-        private readonly CompositeDisposable disposables = new CompositeDisposable();
 
         public ManualPickViewModel(FileOpenCommands fileCommands, Func<IFlightAcademyClient> clientFactory,
-            IDialogService dialogService)
+            IDialogService dialogService, SettingsViewModel settingsViewModel, INavigationService navigationService)
         {
             FileCommands = fileCommands;
-            var selectedFromFlightAcademy = this.WhenAnyValue(x => x.SelectedFlightSummary)
-                .Where(x => x != null)
-                .SelectMany(f => clientFactory().GetFlight(f.Id))
-                .Select(x => x.ToFlight())
-                .ObserveOnDispatcher()
-                .Select(x => x);
 
-            var datasMerged = fileCommands.OpenDataCommand.Merge(selectedFromFlightAcademy);
-            flightOh = datasMerged.ToProperty(this, x => x.Flight);
-            videoOh = fileCommands.OpenVideoCommand.ToProperty(this, x => x.InputVideo);
-            
-            hasDataOh = this.WhenAnyValue(x => x.Flight, selector: x => x!=null).ToProperty(this, x => x.HasData);
-            hasVideoOh = this.WhenAnyValue(x => x.InputVideo).Any(data => data != null)
-                .ToProperty(this, x => x.HasVideo);
+            video = fileCommands.OpenVideoCommand.ToProperty(this, x => x.Video);
+            flightFile = fileCommands.OpenDataCommand.ToProperty(this, x => x.FlightFile);
 
-            LoadFlightsCommand = ReactiveCommand.CreateFromTask(() => clientFactory().GetFlights(0, 2000));
-            LoadFlightsCommand.ThrownExceptions.MessageOnException(dialogService)
-                .DisposeWith(disposables);
-            flightsOh = LoadFlightsCommand.ToProperty(this, x => x.Flights);
+            LoadFlightsCommand = ReactiveCommand.CreateFromTask(() => GetFlights(clientFactory));
+            summaries = GetFlights(clientFactory)
+                .ToObservable()
+                .Merge(LoadFlightsCommand)
+                .ToProperty(this, x => x.FlightSummaries);
 
-            var flights = this.WhenAnyValue(x => x.Flight).Where(x => x != null);
-            var videos = this.WhenAnyValue(x => x.InputVideo).Where(s => s != null);
-            SimulationUnits = flights.CombineLatest(videos, (d, v) => new SimulationUnit(d, v));
+            var manualSimulations = this
+                .WhenAnyValue(x => x.Video, x => x.FlightFile, (v, f) => new {Video = v, FlightFile = f})
+                .SelectMany(async x =>
+                {
+                    var readFlight = await x.FlightFile.ReadFlight();
+                    return new Simulation(x.Video, readFlight, settingsViewModel.UnitPack);
+                })
+                .FirstOrDefaultAsync();
 
-            selectedFlightOh = SimulationUnits.ToProperty(this, x => x.SelectedSimulation);
+            PlayFromFileCommand = ReactiveCommand.CreateFromObservable(() => manualSimulations,
+                this.WhenAnyValue(x => x.FlightFile, x => x.Video, (f, v) => f != null && v != null));
 
-            var canRun = this.WhenAnyValue(x => x.Flight, x => x.InputVideo, (flight, file) => flight != null && file != null);
-            RunCommand = ReactiveCommand.Create(() => new SimulationUnit(Flight, InputVideo), canRun);
+            var onlineSimulations = this
+                .WhenAnyValue(x => x.Video, x => x.SelectedFlightSummary, (v, s) => new {Video = v, FlightSummary = s})
+                .SelectMany(async x =>
+                {
+                    var readFlight = await clientFactory().GetFlight(x.FlightSummary.Id);
+                    return new Simulation(x.Video, readFlight.ToFlight(), settingsViewModel.UnitPack);
+                })
+                .FirstOrDefaultAsync();
+
+            PlayFromOnlineFlightCommand = ReactiveCommand.CreateFromObservable(() => onlineSimulations,
+                this.WhenAnyValue(x => x.SelectedFlightSummary, x => x.Video, (f, v) => f != null && v != null));
+
+            PlayFromFileCommand.Subscribe(simulation => { PlaySimulation(navigationService, simulation); });
+            PlayFromOnlineFlightCommand.Subscribe(simulation => { PlaySimulation(navigationService, simulation); });
         }
 
-        public SimulationUnit SelectedSimulation => selectedFlightOh.Value;
-        public IObservable<SimulationUnit> Simulations => SimulationUnits;
-        public string Name => "Manual pick";
+        private static void PlaySimulation(INavigationService navigationService, Simulation simulation)
+        {
+            navigationService.Navigate(new FlightReplayViewModel(simulation));
+            MessageBus.Current.SendMessage(Unit.Default, "LoadFlightAndPlay");
+        }
 
-        public ReactiveCommand<Unit, SimulationUnit> RunCommand { get; }
+        public ReactiveCommand<Unit, Simulation> PlayFromOnlineFlightCommand { get; set; }
 
-        public IObservable<SimulationUnit> SimulationUnits { get; }
-
-        public ReactiveCommand<Unit, ICollection<FlightSummary>> LoadFlightsCommand { get; }
-
-        public StorageFile InputVideo => videoOh.Value;
-
-        public ICollection<FlightSummary> Flights => flightsOh.Value;
-
-        public Flight Flight => flightOh.Value;
+        private static Task<ICollection<FlightSummary>> GetFlights(Func<IFlightAcademyClient> clientFactory)
+        {
+            return clientFactory().GetFlights(0, 2000);
+        }
 
         public FlightSummary SelectedFlightSummary
         {
@@ -81,8 +81,19 @@ namespace ParrotDiscoReflight.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedFlightSummary, value);
         }
 
-        public bool HasData => hasDataOh.Value;
-        public bool HasVideo => hasVideoOh.Value;
-        public FileOpenCommands FileCommands { get; }        
+        public ICollection<FlightSummary> FlightSummaries => summaries.Value;
+
+        public StorageFile FlightFile => flightFile.Value;
+
+        public Video Video => video.Value;
+
+        public FileOpenCommands FileCommands { get; }
+
+        public ReactiveCommand<Unit, Simulation> PlayFromFileCommand { get; }
+        public string Name => "Manual pick";
+
+        public bool IsLoadingFlight { get; set; }
+
+        public ReactiveCommand<Unit, ICollection<FlightSummary>> LoadFlightsCommand { get; }
     }
 }

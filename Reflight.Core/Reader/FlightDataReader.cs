@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Reflight.Core.FlightAcademy;
 
-namespace Reflight.Core
+namespace Reflight.Core.Reader
 {
     public static class FlightDataReader
     {

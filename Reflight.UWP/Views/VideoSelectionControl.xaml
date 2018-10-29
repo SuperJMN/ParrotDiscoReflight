@@ -1,0 +1,78 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.VideoSelectionControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="1200" d:DataContext="{d:DesignInstance viewModels:ManualPickViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <controls:HeaderedContentControl
+        Padding="{StaticResource StandardSeparation}"
+        Style="{StaticResource SectionHeaderedControl}">
+        <controls:HeaderedContentControl.Header>
+            <TextBlock Margin="{StaticResource VerticalMargin}">
+                <Run FontSize="30" FontWeight="ExtraBlack" CharacterSpacing="80">1</Run>
+                <Run FontSize="14">Video</Run>
+            </TextBlock>
+        </controls:HeaderedContentControl.Header>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  />
+                <ColumnDefinition  />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Spacing="{StaticResource Spacing}">
+                <TextBlock>Select a local video file:</TextBlock>
+                <Button Command="{Binding FileCommands.OpenVideoCommand}"
+                        Style="{StaticResource BigButtonStyle}"
+                        HorizontalAlignment="Left">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/video.svg" />
+                        <TextBlock Margin="{StaticResource HorizontalMargin}" Grid.Column="1"
+                                   Text="Browse..." Style="{StaticResource TextBlockStyle}" />
+                    </Grid>
+                </Button>
+            </StackPanel>
+            <Grid BorderBrush="Black" HorizontalAlignment="Center" BorderThickness="1" Grid.Column="1" DataContext="{Binding Video}"
+                  Margin="{StaticResource StandardSeparation}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <RichTextBlock Grid.Row="0" Margin="{StaticResource StandardSeparation}" HorizontalTextAlignment="Start">
+
+                    <Paragraph>
+                        <Run Text="{Binding Source.Name}" FontWeight="Bold" />
+                    </Paragraph>                    
+
+                    <Paragraph>
+                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                        <Run Text="Duration: " /><Run Text="{Binding RecordedInterval.Duration}" />                                        
+                    </Paragraph>                    
+
+                </RichTextBlock>
+
+                <Image Grid.Column="1" Margin="{StaticResource StandardSeparation}"
+                       Source="{Binding Thumbnail, Converter={StaticResource BitmapConverter}}" />
+            </Grid>
+        </Grid>
+    </controls:HeaderedContentControl>
+</UserControl>

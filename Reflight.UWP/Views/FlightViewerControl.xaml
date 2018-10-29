@@ -6,14 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
-    xmlns:viewModels1="using:ParrotDiscoReflight.ViewModels"
+    xmlns:vm="using:ParrotDiscoReflight.ViewModels"
     xmlns:views="using:ParrotDiscoReflight.Views"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels1:FlightReplayViewModel}">
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance vm:FlightReplayViewModel}">
 
     <Grid>
-        <MediaElement x:Name="MediaElement" Position="{Binding Position, Mode=TwoWay}" Grid.RowSpan="2" AreTransportControlsEnabled="True">
+        <MediaElement x:Name="MediaElement" Position="{Binding Position, Mode=TwoWay}" AutoPlay="True" Grid.RowSpan="2" AreTransportControlsEnabled="True">
             <MediaElement.TransportControls>
                 <MediaTransportControls Margin="100,0" VerticalAlignment="Top" IsCompact="True" IsCompactOverlayEnabled="True"></MediaTransportControls>
             </MediaElement.TransportControls>

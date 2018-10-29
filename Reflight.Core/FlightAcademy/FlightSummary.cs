@@ -31,7 +31,7 @@ namespace Reflight.Core.FlightAcademy
         public string Uuid { get; set; }
 
         [JsonProperty("date")]
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         [JsonProperty("visible")]
         public bool Visible { get; set; }

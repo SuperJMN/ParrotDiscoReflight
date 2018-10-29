@@ -6,8 +6,11 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using ParrotDiscoReflight.ViewModels;
 using ReactiveUI;
 using Reflight.Core;
+using Reflight.Core.FlightAcademy;
+using Reflight.Core.Reader;
 
 namespace ParrotDiscoReflight.Code
 {
@@ -16,12 +19,12 @@ namespace ParrotDiscoReflight.Code
         public FileOpenCommands()
         {
             OpenDataCommand =
-                ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(LoadData)
-                    .Where(x => x != null)
-                    .SelectMany(ReadDataFromFile));
+                ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(LoadData).Where(x => x != null));
 
             OpenVideoCommand =
-                ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(LoadVideo).Where(x => x != null));
+                ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(LoadVideo).Where(x => x != null)
+                    .SelectMany(Video.Load));
+
             SaveFileCommand =
                 ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(SaveVideo).Where(x => x != null));
 
@@ -31,19 +34,11 @@ namespace ParrotDiscoReflight.Code
 
         public ReactiveCommand<Unit, StorageFolder> BrowseFolderCommand { get; }
 
-        private static async Task<Flight> ReadDataFromFile(StorageFile file)
-        {
-            using (var stream = await file.OpenStreamForReadAsync())
-            {
-                return FlightDataReader.Read(stream);
-            }
-        }
-
         public ReactiveCommand<Unit, StorageFile> SaveFileCommand { get; }
 
-        public ReactiveCommand<Unit, StorageFile> OpenVideoCommand { get; }
+        public ReactiveCommand<Unit, Video> OpenVideoCommand { get; }
 
-        public ReactiveCommand<Unit, Flight> OpenDataCommand { get; }
+        public ReactiveCommand<Unit, StorageFile> OpenDataCommand { get; }
 
         private async Task<StorageFile> SaveVideo()
         {
@@ -102,10 +97,5 @@ namespace ParrotDiscoReflight.Code
         {
             return Observable.FromAsync(SaveVideo);
         }
-    }
-
-    public interface IVideoExportService
-    {
-        Task<Unit> Export(ExportInput exportConfig);
     }
 }

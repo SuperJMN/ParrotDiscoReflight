@@ -42,6 +42,6 @@ namespace ParrotDiscoReflight.Views
         {
             get { return (StorageFile)GetValue(VideoProperty); }
             set { SetValue(VideoProperty, value); }
-        }
+        }        
     }
 }

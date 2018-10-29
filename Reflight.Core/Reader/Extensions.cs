@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reflight.Core
+namespace Reflight.Core.Reader
 {
     public static class Extensions
     {

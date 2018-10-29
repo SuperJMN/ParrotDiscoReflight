@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Reflight.Core
@@ -13,9 +14,17 @@ namespace Reflight.Core
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return DateTimeOffset.ParseExact(reader.Value.ToString(), "yyyy-MM-dd'T'HHmmsszzzz",
-                DateTimeFormatInfo.InvariantInfo,
-                DateTimeStyles.None);
+            var formats = new[] { "yyyyMMddHHmmss", "yyyy-MM-dd'T'HHmmsszzzz"};
+
+            var result = DateTimeOffset.TryParseExact(reader.Value.ToString(), formats, DateTimeFormatInfo.InvariantInfo,
+                DateTimeStyles.None, out var dateTime);
+
+            if (!result)
+            {
+                return existingValue;
+            }
+
+            return dateTime;
         }
 
         public override bool CanConvert(Type objectType)

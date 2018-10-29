@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Reflight.Core;
+using Reflight.Core.Reader;
 
 namespace ParrotDiscoReflight.ViewModels
 {
@@ -21,11 +25,23 @@ namespace ParrotDiscoReflight.ViewModels
             var propValue = (T) extraProperties[dateEncodedPropertyName];
             return propValue;
         }
-    }
 
-    public class StorageFileProperty
-    {
-        public static string DateEncoded = "System.Media.DateEncoded";
-        public static string Duration = "System.Media.Duration";
+        public static async Task<byte[]> GetThumbnail(this StorageFile storageFile)
+        {
+            if (storageFile == null) throw new ArgumentNullException(nameof(storageFile));
+
+            var storageItemThumbnail = await storageFile.GetThumbnailAsync(ThumbnailMode.VideosView);
+            if (storageItemThumbnail == null) return null;
+
+            return await storageItemThumbnail.AsStream().ToByteArray();
+        }
+
+        public static async Task<Flight> ReadFlight(this StorageFile file)
+        {
+            using (var stream = await file.OpenStreamForReadAsync())
+            {
+                return FlightDataReader.Read(stream);
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System.IO;
 using Reflight.Core;
+using Reflight.Core.Reader;
 using Xunit;
 
 namespace Reflight.Tests

@@ -15,9 +15,12 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Command="{Binding LoadFlightsCommand}" HorizontalAlignment="Right"
-                Content="Fetch" />
-        <controls:DataGrid Grid.Row="1" ItemsSource="{Binding Flights}" AutoGenerateColumns="False"
+        <Button Command="{Binding LoadFlightsCommand}" HorizontalAlignment="Right">
+            <Button.Content>
+                <SymbolIcon Symbol="Refresh" />
+            </Button.Content>
+        </Button>
+        <controls:DataGrid Grid.Row="1" ItemsSource="{Binding FlightSummaries}" AutoGenerateColumns="False"
                            SelectedItem="{Binding SelectedFlightSummary, Mode=TwoWay}">
             <controls:DataGrid.Columns>
                 <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->

@@ -101,16 +101,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Code\AngleRadianConverter.cs" />
-    <Compile Include="Code\ByteArrayToBitmapConverter.cs" />
+    <Compile Include="Code\BitmapConverter.cs" />
+    <Compile Include="Code\OverlapPanel.cs" />
     <Compile Include="Code\CommandMixin.cs" />
     <Compile Include="Code\DialogService.cs" />
     <Compile Include="Code\IDialogService.cs" />
+    <Compile Include="Code\IVideoExportService.cs" />
     <Compile Include="Code\PickerTemplateSelector.cs" />
     <Compile Include="Code\UnitConverter.cs" />
+    <Compile Include="CompositionRoot.cs" />
+    <Compile Include="OrdinalToOffsetConverter.cs" />
+    <Compile Include="ViewModels\FileBasedSimulationSeed.cs" />
     <Compile Include="ViewModels\IFlightSimulationPicker.cs" />
-    <Compile Include="ViewModels\SimulationUnitViewModel.cs" />
+    <Compile Include="ViewModels\Simulation.cs" />
+    <Compile Include="ViewModels\SimulationSeed.cs" />
+    <Compile Include="ViewModels\SummaryBasedSimulationSeed.cs" />
+    <Compile Include="ViewModels\VideoPackItemViewModel.cs" />
+    <Compile Include="ViewModels\VideoPackViewModel.cs" />
     <Compile Include="ViewModels\StorageFileMixin.cs" />
+    <Compile Include="ViewModels\StorageFileProperty.cs" />
     <Compile Include="ViewModels\StreamMixin.cs" />
+    <Compile Include="ViewModels\Video.cs" />
     <Compile Include="Views\AnglesControl.xaml.cs">
       <DependentUpon>AnglesControl.xaml</DependentUpon>
     </Compile>
@@ -119,6 +130,9 @@
     </Compile>
     <Compile Include="Views\BatteryControl.xaml.cs">
       <DependentUpon>BatteryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FlightDataSelectorControl.xaml.cs">
+      <DependentUpon>FlightDataSelectorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GalleryPickControl.xaml.cs">
       <DependentUpon>GalleryPickControl.xaml</DependentUpon>
@@ -157,7 +171,6 @@
     </Compile>
     <Compile Include="Code\INavigationService.cs" />
     <Compile Include="Code\Frame.cs" />
-    <Compile Include="Code\Settings\ISettingsService.cs" />
     <Compile Include="Views\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -170,7 +183,7 @@
     </Compile>
     <Compile Include="ViewModels\ManualPickViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Code\Settings\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Code\SimulationUnit.cs" />
     <Compile Include="Views\Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -184,6 +197,9 @@
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Compile Include="Code\Units\UnitSource.cs" />
     <Compile Include="Code\VideoSizeConverter.cs" />
+    <Compile Include="Views\VideoSelectionControl.xaml.cs">
+      <DependentUpon>VideoSelectionControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -263,6 +279,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FlightDataSelectorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\GalleryPickControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -303,11 +327,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\VideoSelectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DynamicData">
-      <Version>6.6.0.2492</Version>
-    </PackageReference>
     <PackageReference Include="GeoCoordinate.NetCore">
       <Version>1.0.0.1</Version>
     </PackageReference>
@@ -319,6 +344,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
       <Version>5.0.0-preview.gb86cb1c4cb</Version>
+    </PackageReference>
+    <PackageReference Include="NodaTime">
+      <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI">
       <Version>9.0.1</Version>

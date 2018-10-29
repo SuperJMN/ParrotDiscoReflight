@@ -15,7 +15,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <views:SimulationUnitSelectorControl Margin="30" />
             <Button Margin="10" Padding="6" VerticalAlignment="Top" HorizontalAlignment="Right"
@@ -30,16 +29,7 @@
                         <TextBlock Margin="10,0" VerticalAlignment="Center" Grid.Column="1" Text="Settings" />
                     </Grid>
                 </Button.Content>
-            </Button>
-            <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="10">
-                <Button Command="{Binding RunCommand}" ToolTipService.ToolTip="Play the flight!" Height="100"
-                        Width="100">
-                    <Image Source="/Assets/play.svg" />
-                </Button>
-                <!--<Button Command="{Binding ExportVideoCommand}" Width="100" Height="100">
-                    <Image  Source="Assets/export.svg" />
-                </Button>-->
-            </StackPanel>
+            </Button>            
         </Grid>
 
     </Frame>

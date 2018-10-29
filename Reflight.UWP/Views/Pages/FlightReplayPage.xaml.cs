@@ -2,6 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using ParrotDiscoReflight.ViewModels;
+using ReactiveUI;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,13 +18,13 @@ namespace ParrotDiscoReflight.Views.Pages
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
             var vm = (FlightReplayViewModel)e.Parameter;
-            this.DataContext = vm;
-            FlightViewer.Video = vm.Video;
+            DataContext = vm;
+            FlightViewer.Video = vm.Video.Source;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

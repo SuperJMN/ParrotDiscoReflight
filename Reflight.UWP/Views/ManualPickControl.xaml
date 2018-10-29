@@ -4,179 +4,62 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:system="using:System"
-    xmlns:viewModels1="using:ParrotDiscoReflight.ViewModels"
+    xmlns:vm="using:ParrotDiscoReflight.ViewModels"
     xmlns:views="using:ParrotDiscoReflight.Views"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels1:ManualPickViewModel}">
+    d:DesignHeight="1200"
+    d:DesignWidth="1200" d:DataContext="{d:DesignInstance vm:ManualPickViewModel}">
     <UserControl.Resources>
-        <Style x:Key="BaseHeaderedControl" TargetType="controls:HeaderedContentControl">
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="VerticalContentAlignment" Value="Top"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="controls:HeaderedContentControl">
-                        <Grid BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}"/>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Grid.Row="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
-        <Thickness x:Key="VerticalMargin">0,10</Thickness>
-        <x:Double x:Key="Spacing">10</x:Double>
-        <Thickness x:Key="Padding">20,10</Thickness>
-        <Thickness x:Key="HorizontalMargin">10,0</Thickness>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style x:Key="BigButtonStyle" TargetType="Button">
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="Height" Value="50" />
-            <Setter Property="Padding" Value="10"></Setter>
-        </Style>
+            <DataTemplate x:Key="VideoTemplate" x:DataType="vm:Video">
+                <StackPanel Margin="8">
 
-        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
+                    <Grid>
+                        <Image Source="{Binding Thumbnail, Converter={StaticResource BitmapConverter}}" />
+                    </Grid>
+                    <RichTextBlock TextAlignment="Center" HorizontalAlignment="Center" Margin="10">
 
-        <Style x:Key="SectionHeaderedControl" TargetType="controls:HeaderedContentControl" BasedOn="{StaticResource BaseHeaderedControl}">
-            <Setter Property="BorderBrush" Value="{ThemeResource ButtonDisabledForegroundThemeBrush}" />
-            <Setter Property="BorderThickness" Value="2" />
-        </Style>
+                        <Paragraph>
+                            <Run FontWeight="Bold" Text="Duration:" />
+                            <Run
+                                Text="{Binding RecordedInterval.Value.Duration.Minutes}" />
+                        </Paragraph>
+
+                    </RichTextBlock>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
 
     </UserControl.Resources>
 
-    
-    <ScrollViewer>
 
-        <VisualStateManager.VisualStateGroups>
+    <Grid>
 
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.Setters>
-                        <Setter Target="VideoPane.Background" Value="Green" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{Binding HasVideo}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.Setters>
-                        <Setter Target="FlightDataPane.Background" Value="Green" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{Binding HasData}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        <Grid RowSpacing="20">
 
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="6*" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="6*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*"  />
+                <RowDefinition Height="2*"  />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Column="1" Grid.Row="1" RowSpacing="20">
+            <views:VideoSelectionControl />
 
-                <Grid.Resources>
-
-                </Grid.Resources>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <controls:HeaderedContentControl Grid.Row="1" x:Name="VideoPane"
-                                                 HorizontalContentAlignment="Stretch" Padding="{StaticResource Padding}"
-                                                 Style="{StaticResource SectionHeaderedControl}">
-                    <controls:HeaderedContentControl.Header>
-                        <TextBlock Margin="{StaticResource VerticalMargin}">
-                            <Run FontSize="30" FontWeight="ExtraBlack" CharacterSpacing="80">1</Run>
-                            <Run FontSize="14">Video</Run>
-                        </TextBlock>
-                    </controls:HeaderedContentControl.Header>
-                    <StackPanel Spacing="{StaticResource Spacing}">
-                        <TextBlock>Select a local video file:</TextBlock>
-                        <Button Command="{Binding FileCommands.OpenVideoCommand}"
-                                Style="{StaticResource BigButtonStyle}"
-                                HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Image Source="/Assets/video.svg" />
-                                <TextBlock Margin="{StaticResource HorizontalMargin}" Grid.Column="1" Text="Browse..." Style="{StaticResource TextBlockStyle}" />
-                            </Grid>
-                        </Button>
-                    </StackPanel>
-                </controls:HeaderedContentControl>
-                <controls:HeaderedContentControl Grid.Row="2" x:Name="FlightDataPane"
-                                                 Padding="{StaticResource Padding}"
-                                                 HorizontalContentAlignment="Stretch" Style="{StaticResource SectionHeaderedControl}">
-
-                    <controls:HeaderedContentControl.Header>
-                        <TextBlock Margin="{StaticResource VerticalMargin}">
-                            <Run FontSize="30" FontWeight="ExtraBlack" CharacterSpacing="80">2</Run>
-                            <Run FontSize="14">Flight Data</Run>
-                        </TextBlock>
-                    </controls:HeaderedContentControl.Header>
-                    <StackPanel Spacing="{StaticResource Spacing}">
-                        <TextBlock>Select the Flight Data from either a local file or from  flight stored in the Parrot Flight Academy:</TextBlock>
-                        <Grid ColumnSpacing="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <controls:HeaderedContentControl Header="From local file" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                <Button HorizontalAlignment="Center" Command="{Binding FileCommands.OpenDataCommand}" VerticalAlignment="Center"
-                                        Style="{StaticResource BigButtonStyle}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="/Assets/data.svg" />
-                                        <TextBlock Margin="{StaticResource HorizontalMargin}" Grid.Column="1" Text="Browse..."
-                                                   Style="{StaticResource TextBlockStyle}" />
-                                    </Grid>
-                                </Button>
-                            </controls:HeaderedContentControl>
-                            <controls:HeaderedContentControl Grid.Column="1" Header="From Parrot Flight Academy"
-                                                             Height="300"
-                                                             HorizontalContentAlignment="Stretch">
-                                <views:OnlineFlightsControl />
-                            </controls:HeaderedContentControl>
-                        </Grid>
-                    </StackPanel>
-                </controls:HeaderedContentControl>
-
-            </Grid>
+            <views:FlightDataSelectorControl Grid.Row="1" />
 
         </Grid>
-    </ScrollViewer>
+
+    </Grid>
+
 </UserControl>

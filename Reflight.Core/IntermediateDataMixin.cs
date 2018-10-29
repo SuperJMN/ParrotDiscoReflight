@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using GeoCoordinatePortable;
+using Reflight.Core.Reader;
 
 namespace Reflight.Core
 {
@@ -12,7 +13,7 @@ namespace Reflight.Core
 
         public static Flight ToFlight(this FlightDetails data)
         {
-            var dataProvider = new DataProvider(data.details_data, data.details_headers);
+            var dataProvider = new DataProvider(data.DetailsData, data.DetailsHeaders);
             var times = dataProvider.GetData<object, long>("time", Convert.ToInt64).ToList();
             var altitude = dataProvider.GetData<object, long>("altitude", Convert.ToInt64).ToList();
             var battLevel = dataProvider.GetData<object, int>("battery_level", Convert.ToInt32).ToList();
@@ -81,9 +82,9 @@ namespace Reflight.Core
             var collection = statuses.ToEnumerable().ToList();
             return new Flight
             {
-                Date = data.date,
-                RunTime = data.run_time,
-                TotalRunTime = data.total_run_time,
+                Date = data.Date,
+                RunTime = data.RunTime,
+                TotalRunTime = data.TotalRunTime,
                 Statuses = collection,
             };
         }

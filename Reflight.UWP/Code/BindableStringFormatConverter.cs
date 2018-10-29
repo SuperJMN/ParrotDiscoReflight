@@ -17,6 +17,11 @@ namespace ParrotDiscoReflight.Code
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            if (StringFormat == null)
+            {
+                return value;
+            }
+
             return string.Format(StringFormat, value);
         }
 

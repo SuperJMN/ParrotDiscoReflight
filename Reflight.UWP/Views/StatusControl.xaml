@@ -66,7 +66,7 @@
                                   Unit="{Binding UnitPack.Speed.Abbreviation}"
                                   Style="{StaticResource RadialGaugeStyle}" />
         </controls:HeaderedContentControl>
-        <controls:AdaptiveGridView Grid.Column="1" VerticalAlignment="Bottom" ItemHeight="50" DesiredWidth="120">
+        <controls:UniformGrid Grid.Column="1" VerticalAlignment="Bottom" Rows="1">
             <controls:HeaderedTextBlock Foreground="White" Header="Air Speed" VerticalAlignment="Center"
                                         Text="{Binding Status.PitotSpeed, Converter={StaticResource SpeedConverter}}">
                 <controls:HeaderedTextBlock.HeaderTemplate>
@@ -102,7 +102,7 @@
                     </DataTemplate>
                 </controls:HeaderedTextBlock.HeaderTemplate>
             </controls:HeaderedTextBlock>
-        </controls:AdaptiveGridView>
+        </controls:UniformGrid>
         <views:AnglesControl Grid.Column="2" />
         <controls:HeaderedContentControl Header="Altitude" Style="{StaticResource BottomHeaderStyle}" Grid.Column="3">
             <controls:RadialGauge 

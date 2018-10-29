@@ -24,7 +24,7 @@
 
             <code:PickerTemplateSelector.ManualTemplate>
                 <DataTemplate>
-                    <views:ManualPickControl VerticalAlignment="Center" />
+                    <views:ManualPickControl />
                 </DataTemplate>
             </code:PickerTemplateSelector.ManualTemplate>
 

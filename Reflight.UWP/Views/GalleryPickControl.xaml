@@ -4,28 +4,98 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:viewModels1="using:ParrotDiscoReflight.ViewModels"
+    xmlns:ctr="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:vm="using:ParrotDiscoReflight.ViewModels"
+    xmlns:own="using:ParrotDiscoReflight"
+    xmlns:code="using:ParrotDiscoReflight.Code"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels1:GalleryPickViewModel}" x:Name="UserControl">
-
-    <!--<interactivity:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Loaded">
-            <core:EventTriggerBehavior.Actions>
-                <core:InvokeCommandAction Command="{Binding LoadFlightsCommand}"
-                                          InputConverter="{StaticResource UnitConverter}" />
-            </core:EventTriggerBehavior.Actions>
-        </core:EventTriggerBehavior>
-    </interactivity:Interaction.Behaviors>-->
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance vm:GalleryPickViewModel}">
 
     <UserControl.Resources>
-        <Style TargetType="controls:DataGrid">
+        <Style TargetType="ctr:DataGrid">
             <Setter Property="BorderBrush" Value="{ThemeResource ButtonDisabledForegroundThemeBrush}" />
             <Setter Property="BorderThickness" Value="2" />
         </Style>
+
+        <DataTemplate x:Key="MasterItemTemplate" x:DataType="vm:VideoPackItemViewModel">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Image Source="{Binding Video.Thumbnail, Converter={StaticResource BitmapConverter}}" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DetailItemTemplate" x:DataType="vm:VideoPackItemViewModel">
+            <StackPanel Margin="8">
+
+                <Grid>
+                    <Image
+                        Source="{Binding Video.Thumbnail, Converter={StaticResource BitmapConverter}}" />
+                    <Button Command="{Binding PlayCommand}" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Button.Content>
+                            <SymbolIcon Symbol="Play">
+                                <SymbolIcon.Foreground>
+                                    <media:BackdropInvertBrush />
+                                </SymbolIcon.Foreground>
+                            </SymbolIcon>
+                        </Button.Content>
+                    </Button>
+                    <ctr:Loading IsLoading="{Binding IsBusy}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                        <Grid>
+                            <Border Background="White" Opacity="0.7"></Border>
+                            <ProgressRing Width="50" Height="50" IsActive="{Binding IsBusy}" />
+                        </Grid>
+                    </ctr:Loading>
+                </Grid>
+                <RichTextBlock TextAlignment="Center" HorizontalAlignment="Center" Margin="10">
+
+                    <Paragraph>
+                        <Run FontWeight="Bold" Text="Duration:" />
+                        <Run
+                            Text="{Binding Duration, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:g}'}" />
+                    </Paragraph>
+
+                </RichTextBlock>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PackTemplate" x:DataType="vm:VideoPackViewModel">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <RichTextBlock TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <Paragraph>
+                        <Run FontWeight="Bold" Text="Date:" />
+                        <Run
+                            Text="{Binding FlightSummary.Date}" />
+                    </Paragraph>
+                    <Paragraph>
+                        <Run FontWeight="Bold" Text="Flight time:" />
+                        <Run
+                            Text="{Binding FlightSummary.TotalRunTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:g}'}" />
+                    </Paragraph>
+                </RichTextBlock>
+                <Viewbox Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding ReversedItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <code:OverlapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:VideoPackItemViewModel">
+                                <ContentPresenter ContentTemplate="{StaticResource MasterItemTemplate}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Viewbox>
+            </Grid>
+        </DataTemplate>
+
     </UserControl.Resources>
 
     <Grid>
@@ -81,43 +151,37 @@
             </Button>
         </Grid>
 
-        <controls:AdaptiveGridView SelectionMode="Single" Grid.Row="1"
-                                   ItemsSource="{Binding SimulationUnitsViewModels}"
-                                   SelectedItem="{Binding SelectedViewModel, Mode=TwoWay}" DesiredWidth="240">
-            <controls:AdaptiveGridView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-
-                        <Image Height="150"
-                               Margin="8"
-                               Source="{Binding Thumbnail, Converter={StaticResource BitmapConverter}}" />
-                        <RichTextBlock TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,10">
-                            <Paragraph>
-                                <Run FontWeight="Bold" Text="Date:" />
-                                <Run
-                                    Text="{Binding SimulationUnit.Flight.Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:g}'}" />
-                            </Paragraph>
-                            <Paragraph>
-                                <Run FontWeight="Bold" Text="Flight time:" />
-                                <Run
-                                    Text="{Binding SimulationUnit.Flight.TotalRunTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:g}'}" />
-                            </Paragraph>
-                        </RichTextBlock>
-                    </StackPanel>
+        <ctr:MasterDetailsView Grid.Row="1" ItemsSource="{Binding VideoPacks}" SelectedItem="{Binding SelectedPack, Mode=TwoWay}"
+                               ItemTemplate="{StaticResource PackTemplate}">
+            <ctr:MasterDetailsView.DetailsTemplate>
+                <DataTemplate x:DataType="vm:VideoPackViewModel">
+                    <ctr:AdaptiveGridView Margin="20" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource DetailItemTemplate}"
+                                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                                          DesiredWidth="320" />
                 </DataTemplate>
-            </controls:AdaptiveGridView.ItemTemplate>
-        </controls:AdaptiveGridView>
+            </ctr:MasterDetailsView.DetailsTemplate>
+        </ctr:MasterDetailsView>
 
-        <controls:Loading Grid.RowSpan="2" IsLoading="{Binding IsBusy}" VerticalContentAlignment="Stretch"
-                          HorizontalContentAlignment="Stretch" >
+        <ctr:Loading Grid.Row="0" Grid.RowSpan="2" IsLoading="{Binding IsBusy}" VerticalContentAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch">
             <Grid>
-                <Border Background="{StaticResource AppBarBackgroundThemeBrush}" Opacity="0.8"></Border>
+                <Border>
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:Blur x:Name="BlurBehavior"
+                                        Value="1"
+                                        Duration="1000"
+                                        Delay="0"
+                                        EasingType="Linear"
+                                        EasingMode="EaseOut"
+                                        AutomaticallyStart="True"/>
+                    </interactivity:Interaction.Behaviors>
+                </Border>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock FontWeight="Bold" Text="Loading data..." HorizontalAlignment="Center" Margin="20"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="Loading data..." HorizontalAlignment="Center" Margin="20" />
                     <ProgressRing Width="150" Height="150" IsActive="{Binding IsBusy}" />
-                </StackPanel>                
+                </StackPanel>
             </Grid>
-        </controls:Loading>
+        </ctr:Loading>
 
     </Grid>
 

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reflight.Core
+namespace Reflight.Core.Reader
 {
     internal class DataProvider
     {
-        private readonly List<string> headers;
+        private readonly IList<string> headers;
         private readonly IList<IEnumerable<object>> source;
 
-        public DataProvider(IEnumerable<List<object>> idDetailsData, List<string> idDetailsHeaders)
+        public DataProvider(IEnumerable<List<object>> idDetailsData, IList<string> idDetailsHeaders)
         {
             this.source = idDetailsData.Transpose().ToList();
             this.headers = idDetailsHeaders;

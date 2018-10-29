@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Refit;
+using Reflight.Core.Reader;
 
 namespace Reflight.Core.FlightAcademy
 {
@@ -75,8 +76,6 @@ namespace Reflight.Core.FlightAcademy
             {
                 JsonSerializerSettings = new JsonSerializerSettings
                 {
-                    //20181007111948
-                    DateFormatString = "yyyyMMddHHmmss",
                     Converters =
                     {
                         new TimeSpanJsonConverter(),

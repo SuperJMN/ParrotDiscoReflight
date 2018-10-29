@@ -1,20 +1,24 @@
 ﻿using System;
-using Windows.Storage;
-using ParrotDiscoReflight.Code;
-using ParrotDiscoReflight.Code.Units;
+using System.Reactive;
+using System.Reactive.Linq;
 using ReactiveUI;
+using Reflight.Core;
 
 namespace ParrotDiscoReflight.ViewModels
 {
     public class FlightReplayViewModel : ReactiveObject
     {
         private TimeSpan position;
+        private DataViewModel dataViewModel;
 
-        public FlightReplayViewModel(SimulationUnit unit, UnitPack unitPack)
+        public FlightReplayViewModel(Simulation simulation)
         {
-            Video = unit.Video;
-            DataViewModel = new DataViewModel(unit.Flight.Statuses, this.WhenAnyValue(model => model.Position), unitPack);
+            Video = simulation.Video;
+            var positions = this.WhenAnyValue(model => model.Position).Select(x => x.Add(simulation.Offset));
+            DataViewModel = new DataViewModel(simulation.Flight.Statuses, positions, simulation.UnitPack);
         }
+
+        public ReactiveCommand<Unit, Flight> LoadFlightCommand { get; set; }
 
         public TimeSpan Position
         {
@@ -22,7 +26,12 @@ namespace ParrotDiscoReflight.ViewModels
             set => this.RaiseAndSetIfChanged(ref position, value);
         }
 
-        public DataViewModel DataViewModel { get; }
-        public StorageFile Video { get; }
+        public DataViewModel DataViewModel
+        {
+            get => dataViewModel;
+            set => this.RaiseAndSetIfChanged(ref dataViewModel, value);
+        }
+
+        public Video Video { get; }
     }
 }
