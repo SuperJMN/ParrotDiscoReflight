@@ -4,19 +4,18 @@ using System.Linq;
 using System.Reactive;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using ParrotDiscoReflight.Code;
+using ParrotDiscoReflight.Code.Settings;
 using ParrotDiscoReflight.Code.Units;
 using ReactiveUI;
 
-namespace ParrotDiscoReflight.Code.Settings
+namespace ParrotDiscoReflight.ViewModels
 {
     public class SettingsViewModel : ReactiveObject
     {
-        private readonly ObservableAsPropertyHelper<bool> isVideoFolderFolderConfiguredOh;
         private readonly ObservableSettings settings;
-        private readonly ObservableAsPropertyHelper<StorageFolder> videoFolderOh;
-
+        private readonly ObservableAsPropertyHelper<StorageFolder> videoFolder;
         private UnitPack unitPack;
-        private readonly ObservableAsPropertyHelper<bool> isAccountConfiguredOh;
 
         public SettingsViewModel(FileOpenCommands commands)
         {
@@ -34,12 +33,11 @@ namespace ParrotDiscoReflight.Code.Settings
                 VideoFolderToken = token;
             });
 
-            videoFolderOh = BrowseFolderCommand.ToProperty(this, x => x.Folder);
-            isAccountConfiguredOh = this.WhenAnyValue(x => x.Username, x => x.Password,
-                (u, p) => new[] {u, p}.All(s => !string.IsNullOrEmpty(s))).ToProperty(this, x => x.IsAccountConfigured);
+            videoFolder = BrowseFolderCommand.ToProperty(this, x => x.Folder);
+            IsAccountConfigured = this.WhenAnyValue(x => x.Username, x => x.Password,
+                (u, p) => new[] {u, p}.All(s => !string.IsNullOrEmpty(s)));
 
-            isVideoFolderFolderConfiguredOh = this.WhenAnyValue(x => x.VideoFolder, x => !string.IsNullOrEmpty(x))
-                .ToProperty(this, x => x.IsVideoFolderConfigured);
+            IsVideoFolderFolderConfigured = this.WhenAnyValue(x => x.VideoFolder, x => !string.IsNullOrEmpty(x));
 
             UnitPack = UnitPacks.FirstOrDefault(pack => pack.Id == StringUnitPack) ?? UnitPacks.First();
             this.WhenAnyValue(x => x.UnitPack).Subscribe(x => StringUnitPack = UnitPack.Id);
@@ -52,9 +50,11 @@ namespace ParrotDiscoReflight.Code.Settings
             }, this.WhenAnyValue(x => x.VideoFolderToken, selector: s => s != null));
         }
 
-        public ReactiveCommand<Unit, Unit> RemoveFolderCommand { get; }
+        public IObservable<bool> IsAccountConfigured { get; }
 
-        public bool IsVideoFolderConfigured => isVideoFolderFolderConfiguredOh.Value;
+        public IObservable<bool> IsVideoFolderFolderConfigured { get; }
+
+        public ReactiveCommand<Unit, Unit> RemoveFolderCommand { get; }
 
         public string StringUnitPack
         {
@@ -62,7 +62,7 @@ namespace ParrotDiscoReflight.Code.Settings
             set => settings.Set(value);
         }
 
-        public StorageFolder Folder => videoFolderOh.Value;
+        public StorageFolder Folder => videoFolder.Value;
 
         public ReactiveCommand<Unit, StorageFolder> BrowseFolderCommand { get; }
 
@@ -112,8 +112,6 @@ namespace ParrotDiscoReflight.Code.Settings
         {
             get => unitPack;
             set => this.RaiseAndSetIfChanged(ref unitPack, value);
-        }
-
-        public bool IsAccountConfigured => isAccountConfiguredOh.Value;
+        }        
     }
 }

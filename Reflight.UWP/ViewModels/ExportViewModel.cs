@@ -25,7 +25,6 @@ namespace ParrotDiscoReflight.ViewModels
                     var s = new SizeMessage(p.Width, p.Height);
                     return s;
                 })
-                .ObserveOnDispatcher()
                 .Do(message => MessageBus.Current.SendMessage(message))
                 .Select(_ => Unit.Default)
                 .InvokeCommand(this, x => x.ExportCommand);

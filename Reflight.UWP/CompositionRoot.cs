@@ -21,7 +21,7 @@ namespace ParrotDiscoReflight
 
             var fileOpenCommands = new FileOpenCommands();
 
-            var settingsService = new SettingsViewModel(fileOpenCommands);
+            var settingsViewModel = new SettingsViewModel(fileOpenCommands);
 
             var videoExportService = new ExportService(status =>
                 new SimulationDataViewModel
@@ -30,15 +30,14 @@ namespace ParrotDiscoReflight
                     Status = new StatusViewModel(status.ConvertTo(UnitSource.UnitPacks.First()))
                 });
 
-            IFlightAcademyClient FactoryClient() => FlightAcademyClient.Create(settingsService.Username,
-                settingsService.Password, new Uri("http://academy.ardrone.com/api3"));
+            IFlightAcademyClient FactoryClient() => FlightAcademyClient.Create(settingsViewModel.Username,
+                settingsViewModel.Password, new Uri("http://academy.ardrone.com/api3"));
 
             var dialogService = new DialogService();
 
-            var flightAcademyPickViewModel = new GalleryPickViewModel(FactoryClient, settingsService, dialogService, navigationService);
+            var flightAcademyPickViewModel = new GalleryPickViewModel(FactoryClient, settingsViewModel, dialogService, navigationService);
 
-            var manualPickViewModel = new ManualPickViewModel(fileOpenCommands, FactoryClient, dialogService, settingsService, navigationService);
-            var settingsViewModel = new SettingsViewModel(fileOpenCommands);
+            var manualPickViewModel = new ManualPickViewModel(fileOpenCommands, FactoryClient, dialogService, settingsViewModel, navigationService);
 
             return new MainViewModel(navigationService, flightAcademyPickViewModel, manualPickViewModel, settingsViewModel, new IFlightSimulationPicker[]{ flightAcademyPickViewModel, manualPickViewModel });
         }

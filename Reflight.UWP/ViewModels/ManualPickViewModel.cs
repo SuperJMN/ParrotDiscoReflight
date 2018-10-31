@@ -15,24 +15,32 @@ namespace ParrotDiscoReflight.ViewModels
 {
     public class ManualPickViewModel : ReactiveObject, IFlightSimulationPicker
     {
+        private readonly SettingsViewModel settingsViewModel;
         private readonly ObservableAsPropertyHelper<Video> video;
         private readonly ObservableAsPropertyHelper<StorageFile> flightFile;
         private readonly ObservableAsPropertyHelper<ICollection<FlightSummary>> summaries;
         private FlightSummary selectedFlightSummary;
 
+        private readonly ObservableAsPropertyHelper<bool> isAccountConfigured;
+
         public ManualPickViewModel(FileOpenCommands fileCommands, Func<IFlightAcademyClient> clientFactory,
             IDialogService dialogService, SettingsViewModel settingsViewModel, INavigationService navigationService)
         {
+            this.settingsViewModel = settingsViewModel;
             FileCommands = fileCommands;
 
             video = fileCommands.OpenVideoCommand.ToProperty(this, x => x.Video);
             flightFile = fileCommands.OpenDataCommand.ToProperty(this, x => x.FlightFile);
 
-            LoadFlightsCommand = ReactiveCommand.CreateFromTask(() => GetFlights(clientFactory));
-            summaries = GetFlights(clientFactory)
-                .ToObservable()
-                .Merge(LoadFlightsCommand)
+            LoadFlightsCommand = ReactiveCommand.CreateFromTask(() => GetFlights(clientFactory), settingsViewModel.IsAccountConfigured);
+            summaries = LoadFlightsCommand
                 .ToProperty(this, x => x.FlightSummaries);
+
+            MessageBus.Current
+                .Listen<Unit>("LoadData")
+                .InvokeCommand(LoadFlightsCommand);
+            
+            LoadFlightsCommand.ThrownExceptions.MessageOnException(dialogService);
 
             var manualSimulations = this
                 .WhenAnyValue(x => x.Video, x => x.FlightFile, (v, f) => new {Video = v, FlightFile = f})
@@ -60,6 +68,8 @@ namespace ParrotDiscoReflight.ViewModels
 
             PlayFromFileCommand.Subscribe(simulation => { PlaySimulation(navigationService, simulation); });
             PlayFromOnlineFlightCommand.Subscribe(simulation => { PlaySimulation(navigationService, simulation); });
+
+            isAccountConfigured = settingsViewModel.IsAccountConfigured.ToProperty(this, x => x.IsAccountConfigured);
         }
 
         private static void PlaySimulation(INavigationService navigationService, Simulation simulation)
@@ -70,9 +80,10 @@ namespace ParrotDiscoReflight.ViewModels
 
         public ReactiveCommand<Unit, Simulation> PlayFromOnlineFlightCommand { get; set; }
 
-        private static Task<ICollection<FlightSummary>> GetFlights(Func<IFlightAcademyClient> clientFactory)
+        private static async Task<ICollection<FlightSummary>> GetFlights(Func<IFlightAcademyClient> clientFactory)
         {
-            return clientFactory().GetFlights(0, 2000);
+            var flights = await clientFactory().GetFlights(0, 2000);
+            return flights;
         }
 
         public FlightSummary SelectedFlightSummary
@@ -95,5 +106,7 @@ namespace ParrotDiscoReflight.ViewModels
         public bool IsLoadingFlight { get; set; }
 
         public ReactiveCommand<Unit, ICollection<FlightSummary>> LoadFlightsCommand { get; }
+
+        public bool IsAccountConfigured => isAccountConfigured.Value;
     }
 }

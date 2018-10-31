@@ -6,8 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:settings1="using:ParrotDiscoReflight.Code.Settings"
+    xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance settings1:SettingsViewModel}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
 
     <Grid>
         <Grid.ColumnDefinitions>

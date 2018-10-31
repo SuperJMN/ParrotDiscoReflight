@@ -35,10 +35,12 @@ namespace Reflight.Core.FlightAcademy
             catch (ApiException ex)
             {
                 if (ex.StatusCode == HttpStatusCode.Forbidden)
-                    throw new InvalidCredentialException(
-                        "Your Parrot Flight Academy credentials seem to be incorrect. Please check them in the Settings page");
+                {
+                    throw new InvalidCredentialException("Your Parrot Flight Academy credentials seem to be incorrect. Please check them in the Settings page");
+                }
 
                 throw;
+
             }
         }
 

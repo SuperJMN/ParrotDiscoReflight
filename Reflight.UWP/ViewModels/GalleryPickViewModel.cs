@@ -23,6 +23,8 @@ namespace ParrotDiscoReflight.ViewModels
         private readonly SettingsViewModel settingsViewModel;
         private readonly ObservableAsPropertyHelper<IEnumerable<VideoPackViewModel>> videopacks;
         private VideoPackViewModel selectedFlight;
+        private readonly ObservableAsPropertyHelper<bool> isAccountConfigured;
+        private readonly ObservableAsPropertyHelper<bool> isVideoFolderConfigured;
 
         public GalleryPickViewModel(Func<IFlightAcademyClient> clientFactory, SettingsViewModel settingsViewModel,
             IDialogService dialogService, INavigationService navigationService)
@@ -54,8 +56,7 @@ namespace ParrotDiscoReflight.ViewModels
                     new[] {videoFolder, user, pass}
                         .All(s => !string.IsNullOrEmpty(s)));
 
-            LoadFlightsCommand = ReactiveCommand.CreateFromObservable(() => zipped
-                .ObserveOnDispatcher(), canLoadFlights);
+            LoadFlightsCommand = ReactiveCommand.CreateFromObservable(() => zipped, canLoadFlights);
 
             LoadFlightsCommand.ThrownExceptions.MessageOnException(dialogService)
                 .DisposeWith(disposables);
@@ -66,6 +67,9 @@ namespace ParrotDiscoReflight.ViewModels
             MessageBus.Current
                 .Listen<Unit>("LoadData")
                 .InvokeCommand(LoadFlightsCommand);
+
+            isAccountConfigured = settingsViewModel.IsAccountConfigured.ToProperty(this, x => x.IsAccountConfigured);
+            isVideoFolderConfigured = settingsViewModel.IsVideoFolderFolderConfigured.ToProperty(this, x => x.IsVideoFolderConfigured);
         }
 
         public bool IsBusy => isBusy.Value;
@@ -80,11 +84,9 @@ namespace ParrotDiscoReflight.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedFlight, value);
         }
 
-        public bool IsAccountConfigured => settingsViewModel.IsAccountConfigured;
+        public bool IsAccountConfigured => isAccountConfigured.Value;
 
-        public bool IsVideoFolderConfigured => settingsViewModel.IsVideoFolderConfigured;
-
-        public IObservable<SimulationSeed> NewSimulations { get; }
+        public bool IsVideoFolderConfigured => isVideoFolderConfigured.Value;
 
         public string Name => "Gallery";
 
