@@ -1,0 +1,99 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.Settings.GeneralControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ParrotDiscoReflight.Views.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    xmlns:code="using:ParrotDiscoReflight.Code"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
+    <UserControl.Resources>
+        <Style x:Key="StackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Spacing" Value="40" />
+            <Setter Property="Margin" Value="20" />
+        </Style>
+
+        
+    </UserControl.Resources>
+
+    <StackPanel Style="{StaticResource StackPanelStyle}" MaxWidth="800" HorizontalAlignment="Left">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualStateGroup.States>
+                    <VisualState>
+                        <VisualState.StateTriggers>
+                            <code:ValueDataTrigger DataValue="{Binding VideoFolder}" TriggerValue="{x:Null}" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="DeleteButton.Visibility" Value="Collapsed" />                            
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup.States>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <controls:HeaderedContentControl  HorizontalContentAlignment="Center">
+            <controls:HeaderedContentControl.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <RichTextBlock>
+                        <Paragraph FontWeight="Bold">
+                            Video Folder
+                        </Paragraph>
+                        <Paragraph>
+                            This is the folder that will feed the
+                            <Run FontWeight="SemiBold">Gallery</Run> section. Each of your flights in My.Parrot will have their videos populated from here.
+                        </Paragraph>
+                    </RichTextBlock>
+                    <Button Margin="20,0" Grid.Column="1" Content="Browse…"
+                            Command="{Binding BrowseFolderCommand}"
+                            HorizontalAlignment="Right" />
+                </Grid>
+            </controls:HeaderedContentControl.Header>
+            <controls:HeaderedContentControl.Content>
+                <StackPanel>
+                    <StackPanel Margin="0,8" Orientation="Horizontal">
+
+                        <RichTextBlock VerticalAlignment="Center" x:Name="VideoFolder">
+                            <Paragraph>
+                                <Run>Current folder:</Run> <Run FontWeight="Bold" Text="{Binding VideoFolder, TargetNullValue='(None)'}"></Run>
+                            </Paragraph>
+                        </RichTextBlock>
+
+                        <Button Margin="10,0" ToolTipService.ToolTip="Remove the current folder" x:Name="DeleteButton" Background="Transparent" Command="{Binding RemoveFolderCommand}">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Clear" />
+                            </Button.Content>
+                        </Button>
+                           
+                    </StackPanel>
+                    <TextBlock FontWeight="Light">Please, take into account that the corresponding videos are discovered by using their metadata (the Date Encoded, property)</TextBlock>                        
+                </StackPanel>
+
+            </controls:HeaderedContentControl.Content>
+        </controls:HeaderedContentControl>
+
+        <ComboBox DisplayMemberPath="Name" HorizontalAlignment="Left"
+                  ItemsSource="{Binding UnitPacks}" SelectedItem="{Binding UnitPack, Mode=TwoWay}">
+            <ComboBox.Header>
+                <RichTextBlock>
+                    <Paragraph FontWeight="Bold">
+                        Measurement Units
+                    </Paragraph>
+                    <Paragraph>
+                        Measurement units to display in the
+                        <Run FontWeight="SemiBold">Virtual Dashboard</Run>
+                    </Paragraph>
+                </RichTextBlock>
+            </ComboBox.Header>
+        </ComboBox>
+    </StackPanel>
+</UserControl>

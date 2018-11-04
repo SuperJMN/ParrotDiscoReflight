@@ -14,6 +14,6 @@ namespace ParrotDiscoReflight.ViewModels
             set => this.RaiseAndSetIfChanged(ref status, value);
         }
 
-        public UnitPack UnitPack { get; set; }
+        public UnitPack Units { get; set; }
     }
 }

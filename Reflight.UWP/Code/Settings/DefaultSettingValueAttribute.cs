@@ -2,13 +2,9 @@
 
 namespace ParrotDiscoReflight.Code.Settings
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public sealed class DefaultSettingValueAttribute : Attribute
     {
-        public DefaultSettingValueAttribute()
-        {
-        }
-
         public DefaultSettingValueAttribute(object value)
         {
             Value = value;

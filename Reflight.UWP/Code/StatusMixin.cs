@@ -17,17 +17,17 @@ namespace ParrotDiscoReflight.Code
             };
         }
 
-        public static Status ConvertTo(this Status x, UnitPack unitPack)
-        {
-            return new Status(x)
-            {
-                Speed = new Vector(x.Speed.Coordinates.Select(s => s.ConvertTo(unitPack.Speed)).ToArray()),
-                PitotSpeed = x.PitotSpeed.ConvertTo(unitPack.Speed),
-                Altitude = x.Altitude.ConvertTo(unitPack.Longitude),
-            };
-        }
+        //public static Status ConvertTo(this Status x, Units unitPack)
+        //{
+        //    return new Status(x)
+        //    {
+        //        Speed = new Vector(x.Speed.Coordinates.Select(s => s.ConvertTo(unitPack.Speed)).ToArray()),
+        //        PitotSpeed = x.PitotSpeed.ConvertTo(unitPack.Speed),
+        //        Altitude = x.Altitude.ConvertTo(unitPack.Longitude),
+        //    };
+        //}
 
-        public static double ConvertTo(this double x, IMeasurementUnit unit)
+        private static double ConvertTo(this double x, IMeasurementUnit unit)
         {
             return unit.Convert(x);
         }

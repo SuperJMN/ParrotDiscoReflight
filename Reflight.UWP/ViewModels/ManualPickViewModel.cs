@@ -23,7 +23,7 @@ namespace ParrotDiscoReflight.ViewModels
 
         private readonly ObservableAsPropertyHelper<bool> isAccountConfigured;
 
-        public ManualPickViewModel(FileOpenCommands fileCommands, Func<IFlightAcademyClient> clientFactory,
+        public ManualPickViewModel(FileOpenCommands fileCommands, Func<Task<IFlightAcademyClient>>  clientFactory,
             IDialogService dialogService, SettingsViewModel settingsViewModel, INavigationService navigationService)
         {
             this.settingsViewModel = settingsViewModel;
@@ -58,7 +58,7 @@ namespace ParrotDiscoReflight.ViewModels
                 .WhenAnyValue(x => x.Video, x => x.SelectedFlightSummary, (v, s) => new {Video = v, FlightSummary = s})
                 .SelectMany(async x =>
                 {
-                    var readFlight = await clientFactory().GetFlight(x.FlightSummary.Id);
+                    var readFlight =await (await clientFactory()).GetFlight(x.FlightSummary.Id);
                     return new Simulation(x.Video, readFlight.ToFlight(), settingsViewModel.UnitPack);
                 })
                 .FirstOrDefaultAsync();
@@ -80,9 +80,10 @@ namespace ParrotDiscoReflight.ViewModels
 
         public ReactiveCommand<Unit, Simulation> PlayFromOnlineFlightCommand { get; set; }
 
-        private static async Task<ICollection<FlightSummary>> GetFlights(Func<IFlightAcademyClient> clientFactory)
+        private static async Task<ICollection<FlightSummary>> GetFlights(Func<Task<IFlightAcademyClient>>  clientFactory)
         {
-            var flights = await clientFactory().GetFlights(0, 2000);
+            var fac = await clientFactory();
+            var flights = await fac.GetFlights(0, 2000);
             return flights;
         }
 

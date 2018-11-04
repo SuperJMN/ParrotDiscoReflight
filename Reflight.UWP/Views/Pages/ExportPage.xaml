@@ -6,10 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:ParrotDiscoReflight.Views"
     xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    RequestedTheme="Dark"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance viewModels:ExportViewModel}">
     <Grid>
-        <ContentControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" x:Name="RenderControl">
+        <ContentControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" x:Name="RenderControl" Width="1920" Height="1080">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="4*"></RowDefinition>

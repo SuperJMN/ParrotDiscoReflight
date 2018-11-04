@@ -11,7 +11,7 @@
         }
 
         public double Maximum => 500;
-        public double Tick => 10;
+        public double Tick => 25;
         public string StringFormat => $"{{0:F}} {Abbreviation}";
     }
 }

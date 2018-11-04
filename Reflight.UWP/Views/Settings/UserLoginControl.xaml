@@ -1,0 +1,21 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.Settings.UserLoginControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels:UserBasedLogin}">
+
+    <StackPanel Spacing="20" Width="500">
+        <StackPanel>
+            <TextBox Header="Username" Text="{Binding Username, Mode=TwoWay}" />
+            <RichTextBlock>
+                <Paragraph FontWeight="Light">The username is case sensitive</Paragraph>
+            </RichTextBlock>
+        </StackPanel>
+        <PasswordBox Header="Password" Password="{Binding Password, Mode=TwoWay}" />
+    </StackPanel>
+</UserControl>

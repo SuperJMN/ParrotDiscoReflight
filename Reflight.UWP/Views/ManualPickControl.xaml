@@ -6,8 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:ParrotDiscoReflight.ViewModels"
     xmlns:views="using:ParrotDiscoReflight.Views"
-    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="1200"
     d:DesignWidth="1200" d:DataContext="{d:DesignInstance vm:ManualPickViewModel}">

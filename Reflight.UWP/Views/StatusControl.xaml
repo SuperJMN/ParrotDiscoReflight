@@ -13,22 +13,31 @@
     d:DataContext="{d:DesignInstance viewModels:DataViewModel}">
 
     <UserControl.Resources>
-        <code:BindableStringFormatConverter x:Key="SpeedConverter" StringFormat="{Binding UnitPack.Speed.StringFormat}" />
-        <code:BindableStringFormatConverter x:Key="LongitudeConverter"
-                                           StringFormat="{Binding UnitPack.Longitude.StringFormat}" />
+        <code:MeasurementUnitConverterToFormattedString x:Key="SpeedToStr" MeasurementUnit="{Binding Units.Speed}" />
+        <code:MeasurementUnitConverter x:Key="Speed" MeasurementUnit="{Binding Units.Speed}" />
+
+        <code:MeasurementUnitConverterToFormattedString x:Key="LongitudeToStr" MeasurementUnit="{Binding Units.Longitude}" />
+        <code:MeasurementUnitConverter x:Key="Longitude" MeasurementUnit="{Binding Units.Longitude}" />
+
+        <code:MeasurementUnitConverterToFormattedString x:Key="AltitudeToStr" MeasurementUnit="{Binding Units.Altitude}" />
+        <code:MeasurementUnitConverter x:Key="Altitude" MeasurementUnit="{Binding Units.Altitude}" />
+
         <Style x:Key="BottomHeaderStyle" TargetType="controls:HeaderedContentControl">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="controls:HeaderedContentControl">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            <ContentPresenter HorizontalContentAlignment="Center" Grid.Row="1" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}"/>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <ContentPresenter HorizontalContentAlignment="Center" Grid.Row="1"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                              Content="{TemplateBinding Header}" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -54,21 +63,21 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
         <controls:HeaderedContentControl Style="{StaticResource BottomHeaderStyle}" Header="Speed">
-            <controls:RadialGauge Value="{Binding Status.Speed}"
-                                  Minimum="0" TickSpacing="{Binding UnitPack.Speed.Tick}"
-                                  Maximum="{Binding UnitPack.Speed.Maximum}"
-                                  Unit="{Binding UnitPack.Speed.Abbreviation}"
+            <controls:RadialGauge Value="{Binding Status.Speed, Converter={StaticResource Speed}}"
+                                  Minimum="0" TickSpacing="{Binding Units.Speed.Tick}"
+                                  Maximum="{Binding Units.Speed.Maximum}"
+                                  Unit="{Binding Units.Speed.Abbreviation}"
                                   Style="{StaticResource RadialGaugeStyle}" />
         </controls:HeaderedContentControl>
         <controls:UniformGrid Grid.Column="1" VerticalAlignment="Bottom" Rows="1">
             <controls:HeaderedTextBlock Foreground="White" Header="Air Speed" VerticalAlignment="Center"
-                                        Text="{Binding Status.PitotSpeed, Converter={StaticResource SpeedConverter}}">
+                                        Text="{Binding Status.PitotSpeed, Converter={StaticResource SpeedToStr}}">
                 <controls:HeaderedTextBlock.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Foreground="White" Text="{Binding}" />
@@ -86,7 +95,7 @@
             </controls:HeaderedTextBlock>
             <controls:HeaderedTextBlock Header="Distance"
                                         VerticalAlignment="Center"
-                                        Text="{Binding Status.DistanceToDrone, Converter={StaticResource LongitudeConverter}}">
+                                        Text="{Binding Status.DistanceToDrone, Converter={StaticResource LongitudeToStr}}">
                 <controls:HeaderedTextBlock.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Foreground="White" Text="{Binding}" />
@@ -95,7 +104,7 @@
             </controls:HeaderedTextBlock>
             <controls:HeaderedTextBlock Header="Total Distance"
                                         VerticalAlignment="Center"
-                                        Text="{Binding Status.TotalDistance, Converter={StaticResource LongitudeConverter}}">
+                                        Text="{Binding Status.TotalDistance, Converter={StaticResource LongitudeToStr}}">
                 <controls:HeaderedTextBlock.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" />
@@ -105,13 +114,13 @@
         </controls:UniformGrid>
         <views:AnglesControl Grid.Column="2" />
         <controls:HeaderedContentControl Header="Altitude" Style="{StaticResource BottomHeaderStyle}" Grid.Column="3">
-            <controls:RadialGauge 
-                                  Value="{Binding Status.DronePosition.Altitude, Converter={StaticResource LongitudeConverter}}"
-                                  Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
-                                  TickSpacing="{Binding UnitPack.Longitude.Tick}"
-                                  Maximum="{Binding UnitPack.Longitude.Maximum}"
-                                  Unit="{Binding UnitPack.Longitude.Abbreviation}"
-                                  Style="{StaticResource RadialGaugeStyle}" />
+            <controls:RadialGauge
+                Value="{Binding Status.DronePosition.Altitude, Converter={StaticResource Altitude}}"
+                Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
+                TickSpacing="{Binding Units.Altitude.Tick}"
+                Maximum="{Binding Units.Altitude.Maximum}"
+                Unit="{Binding Units.Altitude.Abbreviation}"
+                Style="{StaticResource RadialGaugeStyle}" />
         </controls:HeaderedContentControl>
 
         <!--<maps:MapControl x:Name="MapControl" Style="AerialWithRoads" Visibility="Collapsed" />-->

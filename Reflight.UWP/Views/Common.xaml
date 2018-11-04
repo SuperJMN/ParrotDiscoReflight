@@ -38,16 +38,7 @@
     <x:Double x:Key="Spacing">10</x:Double>
     <Thickness x:Key="StandardSeparation">20,10</Thickness>
     <Thickness x:Key="HorizontalMargin">10,0</Thickness>
-
-    <Style x:Key="BigButtonStyle" TargetType="Button">
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Height" Value="50" />
-        <Setter Property="Padding" Value="10"></Setter>
-    </Style>
-
+   
     <Style x:Key="TextBlockStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="20" />
         <Setter Property="VerticalAlignment" Value="Center" />

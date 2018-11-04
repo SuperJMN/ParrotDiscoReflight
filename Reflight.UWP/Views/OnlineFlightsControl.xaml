@@ -32,9 +32,13 @@
         </VisualStateManager.VisualStateGroups>
 
         <StackPanel>
-            <TextBlock Margin="4" x:Name="NonConfiguredAccountWarning"
-                       Text="In order to load data, you need to supply the credentials of your Parrot Flight Academy account by going to the Settings page"
-                       TextWrapping="WrapWholeWords" />
+            <RichTextBlock  x:Name="NonConfiguredAccountWarning"
+                            TextWrapping="WrapWholeWords">
+                <Paragraph>
+                    <Run FontWeight="Bold">NOTICE:</Run>
+                    In order to load data, you need to supply the credentials of your My.Parrot account by going to the Settings page
+                </Paragraph>
+            </RichTextBlock>
             <Button Command="{Binding LoadFlightsCommand}" HorizontalAlignment="Right">
                 <Button.Content>
                     <SymbolIcon Symbol="Refresh" />

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using ParrotDiscoReflight.Code;
-using ParrotDiscoReflight.Code.Settings;
 using ParrotDiscoReflight.Code.Units;
 using ParrotDiscoReflight.ViewModels;
 using ParrotDiscoReflight.Views.Pages;
@@ -20,20 +20,20 @@ namespace ParrotDiscoReflight
             navigationService.Register<SettingsViewModel, SettingsPage>();
 
             var fileOpenCommands = new FileOpenCommands();
-
-            var settingsViewModel = new SettingsViewModel(fileOpenCommands);
+            
+            var dialogService = new DialogService();
+            var settingsViewModel = new SettingsViewModel(fileOpenCommands,dialogService);
 
             var videoExportService = new ExportService(status =>
                 new SimulationDataViewModel
                 {
-                    UnitPack = UnitSource.UnitPacks.First(),
-                    Status = new StatusViewModel(status.ConvertTo(UnitSource.UnitPacks.First()))
+                    Units = UnitSource.UnitPacks.First(),
+                    Status = new StatusViewModel(status),
                 });
 
-            IFlightAcademyClient FactoryClient() => FlightAcademyClient.Create(settingsViewModel.Username,
+            Task<IFlightAcademyClient> FactoryClient() => FlightAcademyClient.Create(settingsViewModel.Username,
                 settingsViewModel.Password, new Uri("http://academy.ardrone.com/api3"));
 
-            var dialogService = new DialogService();
 
             var flightAcademyPickViewModel = new GalleryPickViewModel(FactoryClient, settingsViewModel, dialogService, navigationService);
 

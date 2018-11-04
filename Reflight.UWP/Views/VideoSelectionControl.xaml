@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    xmlns:code="using:ParrotDiscoReflight.Code"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="1200" d:DataContext="{d:DesignInstance viewModels:ManualPickViewModel}">
@@ -15,12 +16,29 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Common.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
     <controls:HeaderedContentControl
         Padding="{StaticResource StandardSeparation}"
         Style="{StaticResource SectionHeaderedControl}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualStateGroup.States>
+                    <VisualState>
+                        <VisualState.StateTriggers>
+                            <code:ValueDataTrigger DataValue="{Binding Video}" TriggerValue="{x:Null}" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="VideoPane.Visibility" Value="Collapsed" />                            
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup.States>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <controls:HeaderedContentControl.Header>
             <TextBlock Margin="{StaticResource VerticalMargin}">
                 <Run FontSize="30" FontWeight="ExtraBlack" CharacterSpacing="80">1</Run>
@@ -33,23 +51,13 @@
                 <ColumnDefinition  />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Spacing="{StaticResource Spacing}">
-                <TextBlock>Select a local video file:</TextBlock>
-                <Button Command="{Binding FileCommands.OpenVideoCommand}"
-                        Style="{StaticResource BigButtonStyle}"
-                        HorizontalAlignment="Left">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/Assets/video.svg" />
-                        <TextBlock Margin="{StaticResource HorizontalMargin}" Grid.Column="1"
-                                   Text="Browse..." Style="{StaticResource TextBlockStyle}" />
-                    </Grid>
-                </Button>
-            </StackPanel>
-            <Grid BorderBrush="Black" HorizontalAlignment="Center" BorderThickness="1" Grid.Column="1" DataContext="{Binding Video}"
+            <controls:HeaderedContentControl>
+                <controls:HeaderedContentControl.Header>
+                    <TextBlock Margin="{StaticResource VerticalMargin}">Select a local video file:</TextBlock>
+                </controls:HeaderedContentControl.Header>
+                <Button Command="{Binding FileCommands.OpenVideoCommand}" Content="Browse..." />
+            </controls:HeaderedContentControl>
+            <Grid BorderBrush="Black" HorizontalAlignment="Center" x:Name="VideoPane" BorderThickness="1" Grid.Column="1" DataContext="{Binding Video}"
                   Margin="{StaticResource StandardSeparation}">
 
                 <Grid.ColumnDefinitions>

@@ -21,6 +21,7 @@
                 <Setter Property="Width" Value="40" />
                 <Setter Property="Height" Value="40" />
                 <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="ToolTipService.ToolTip" Value="Play the flight!" />
                 <Setter Property="ContentTemplate">
                     <Setter.Value>
                         <DataTemplate>
@@ -47,15 +48,12 @@
 
         <Grid x:Name="Root">
 
-            <Grid RowSpacing="20">
+            <controls:HeaderedContentControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <TextBlock>Select the Flight Data from either a local file or from  flight stored in the Parrot Flight Academy:</TextBlock>
-                <Grid Grid.Row="1" ColumnSpacing="20">
+                <controls:HeaderedContentControl.Header>
+                    <TextBlock Margin="{StaticResource VerticalMargin}">Select the Flight Data from either a local file (.json) or from a flight stored in My.Parrot</TextBlock>
+                </controls:HeaderedContentControl.Header>
+                <Grid ColumnSpacing="20">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -75,17 +73,7 @@
                             <Button HorizontalAlignment="Left"
                                     Command="{Binding FileCommands.OpenDataCommand}" VerticalAlignment="Top"
                                     Margin="0,10"
-                                    Style="{StaticResource BigButtonStyle}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Source="/Assets/data.svg" />
-                                    <TextBlock Margin="{StaticResource HorizontalMargin}" Grid.Column="1"
-                                               Text="Browse..."
-                                               Style="{StaticResource TextBlockStyle}" />
-                                </Grid>
+                                    Content="Browse...">
                             </Button>
                             <TextBlock Grid.Row="1" Text="{Binding FlightFile.Name}" />
                             <Button VerticalAlignment="Bottom" Grid.Row="2"
@@ -93,7 +81,7 @@
                         </Grid>
                     </controls:HeaderedContentControl>
 
-                    <controls:HeaderedContentControl Grid.Column="1" Header="From Parrot Flight Academy"
+                    <controls:HeaderedContentControl Grid.Column="1" Header="From My.Parrot"
                                                      Padding="{StaticResource StandardSeparation}"
                                                      Style="{StaticResource BoldHeaderedContentControlStyle}">
                         <Grid>                            
@@ -109,7 +97,7 @@
                     </controls:HeaderedContentControl>
 
                 </Grid>
-            </Grid>
+            </controls:HeaderedContentControl>
 
         </Grid>
 

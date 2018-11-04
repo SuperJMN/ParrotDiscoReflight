@@ -13,21 +13,24 @@ namespace ParrotDiscoReflight.Code.Units
                     Id = "metrickms",
                     Name = "Metric (speed in Km/h)",
                     Speed = new KilometersPerHourUnit(),
-                    Longitude = new MetersUnit()                    
+                    Longitude = new KilometersUnit(),
+                    Altitude = new MetersUnit(),
                 },
                 new UnitPack
                 {
                     Id = "metricms",
                     Name = "Metric (speed in m/s)",
                     Speed = new MetersPerSecondUnit(),
-                    Longitude = new MetersUnit()
+                    Longitude = new MetersUnit(),
+                    Altitude = new MetersUnit(),
                 },
                 new UnitPack
                 {
                     Id = "imperial",
                     Name = "Imperial",
                     Speed = new MilesPerHourUnit(),
-                    Longitude = new FeetUnit()
+                    Longitude = new MilesUnit(),
+                    Altitude = new FeetUnit()
                 }
             };
         }

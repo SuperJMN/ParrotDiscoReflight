@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Windows.Storage;
 using NodaTime;
 using NodaTime.Extensions;
@@ -16,7 +17,7 @@ namespace ParrotDiscoReflight.ViewModels
 {
     public class GalleryPickViewModel : ReactiveObject, IFlightSimulationPicker
     {
-        private readonly Func<IFlightAcademyClient> clientFactory;
+        private readonly Func<Task<IFlightAcademyClient>> clientFactory;
         private readonly CompositeDisposable disposables = new CompositeDisposable();
         private readonly ObservableAsPropertyHelper<bool> isBusy;
         private readonly INavigationService navigationService;
@@ -26,7 +27,7 @@ namespace ParrotDiscoReflight.ViewModels
         private readonly ObservableAsPropertyHelper<bool> isAccountConfigured;
         private readonly ObservableAsPropertyHelper<bool> isVideoFolderConfigured;
 
-        public GalleryPickViewModel(Func<IFlightAcademyClient> clientFactory, SettingsViewModel settingsViewModel,
+        public GalleryPickViewModel(Func<Task<IFlightAcademyClient>> clientFactory, SettingsViewModel settingsViewModel,
             IDialogService dialogService, INavigationService navigationService)
         {
             this.clientFactory = clientFactory;
@@ -43,7 +44,11 @@ namespace ParrotDiscoReflight.ViewModels
                 .Where(x => x.RecordedInterval.HasValue)
                 .ToList();
 
-            var summariesObs = Observable.FromAsync(() => clientFactory().GetFlights(0, 2000));
+            var summariesObs = Observable.FromAsync(async () =>
+            {
+                var flightAcademyClient = await clientFactory();
+                return await flightAcademyClient.GetFlights(0, 2000);
+            });
 
             var zipped = videoObs.Zip(summariesObs,
                 (videos, flight) =>
@@ -101,7 +106,11 @@ namespace ParrotDiscoReflight.ViewModels
                 Items = matchingVideos.Select(video =>
                 {
                     var newSimulationUnit = new SummaryBasedSimulationSeed(
-                        () => clientFactory().GetFlight(flightSummary.Id), video, () => settingsViewModel.UnitPack);
+                        async () =>
+                        {
+                            var flightAcademyClient = await clientFactory();
+                            return await flightAcademyClient.GetFlight(flightSummary.Id);
+                        }, video, () => settingsViewModel.UnitPack);
                     return new VideoPackItemViewModel(newSimulationUnit, OnPlay);
                 }).OrderBy(x => x.Date)
             };

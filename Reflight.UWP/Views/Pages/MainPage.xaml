@@ -13,10 +13,10 @@
     <Frame>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition />
                 <RowDefinition Height="Auto" />
+                <RowDefinition />
+                
             </Grid.RowDefinitions>
-            <views:SimulationUnitSelectorControl Margin="30" />
             <Button Margin="10" Padding="6" VerticalAlignment="Top" HorizontalAlignment="Right"
                     Command="{Binding GoToSettingsCommand}">
                 <Button.Content>
@@ -30,6 +30,9 @@
                     </Grid>
                 </Button.Content>
             </Button>            
+
+            <views:SimulationUnitSelectorControl Grid.Row="1" />
+            
         </Grid>
 
     </Frame>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using ParrotDiscoReflight.Code;
@@ -13,13 +14,15 @@ namespace ParrotDiscoReflight.ViewModels
 {
     public class SettingsViewModel : ReactiveObject
     {
-        private readonly ObservableSettings settings;
+        private readonly SettingsSaver settings;
         private readonly ObservableAsPropertyHelper<StorageFolder> videoFolder;
         private UnitPack unitPack;
+        private readonly ObservableAsPropertyHelper<string> username;
+        private readonly ObservableAsPropertyHelper<string> password;
 
-        public SettingsViewModel(FileOpenCommands commands)
+        public SettingsViewModel(FileOpenCommands commands, IDialogService dialogService)
         {
-            settings = new ObservableSettings(this, ApplicationData.Current.RoamingSettings);
+            settings = new SettingsSaver(this, ApplicationData.Current.RoamingSettings);
             BrowseFolderCommand = commands.BrowseFolderCommand;
             BrowseFolderCommand.Subscribe(x =>
             {
@@ -48,6 +51,36 @@ namespace ParrotDiscoReflight.ViewModels
                 VideoFolder = null;
                 VideoFolderToken = null;
             }, this.WhenAnyValue(x => x.VideoFolderToken, selector: s => s != null));
+
+            UserBasedLogin = new UserBasedLogin();
+            EmailBasedLogin = new EmailBasedLogin(dialogService);
+
+            var usernamesSequence = GetUsernamesSequence();
+            var passwordSequence = GetPasswordsSequence();
+
+
+            username = usernamesSequence.ToProperty(this, x => x.Username);
+            password = passwordSequence.ToProperty(this, x => x.Password);
+        }
+
+        private IObservable<string> GetUsernamesSequence()
+        {
+            var isUserBased = this.WhenAnyValue(x => x.IsUserLogon);
+            var userBasedLogon = UserBasedLogin.WhenAnyValue(x => x.Username);
+            var emailBasedLogon = EmailBasedLogin.WhenAnyValue(x => x.VerifiedUsername);
+            var usernames = userBasedLogon.CombineLatest(emailBasedLogon, (u, m) => new {Username = u, Email = m});
+            var usernamesSequence = isUserBased.CombineLatest(usernames, (userBased, user) => userBased ? user.Username : user.Email);
+            return usernamesSequence;
+        }
+
+        private IObservable<string> GetPasswordsSequence()
+        {
+            var isUserBased = this.WhenAnyValue(x => x.IsUserLogon);
+            var userBasedLogon = UserBasedLogin.WhenAnyValue(x => x.Password);
+            var emailBasedLogon = EmailBasedLogin.WhenAnyValue(x => x.VerifiedPassword);
+            var usernames = userBasedLogon.CombineLatest(emailBasedLogon, (u, w) => new {Username = u, Email = w});
+            var sequence = isUserBased.CombineLatest(usernames, (userBased, user) => userBased ? user.Username : user.Email);
+            return sequence;
         }
 
         public IObservable<bool> IsAccountConfigured { get; }
@@ -88,9 +121,20 @@ namespace ParrotDiscoReflight.ViewModels
 
         public ICollection<UnitPack> UnitPacks => UnitSource.UnitPacks;
 
-        public string Username
+        public string Username => username.Value;
+
+        public string Password => password.Value;
+
+        public UnitPack UnitPack
         {
-            get => settings.Get<string>();
+            get => unitPack;
+            set => this.RaiseAndSetIfChanged(ref unitPack, value);
+        }
+
+        [DefaultSettingValue(true)]
+        public bool IsUserLogon
+        {
+            get => settings.Get<bool>();
             set
             {
                 settings.Set(value);
@@ -98,20 +142,7 @@ namespace ParrotDiscoReflight.ViewModels
             }
         }
 
-        public string Password
-        {
-            get => settings.Get<string>();
-            set
-            {
-                settings.Set(value); 
-                this.RaisePropertyChanged();
-            }
-        }
-
-        public UnitPack UnitPack
-        {
-            get => unitPack;
-            set => this.RaiseAndSetIfChanged(ref unitPack, value);
-        }        
+        public UserBasedLogin UserBasedLogin { get; }
+        public EmailBasedLogin EmailBasedLogin { get; }
     }
 }

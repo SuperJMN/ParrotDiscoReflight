@@ -12,5 +12,11 @@ namespace ParrotDiscoReflight.Code
             var dialog = new MessageDialog(message) { Title = title };
             return dialog.ShowAsync().AsTask();
         }
+
+        public Task ShowMessage(string message)
+        {
+            var dialog = new MessageDialog(message);
+            return dialog.ShowAsync().AsTask();
+        }
     }
 }

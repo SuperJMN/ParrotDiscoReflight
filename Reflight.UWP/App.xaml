@@ -11,5 +11,6 @@
         <code:VideoSizeConverter x:Key="VideoSizeConverter" />
         <code:BitmapConverter x:Key="BitmapConverter" />
         <code:UnitConverter x:Key="UnitConverter" />
+        <converters:BoolNegationConverter x:Key="BooleanInverter" />
     </Application.Resources>
 </Application>

@@ -135,13 +135,21 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <StackPanel Spacing="5">
-                <TextBlock Margin="4" x:Name="NonConfiguredAccountWarning"
-                           Text="In order to load data, you need to supply the credentials of your Parrot Flight Academy account by going to the Settings page"
-                           TextWrapping="WrapWholeWords" />
-                <TextBlock Margin="4" x:Name="NonConfiguredVideoFolder"
-                           Text="You need to setup the the folder that contains all your videos in order to use this feature. Please, set it in by going to the Settings page"
-                           TextWrapping="WrapWholeWords" />
+            <StackPanel Spacing="5" VerticalAlignment="Center">
+                <RichTextBlock  x:Name="NonConfiguredAccountWarning"
+                           TextWrapping="WrapWholeWords">
+                    <Paragraph>
+                        <Run FontWeight="Bold">NOTICE:</Run>
+                        In order to load data, you need to supply the credentials of your My.Parrot account by going to the Settings page
+                    </Paragraph>
+                </RichTextBlock>
+                <RichTextBlock x:Name="NonConfiguredVideoFolder"
+                           TextWrapping="WrapWholeWords">
+                    <Paragraph>
+                        <Run FontWeight="Bold">NOTICE:</Run>
+                        You need to setup the the folder that contains all your videos in order to use this feature. Please, set it in by going to the Settings page
+                    </Paragraph>
+                </RichTextBlock>
             </StackPanel>
             <Button Grid.Column="1" Margin="0,10" ToolTipService.ToolTip="Refresh" Padding="10"
                     Command="{Binding LoadFlightsCommand}" HorizontalAlignment="Right">

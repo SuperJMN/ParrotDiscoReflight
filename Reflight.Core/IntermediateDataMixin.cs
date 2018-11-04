@@ -46,7 +46,7 @@ namespace Reflight.Core
                     AnglePsi = anglePsi[i],
                     BatteryLevel = battLevel[i] / 100D,
                     WifiStregth = wifiStrength[i],
-                    DronePosition = new GeoCoordinate(lat[i], lng[i], altitude[i]),
+                    DronePosition = new GeoCoordinate(lat[i], lng[i], altitude[i] / 1000D),
                     ControllerPosition = new GeoCoordinate(ctrlLat[i], ctrlLng[i], 0D),
                 })
                 .Buffer(2, 1)
