@@ -17,7 +17,14 @@ namespace Reflight.Core.Reader
 
         public IEnumerable<TOut> GetData<TIn, TOut>(string header, Func<TIn, TOut> selector)
         {
-            var row = source[headers.IndexOf(header)];
+            var indexOf = headers.IndexOf(header);
+
+            if (indexOf == -1)
+            {
+                return Enumerable.Empty<TOut>();
+            }
+
+            var row = source[indexOf];
             return row.Select(o => selector((TIn)o));
         }
     }

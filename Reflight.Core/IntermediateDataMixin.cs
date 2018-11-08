@@ -38,7 +38,7 @@ namespace Reflight.Core
                     TimeElapsed = TimeSpan.FromMilliseconds(times[i]).Add(TimeCorrection),
                     Speed = new Vector(spdX[i], spdY[i], spdZ[i]),
                     Altitude = altitude[i] >= 0 ? altitude[i] / (double) 1000 : 0,
-                    PitotSpeed = pitotSpeed[i],
+                    PitotSpeed = pitotSpeed.Any() ? pitotSpeed[i] : double.NaN, 
                     Longitude = lng[i],
                     Latitude = lat[i],
                     AnglePhi = anglePhi[i],

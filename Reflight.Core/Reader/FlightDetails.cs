@@ -43,7 +43,7 @@ namespace Reflight.Core.Reader
         public long ProductStyle { get; set; }
 
         [JsonProperty("product_accessory")] 
-        public long ProductAccessory { get; set; }
+        public long? ProductAccessory { get; set; }
 
         [JsonProperty("gps_available")] 
         public bool GpsAvailable { get; set; }
