@@ -1,0 +1,23 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dashboards="using:ParrotDiscoReflight.Views.Dashboards">
+    
+    <DataTemplate x:Key="Standard">
+        <dashboards:StandardDashboard />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Original">
+        <dashboards:OriginalDashboard />        
+    </DataTemplate>
+
+    <DataTemplate x:Key="Original with graphs">
+        <dashboards:OriginalWithGraphs />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Compact">
+        <dashboards:CompactDashboard />
+    </DataTemplate>
+
+
+</ResourceDictionary>

@@ -9,7 +9,6 @@ using Windows.Storage;
 using NodaTime;
 using NodaTime.Extensions;
 using ParrotDiscoReflight.Code;
-using ParrotDiscoReflight.Code.Settings;
 using ReactiveUI;
 using Reflight.Core.FlightAcademy;
 
@@ -110,7 +109,11 @@ namespace ParrotDiscoReflight.ViewModels
                         {
                             var flightAcademyClient = await clientFactory();
                             return await flightAcademyClient.GetFlight(flightSummary.Id);
-                        }, video, () => settingsViewModel.UnitPack);
+                        }, video, () => new PresentationOptions()
+                        {
+                            UnitPack = settingsViewModel.UnitPack,
+                            Dashboard = settingsViewModel.VirtualDashboard,                            
+                        });
                     return new VideoPackItemViewModel(newSimulationUnit, OnPlay);
                 }).OrderBy(x => x.Date)
             };

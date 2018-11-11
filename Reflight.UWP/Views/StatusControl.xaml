@@ -10,17 +10,17 @@
     xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
     mc:Ignorable="d"
     Foreground="White"
-    d:DataContext="{d:DesignInstance viewModels:DataViewModel}">
+    d:DataContext="{d:DesignInstance viewModels:SimulationViewModel}">
 
     <UserControl.Resources>
-        <code:MeasurementUnitConverterToFormattedString x:Key="SpeedToStr" MeasurementUnit="{Binding Units.Speed}" />
-        <code:MeasurementUnitConverter x:Key="Speed" MeasurementUnit="{Binding Units.Speed}" />
+        <code:MeasurementUnitConverterToFormattedString x:Key="SpeedToStr" MeasurementUnit="{Binding PresentationOptions.UnitPack.Speed}" />
+        <code:MeasurementUnitConverter x:Key="Speed" MeasurementUnit="{Binding PresentationOptions.UnitPack.Speed}" />
 
-        <code:MeasurementUnitConverterToFormattedString x:Key="LongitudeToStr" MeasurementUnit="{Binding Units.Longitude}" />
-        <code:MeasurementUnitConverter x:Key="Longitude" MeasurementUnit="{Binding Units.Longitude}" />
+        <code:MeasurementUnitConverterToFormattedString x:Key="LongitudeToStr" MeasurementUnit="{Binding PresentationOptions.UnitPack.Longitude}" />
+        <code:MeasurementUnitConverter x:Key="Longitude" MeasurementUnit="{Binding PresentationOptions.UnitPack.Longitude}" />
 
-        <code:MeasurementUnitConverterToFormattedString x:Key="AltitudeToStr" MeasurementUnit="{Binding Units.Altitude}" />
-        <code:MeasurementUnitConverter x:Key="Altitude" MeasurementUnit="{Binding Units.Altitude}" />
+        <code:MeasurementUnitConverterToFormattedString x:Key="AltitudeToStr" MeasurementUnit="{Binding PresentationOptions.UnitPack.Altitude}" />
+        <code:MeasurementUnitConverter x:Key="Altitude" MeasurementUnit="{Binding PresentationOptions.UnitPack.Altitude}" />
 
         <Style x:Key="BottomHeaderStyle" TargetType="controls:HeaderedContentControl">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -70,9 +70,9 @@
 
         <controls:HeaderedContentControl Style="{StaticResource BottomHeaderStyle}" Header="Speed">
             <controls:RadialGauge Value="{Binding Status.Speed, Converter={StaticResource Speed}}"
-                                  Minimum="0" TickSpacing="{Binding Units.Speed.Tick}"
-                                  Maximum="{Binding Units.Speed.Maximum}"
-                                  Unit="{Binding Units.Speed.Abbreviation}"
+                                  Minimum="0" TickSpacing="{Binding PresentationOptions.UnitPack.Speed.Tick}"
+                                  Maximum="{Binding PresentationOptions.UnitPack.Speed.Maximum}"
+                                  Unit="{Binding PresentationOptions.UnitPack.Speed.Abbreviation}"
                                   Style="{StaticResource RadialGaugeStyle}" />
         </controls:HeaderedContentControl>
         <controls:UniformGrid Grid.Column="1" VerticalAlignment="Bottom" Rows="1">
@@ -117,9 +117,9 @@
             <controls:RadialGauge
                 Value="{Binding Status.DronePosition.Altitude, Converter={StaticResource Altitude}}"
                 Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
-                TickSpacing="{Binding Units.Altitude.Tick}"
-                Maximum="{Binding Units.Altitude.Maximum}"
-                Unit="{Binding Units.Altitude.Abbreviation}"
+                TickSpacing="{Binding PresentationOptions.UnitPack.Altitude.Tick}"
+                Maximum="{Binding PresentationOptions.UnitPack.Altitude.Maximum}"
+                Unit="{Binding PresentationOptions.UnitPack.Altitude.Abbreviation}"
                 Style="{StaticResource RadialGaugeStyle}" />
         </controls:HeaderedContentControl>
 

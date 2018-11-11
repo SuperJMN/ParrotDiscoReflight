@@ -3,12 +3,13 @@ using System.Linq;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using ParrotDiscoReflight.Code;
 using ParrotDiscoReflight.Code.Units;
 using ParrotDiscoReflight.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace App1
+namespace ParrotDiscoReflight.Views.Pages
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -38,7 +39,7 @@ namespace App1
             var output = await folderFromPathAsync.CreateFileAsync("output.mp4", CreationCollisionOption.ReplaceExisting);
             await exportService.Export(video, flight, output, status =>
             {
-                RenderControl.DataContext = new SimulationDataViewModel()
+                RenderControl.DataContext = new SimulationSimulationViewModel()
                 {
                     Status = new StatusViewModel(status),
                     Units = UnitSource.UnitPacks.FirstOrDefault(),

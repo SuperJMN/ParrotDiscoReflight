@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:settings="using:ParrotDiscoReflight.Views.Pages.Settings"
     xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -77,7 +76,7 @@
 
                 <StackPanel Grid.Column="1">
                     <local:UserLoginControl x:Name="UserLogon" DataContext="{Binding UserBasedLogin}" />
-                    <settings:EmailLoginControl x:Name="EmailLogon" DataContext="{Binding EmailBasedLogin}" />
+                    <local:EmailLoginControl x:Name="EmailLogon" DataContext="{Binding EmailBasedLogin}" />
                 </StackPanel>
             </Grid>
         </controls:HeaderedContentControl>

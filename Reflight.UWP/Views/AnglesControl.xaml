@@ -5,9 +5,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     mc:Ignorable="d"
     
-    d:DataContext="{d:DesignInstance viewModels:DataViewModel}">
+    d:DataContext="{d:DesignInstance viewModels:SimulationViewModel}">
 
     <Grid ColumnSpacing="10">
         <Grid.ColumnDefinitions>
@@ -25,11 +26,20 @@
                 <CompositeTransform Rotation="{Binding Status.AngleTheta, Converter={StaticResource AngleRadianConverter}}" ScaleX="0.6" ScaleY="0.6" />
             </Image.RenderTransform>
         </Image>
-        <Image Grid.Column="2" Margin="20" Source="/Assets/otra.png" RenderTransformOrigin="0.5,0.5">
-            <Image.RenderTransform>
-                <RotateTransform Angle="{Binding Status.AnglePsi, Converter={StaticResource AngleRadianConverter}}" />
-            </Image.RenderTransform>
-        </Image>
+        <Grid Grid.Column="2" Margin="20" >
+            <Image Source="/Assets/otra.png" ></Image>
+            <Border RenderTransformOrigin="0.5,0.5" >
+                <Border.RenderTransform>
+                    <CompositeTransform
+                        Rotation="{Binding Status.AnglePsi, Converter={StaticResource AngleRadianConverter}}"
+                        ScaleX="0.4" ScaleY="0.4"/>
+                </Border.RenderTransform>
+                <Border.Background>
+                    <media:ImageBlendBrush Source="/Assets/little.png" Mode="Overlay" Stretch="Uniform">
+                    </media:ImageBlendBrush>
+                </Border.Background>
+            </Border>            
+        </Grid>
     </Grid>
 
 </UserControl>

@@ -17,6 +17,7 @@ namespace Reflight.Core.Reader
                     {
                         Converters = { new TimeSpanJsonConverter(), new JsonDateTimeOffsetConverter(), }
                     };
+
                     intermediate = ser.Deserialize<FlightDetails>(jsonReader);
                 }
             }

@@ -9,8 +9,8 @@
     xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
     xmlns:code="using:ParrotDiscoReflight.Code"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
+    d:DesignHeight="800"
+    d:DesignWidth="500" d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
     <UserControl.Resources>
         <Style x:Key="StackPanelStyle" TargetType="StackPanel">
             <Setter Property="Spacing" Value="40" />
@@ -91,6 +91,18 @@
                     <Paragraph>
                         Measurement units to display in the
                         <Run FontWeight="SemiBold">Virtual Dashboard</Run>
+                    </Paragraph>
+                </RichTextBlock>
+            </ComboBox.Header>
+        </ComboBox>
+        <ComboBox HorizontalAlignment="Left" DisplayMemberPath="Name" ItemsSource="{Binding VirtualDashboards}" SelectedItem="{Binding VirtualDashboard, Mode=TwoWay}">
+            <ComboBox.Header>
+                <RichTextBlock>
+                    <Paragraph FontWeight="Bold">
+                        Virtual Dashboard templates
+                    </Paragraph>
+                    <Paragraph>
+                        Choose the <Run FontWeight="SemiBold">Virtual Dashboard</Run> you want for playing your flights                        
                     </Paragraph>
                 </RichTextBlock>
             </ComboBox.Header>

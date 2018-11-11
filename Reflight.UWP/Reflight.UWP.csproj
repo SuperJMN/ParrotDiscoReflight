@@ -21,7 +21,7 @@
     <PackageCertificateKeyFile>SuppaFlight.UWP_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>18F8061F3F7D884324C5F814F60F2614B7F22092</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
@@ -102,8 +102,10 @@
   <ItemGroup>
     <Compile Include="Code\AngleRadianConverter.cs" />
     <Compile Include="Code\BitmapConverter.cs" />
+    <Compile Include="Code\SimulationViewModelToDataTemplateConverter.cs" />
     <Compile Include="Code\ControlBasedExporter.cs" />
     <Compile Include="Code\MeasurementUnitConverter.cs" />
+    <Compile Include="Code\MeasurementUnitConverterCollection.cs" />
     <Compile Include="Code\MeasurementUnitConverterToFormattedString.cs" />
     <Compile Include="Code\Units\KilometersUnit.cs" />
     <Compile Include="Code\Units\MilesUnit.cs" />
@@ -112,16 +114,24 @@
     <Compile Include="Code\CommandMixin.cs" />
     <Compile Include="Code\DialogService.cs" />
     <Compile Include="Code\IDialogService.cs" />
-    <Compile Include="Code\IVideoExportService.cs" />
     <Compile Include="Code\PickerTemplateSelector.cs" />
     <Compile Include="Code\UnitConverter.cs" />
-    <Compile Include="CompositionRoot.cs" />
-    <Compile Include="OrdinalToOffsetConverter.cs" />
+    <Compile Include="Code\CompositionRoot.cs" />
+    <Compile Include="Controls\LineGraph.xaml.cs">
+      <DependentUpon>LineGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Renderer.cs" />
+    <Compile Include="Controls\Plotter.xaml.cs">
+      <DependentUpon>Plotter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Point.cs" />
     <Compile Include="ViewModels\CredentialRetriever.cs" />
     <Compile Include="ViewModels\Credentials.cs" />
     <Compile Include="ViewModels\EmailBasedLogin.cs" />
-    <Compile Include="ViewModels\FileBasedSimulationSeed.cs" />
     <Compile Include="ViewModels\IFlightSimulationPicker.cs" />
+    <Compile Include="ViewModels\IVirtualDashboardsRepository.cs" />
+    <Compile Include="ViewModels\PlottableViewModel.cs" />
+    <Compile Include="ViewModels\PresentationOptions.cs" />
     <Compile Include="ViewModels\SettingsSaver.cs" />
     <Compile Include="ViewModels\Simulation.cs" />
     <Compile Include="ViewModels\SimulationSeed.cs" />
@@ -133,14 +143,84 @@
     <Compile Include="ViewModels\StorageFileProperty.cs" />
     <Compile Include="ViewModels\StreamMixin.cs" />
     <Compile Include="ViewModels\Video.cs" />
+    <Compile Include="ViewModels\VirtualDashboard.cs" />
     <Compile Include="Views\AnglesControl.xaml.cs">
       <DependentUpon>AnglesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BatteryControl.xaml.cs">
+    <Compile Include="Views\Dashboards\OriginalDashboard.xaml.cs">
+      <DependentUpon>OriginalDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\StandardDashboard.xaml.cs">
+      <DependentUpon>StandardDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\AltitudeIndicator.xaml.cs">
+      <DependentUpon>AltitudeIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\AttackAngle.xaml.cs">
+      <DependentUpon>AttackAngle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\BackIcon.xaml.cs">
+      <DependentUpon>BackIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\BatteryControl.xaml.cs">
       <DependentUpon>BatteryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\CompactDashboard.xaml.cs">
+      <DependentUpon>CompactDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\AltitudeGauge.xaml.cs">
+      <DependentUpon>AltitudeGauge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\AltitudeGraph.xaml.cs">
+      <DependentUpon>AltitudeGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\DistanceIndicator.xaml.cs">
+      <DependentUpon>DistanceIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\FlightDistanceIndicator.xaml.cs">
+      <DependentUpon>FlightDistanceIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\Graphs.xaml.cs">
+      <DependentUpon>Graphs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\Guides.xaml.cs">
+      <DependentUpon>Guides.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\MaxAltitudeIndicator.xaml.cs">
+      <DependentUpon>MaxAltitudeIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\MaxSpeedIndicator.xaml.cs">
+      <DependentUpon>MaxSpeedIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\SideIcon.xaml.cs">
+      <DependentUpon>SideIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\SpeedGauge.xaml.cs">
+      <DependentUpon>SpeedGauge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\SpeedGraph.xaml.cs">
+      <DependentUpon>SpeedGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\SpeedIndicator.xaml.cs">
+      <DependentUpon>SpeedIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\TimeIndicator.xaml.cs">
+      <DependentUpon>TimeIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\TopIcon.xaml.cs">
+      <DependentUpon>TopIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\WifiSignalIndicator.xaml.cs">
+      <DependentUpon>WifiSignalIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\Parts\WindSpeedIndicator.xaml.cs">
+      <DependentUpon>WindSpeedIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboards\OriginalWithGraphs.xaml.cs">
+      <DependentUpon>OriginalWithGraphs.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FlightDataSelectorControl.xaml.cs">
       <DependentUpon>FlightDataSelectorControl.xaml</DependentUpon>
@@ -149,14 +229,14 @@
       <DependentUpon>GalleryPickControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Code\BindableStringFormatConverter.cs" />
-    <Compile Include="ViewModels\DataViewModel.cs" />
+    <Compile Include="ViewModels\SimulationViewModel.cs" />
     <Compile Include="Code\ExportInput.cs" />
     <Compile Include="ViewModels\FlightReplayViewModel.cs" />
-    <Compile Include="Code\IDataViewModel.cs" />
+    <Compile Include="Code\ISimulationViewModel.cs" />
     <Compile Include="Code\LoadedMessage.cs" />
     <Compile Include="Code\Settings\ObservableSettings.cs" />
     <Compile Include="Code\Settings\DefaultSettingValueAttribute.cs" />
-    <Compile Include="ViewModels\SimulationDataViewModel.cs" />
+    <Compile Include="ViewModels\SimulationSimulationViewModel.cs" />
     <Compile Include="Code\SizeMessage.cs" />
     <Compile Include="Code\Units\FeetUnit.cs" />
     <Compile Include="Code\FileOpenCommands.cs" />
@@ -165,11 +245,6 @@
     <Compile Include="Code\Units\MetersPerSecondUnit.cs" />
     <Compile Include="Code\Units\MetersUnit.cs" />
     <Compile Include="Code\Units\MilesPerHourUnit.cs" />
-    <Compile Include="Views\Pages\ExportPage.xaml.cs">
-      <DependentUpon>ExportPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Code\ExportService.cs" />
-    <Compile Include="ViewModels\ExportViewModel.cs" />
     <Compile Include="Views\OnlineFlightsControl.xaml.cs">
       <DependentUpon>OnlineFlightsControl.xaml</DependentUpon>
     </Compile>
@@ -195,7 +270,6 @@
     <Compile Include="ViewModels\ManualPickViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Code\SimulationUnit.cs" />
     <Compile Include="Views\Settings\GeneralControl.xaml.cs">
       <DependentUpon>GeneralControl.xaml</DependentUpon>
     </Compile>
@@ -226,6 +300,7 @@
     <Compile Include="Views\VideoSelectionControl.xaml.cs">
       <DependentUpon>VideoSelectionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Code\VirtualDashboardRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -243,6 +318,7 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\little.png" />
     <Content Include="Assets\play.svg" />
     <Content Include="Assets\otra.png" />
     <Content Include="Assets\side.svg" />
@@ -297,15 +373,119 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\LineGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Plotter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AnglesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BatteryControl.xaml">
+    <Page Include="Views\Dashboards\OriginalDashboard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dashboards\StandardDashboard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\AltitudeIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\AttackAngle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\BackIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\BatteryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\CompactDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\AltitudeGauge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\AltitudeGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\Common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\DistanceIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\FlightDistanceIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\Graphs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\Guides.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\MaxAltitudeIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\MaxSpeedIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\SideIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\SpeedGauge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\SpeedGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\SpeedIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\TimeIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\TopIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\WifiSignalIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\Parts\WindSpeedIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboards\OriginalWithGraphs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -314,10 +494,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GalleryPickControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Pages\ExportPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -377,6 +553,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\VirtualDashboards.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GeoCoordinate.NetCore">
@@ -399,6 +579,15 @@
     </PackageReference>
     <PackageReference Include="System.Reactive">
       <Version>4.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Win2D.uwp">
+      <Version>1.23.0</Version>
+    </PackageReference>
+    <PackageReference Include="WinRTXamlToolkit.Controls.DataVisualization.UWP">
+      <Version>2.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="WinRTXamlToolkit.UWP">
+      <Version>2.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

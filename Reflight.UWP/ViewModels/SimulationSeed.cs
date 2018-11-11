@@ -7,14 +7,14 @@ namespace ParrotDiscoReflight.ViewModels
 {
     public abstract class SimulationSeed
     {
-        protected SimulationSeed(Video video, Func<UnitPack> getUnitPack)
+        protected SimulationSeed(Video video, Func<PresentationOptions> getPresentationOptions)
         {
             Video = video;
-            GetUnitPack = getUnitPack;
+            GetPresentationOptions = getPresentationOptions;
         }
 
         public Video Video { get;  }
         public abstract Task<Flight> GetFlight();
-        public Func<UnitPack> GetUnitPack {get; }
+        public Func<PresentationOptions> GetPresentationOptions {get; }
     }
 }

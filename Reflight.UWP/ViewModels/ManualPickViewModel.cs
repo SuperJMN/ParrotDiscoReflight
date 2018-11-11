@@ -47,7 +47,11 @@ namespace ParrotDiscoReflight.ViewModels
                 .SelectMany(async x =>
                 {
                     var readFlight = await x.FlightFile.ReadFlight();
-                    return new Simulation(x.Video, readFlight, settingsViewModel.UnitPack);
+                    return new Simulation(x.Video, readFlight, new PresentationOptions()
+                    {
+                        UnitPack = settingsViewModel.UnitPack,
+                        Dashboard = settingsViewModel.VirtualDashboard,
+                    });
                 })
                 .FirstOrDefaultAsync();
 
@@ -59,7 +63,11 @@ namespace ParrotDiscoReflight.ViewModels
                 .SelectMany(async x =>
                 {
                     var readFlight =await (await clientFactory()).GetFlight(x.FlightSummary.Id);
-                    return new Simulation(x.Video, readFlight.ToFlight(), settingsViewModel.UnitPack);
+                    return new Simulation(x.Video, readFlight.ToFlight(), new PresentationOptions()
+                    {
+                        UnitPack = settingsViewModel.UnitPack,
+                        Dashboard = settingsViewModel.VirtualDashboard,
+                    });
                 })
                 .FirstOrDefaultAsync();
 

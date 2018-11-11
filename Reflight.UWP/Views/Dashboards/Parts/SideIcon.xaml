@@ -1,0 +1,15 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.Dashboards.Parts.SideIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:code="using:ParrotDiscoReflight.Code"
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance code:ISimulationViewModel}">
+
+    <Image Source="/Assets/side.svg" RenderTransformOrigin="0.5,0.5" >
+        <Image.RenderTransform>
+            <CompositeTransform Rotation="{Binding Status.AngleTheta, Converter={StaticResource AngleRadianConverter}}" />
+        </Image.RenderTransform>
+    </Image>
+</UserControl>

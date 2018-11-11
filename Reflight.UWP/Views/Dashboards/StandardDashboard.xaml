@@ -1,0 +1,70 @@
+﻿<Page
+    x:Class="ParrotDiscoReflight.Views.Dashboards.StandardDashboard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:parts="using:ParrotDiscoReflight.Views.Dashboards.Parts"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="10">
+            <parts:TimeIndicator />
+            <parts:BatteryControl DataContext="{Binding}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                  Margin="10" MaxHeight="60" />
+        </StackPanel>
+
+        <StackPanel Spacing="{StaticResource Spacing}" Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
+                <parts:SpeedGraph />
+                <parts:SpeedGauge Grid.Row="1" HorizontalAlignment="Center" />
+            </Grid>
+            <Grid RowSpacing="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
+                <parts:AltitudeGraph />
+                <parts:AltitudeGauge Grid.Row="1" HorizontalAlignment="Center" />
+            </Grid>           
+        </StackPanel>       
+
+        <controls:UniformGrid Grid.Row="1" Rows="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="600">
+            <parts:BackIcon Width="200" />
+            <parts:SideIcon Width="130" />
+            <parts:TopIcon Height="130" />
+        </controls:UniformGrid>
+        
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Margin="{StaticResource StandardSeparation}" Orientation="Horizontal"
+                    VerticalAlignment="Bottom" Spacing="{StaticResource Spacing}">
+            <parts:WifiSignalIndicator />
+            <parts:WindSpeedIndicator />
+            <parts:DistanceIndicator />
+            <parts:FlightDistanceIndicator />
+            
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Margin="30" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal" Opacity="0.6" Spacing="8">
+            <parts:MaxSpeedIndicator FontSize="12" VerticalAlignment="Bottom" />
+            <parts:MaxAltitudeIndicator FontSize="12" VerticalAlignment="Bottom" />
+        </StackPanel>
+
+    </Grid>
+</Page>

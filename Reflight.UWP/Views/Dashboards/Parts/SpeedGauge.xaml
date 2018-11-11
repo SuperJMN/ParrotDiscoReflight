@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.Dashboards.Parts.SpeedGauge"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:code="using:ParrotDiscoReflight.Code"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance code:ISimulationViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <code:MeasurementUnitConverter x:Key="Speed" MeasurementUnit="{Binding PresentationOptions.UnitPack.Speed}" />
+
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <controls:HeaderedContentControl Style="{StaticResource BottomHeaderStyle}" Header="Speed">
+        
+        <controls:RadialGauge Value="{Binding Status.Speed, Converter={StaticResource Speed}}"
+                              Minimum="0" TickSpacing="{Binding PresentationOptions.UnitPack.Speed.Tick}"
+                              Maximum="{Binding PresentationOptions.UnitPack.Speed.Maximum}"
+                              Unit="{Binding PresentationOptions.UnitPack.Speed.Abbreviation}" Style="{StaticResource RadialGaugeStyle}" />
+    </controls:HeaderedContentControl>
+
+</UserControl>

@@ -2,11 +2,11 @@
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace ParrotDiscoReflight.Views
+namespace ParrotDiscoReflight.Views.Dashboards.Parts
 {
-    public sealed partial class BatteryControl : UserControl
+    public sealed partial class AltitudeGraph : UserControl
     {
-        public BatteryControl()
+        public AltitudeGraph()
         {
             this.InitializeComponent();
         }

@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using ParrotDiscoReflight.Code;
-using ParrotDiscoReflight.Code.Units;
 using ParrotDiscoReflight.ViewModels;
 using ParrotDiscoReflight.Views.Pages;
+using ParrotDiscoReflight.Views.Settings;
 using Reflight.Core.FlightAcademy;
 
-namespace ParrotDiscoReflight
+namespace ParrotDiscoReflight.Code
 {
     sealed class CompositionRoot
     {
@@ -16,21 +15,13 @@ namespace ParrotDiscoReflight
         {
             var navigationService = new NavigationService(rootFrame);
             navigationService.Register<FlightReplayViewModel, FlightReplayPage>();
-            navigationService.Register<ExportViewModel, ExportPage>();
             navigationService.Register<SettingsViewModel, SettingsPage>();
 
             var fileOpenCommands = new FileOpenCommands();
             
             var dialogService = new DialogService();
-            var settingsViewModel = new SettingsViewModel(fileOpenCommands,dialogService);
-
-            var videoExportService = new ExportService(status =>
-                new SimulationDataViewModel
-                {
-                    Units = UnitSource.UnitPacks.First(),
-                    Status = new StatusViewModel(status),
-                });
-
+            var settingsViewModel = new SettingsViewModel(fileOpenCommands,dialogService, new VirtualDashboardRepository(new ResourceDictionary() { Source = new Uri("ms-appx:///Views/VirtualDashboards.xaml") }));
+           
             Task<IFlightAcademyClient> FactoryClient() => FlightAcademyClient.Create(settingsViewModel.Username,
                 settingsViewModel.Password, new Uri("http://academy.ardrone.com/api3"));
 

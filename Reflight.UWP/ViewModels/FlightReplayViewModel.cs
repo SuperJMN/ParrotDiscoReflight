@@ -1,37 +1,33 @@
 ﻿using System;
-using System.Reactive;
 using System.Reactive.Linq;
 using ReactiveUI;
-using Reflight.Core;
 
 namespace ParrotDiscoReflight.ViewModels
 {
     public class FlightReplayViewModel : ReactiveObject
     {
         private TimeSpan position;
-        private DataViewModel dataViewModel;
+        private SimulationViewModel simulationViewModel;
 
         public FlightReplayViewModel(Simulation simulation)
         {
             Video = simulation.Video;
             var positions = this.WhenAnyValue(model => model.Position).Select(x => x.Add(simulation.Offset));
-            DataViewModel = new DataViewModel(simulation.Flight.Statuses, positions, simulation.UnitPack);
+            SimulationViewModel = new SimulationViewModel(simulation, positions, simulation.PresentationOptions);
         }
-
-        public ReactiveCommand<Unit, Flight> LoadFlightCommand { get; set; }
-
+        
         public TimeSpan Position
         {
             get => position;
             set => this.RaiseAndSetIfChanged(ref position, value);
         }
 
-        public DataViewModel DataViewModel
+        public SimulationViewModel SimulationViewModel
         {
-            get => dataViewModel;
-            set => this.RaiseAndSetIfChanged(ref dataViewModel, value);
+            get => simulationViewModel;
+            set => this.RaiseAndSetIfChanged(ref simulationViewModel, value);
         }
 
         public Video Video { get; }
-    }
+    }    
 }

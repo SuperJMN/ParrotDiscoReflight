@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="ParrotDiscoReflight.Views.BatteryControl"
+    x:Class="ParrotDiscoReflight.Views.Dashboards.Parts.BatteryControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,7 @@
     xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels:DataViewModel}">
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels:SimulationViewModel}">
 
     <Viewbox Stretch="Uniform">
         <StackPanel>

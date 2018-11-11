@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.Dashboards.Parts.Guides"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:code="using:ParrotDiscoReflight.Code"
+    xmlns:parts="using:ParrotDiscoReflight.Views.Dashboards.Parts"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance code:ISimulationViewModel}">
+
+    <Grid>
+        <Grid Grid.Row="0" RenderTransformOrigin="0.5,0.5" Height="2">
+            <Grid.RenderTransform>
+                <CompositeTransform
+                    Rotation="{Binding Status.AnglePhi, Converter={StaticResource AngleRadianConverter}}"/>
+            </Grid.RenderTransform>            
+            <Grid HorizontalAlignment="Center" Width="250">
+                <Border Background="White" Width="20" HorizontalAlignment="Left" />
+                <Border Background="White" Width="20" HorizontalAlignment="Right" />           
+            </Grid>
+        </Grid>
+
+        <Viewbox Grid.Row="0" Stretch="Fill" Width="200" Height="150" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Path StrokeThickness="2" Stroke="#FFF9F9F9" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Opacity="1" Data="M 38.109492 3.7701529 C 16.034929 22.571261 3.0767021 51.739368 3.0517192 82.68289 3.0953022 113.60304 16.051574 142.74226 38.109492 161.52915 M 171.99946 160.8396 c 22.07456 -18.8011 35.03279 -47.96919 35.05778 -78.912715 -0.0434 -30.920369 -12.9997 -60.059859 -35.05778 -78.8468763 v -1.2e-6"/>
+        </Viewbox>
+
+        <parts:AttackAngle Width="80" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
+
+    </Grid>
+</UserControl>

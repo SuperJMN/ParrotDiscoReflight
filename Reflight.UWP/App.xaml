@@ -3,7 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
-    xmlns:code="using:ParrotDiscoReflight.Code">
+    xmlns:code="using:ParrotDiscoReflight.Code"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media">
 
     <Application.Resources>
         <code:AngleRadianConverter x:Key="AngleRadianConverter" />
@@ -12,5 +13,11 @@
         <code:BitmapConverter x:Key="BitmapConverter" />
         <code:UnitConverter x:Key="UnitConverter" />
         <converters:BoolNegationConverter x:Key="BooleanInverter" />
+        <media:BackdropInvertBrush x:Key="InvertBrush" />
+        <code:SimulationViewModelToDataTemplateConverter x:Key="TemplateNameToTemplateConverter">
+            <code:SimulationViewModelToDataTemplateConverter.ResourceDictionary>
+                <ResourceDictionary Source="Views/VirtualDashboards.xaml" />
+            </code:SimulationViewModelToDataTemplateConverter.ResourceDictionary>
+        </code:SimulationViewModelToDataTemplateConverter>
     </Application.Resources>
 </Application>

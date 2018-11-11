@@ -9,7 +9,7 @@ namespace Reflight.Core
 {
     public static class IntermediateDataMixin
     {
-        private static readonly TimeSpan TimeCorrection = TimeSpan.FromSeconds(-1);
+        private static readonly TimeSpan TimeCorrection = TimeSpan.FromSeconds(-0.7);
 
         public static Flight ToFlight(this FlightDetails data)
         {

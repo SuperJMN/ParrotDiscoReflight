@@ -5,7 +5,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using App1;
+using ParrotDiscoReflight.Code;
 using ParrotDiscoReflight.Views;
 using ParrotDiscoReflight.Views.Pages;
 using ReactiveUI;

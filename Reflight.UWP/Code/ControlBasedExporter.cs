@@ -18,7 +18,7 @@ using NodaTime.Extensions;
 using ParrotDiscoReflight.ViewModels;
 using Reflight.Core;
 
-namespace App1
+namespace ParrotDiscoReflight.Code
 {
     public class ControlBasedExporter : IExporter
     {

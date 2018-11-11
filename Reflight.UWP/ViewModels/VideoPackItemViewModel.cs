@@ -15,7 +15,7 @@ namespace ParrotDiscoReflight.ViewModels
             Date = simulationSeed.Video.RecordedInterval.Value.Start.ToDateTimeOffset();
             PlayCommand = ReactiveCommand.CreateFromTask(async () => new Simulation(simulationSeed.Video,
                 await simulationSeed.GetFlight(),
-                simulationSeed.GetUnitPack()));
+                simulationSeed.GetPresentationOptions()));
 
             PlayCommand.Subscribe(onPlay);
             isBusy = PlayCommand.IsExecuting.ToProperty(this, x => x.IsBusy);

@@ -14,14 +14,16 @@ namespace ParrotDiscoReflight.ViewModels
 {
     public class SettingsViewModel : ReactiveObject
     {
+        private readonly IVirtualDashboardsRepository virtualDashboardsRepository;
         private readonly SettingsSaver settings;
         private readonly ObservableAsPropertyHelper<StorageFolder> videoFolder;
         private UnitPack unitPack;
         private readonly ObservableAsPropertyHelper<string> username;
         private readonly ObservableAsPropertyHelper<string> password;
 
-        public SettingsViewModel(FileOpenCommands commands, IDialogService dialogService)
+        public SettingsViewModel(FileOpenCommands commands, IDialogService dialogService, IVirtualDashboardsRepository virtualDashboardsRepository)
         {
+            this.virtualDashboardsRepository = virtualDashboardsRepository;
             settings = new SettingsSaver(this, ApplicationData.Current.RoamingSettings);
             BrowseFolderCommand = commands.BrowseFolderCommand;
             BrowseFolderCommand.Subscribe(x =>
@@ -131,6 +133,20 @@ namespace ParrotDiscoReflight.ViewModels
             set => this.RaiseAndSetIfChanged(ref unitPack, value);
         }
 
+        public VirtualDashboard VirtualDashboard
+        {
+            get
+            {
+                var name = settings.Get<string>();
+                return VirtualDashboards.FirstOrDefault(x => x.Name == name) ?? VirtualDashboards.First();
+            }
+            set
+            {
+                settings.Set(value.Name);
+                this.RaisePropertyChanged();
+            }
+        }
+
         [DefaultSettingValue(true)]
         public bool IsUserLogon
         {
@@ -144,5 +160,7 @@ namespace ParrotDiscoReflight.ViewModels
 
         public UserBasedLogin UserBasedLogin { get; }
         public EmailBasedLogin EmailBasedLogin { get; }
+
+        public ICollection<VirtualDashboard> VirtualDashboards => virtualDashboardsRepository.GetAll();
     }
 }

@@ -22,43 +22,52 @@
         </Style>
 
         <DataTemplate x:Key="MasterItemTemplate" x:DataType="vm:VideoPackItemViewModel">
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Image Source="{Binding Video.Thumbnail, Converter={StaticResource BitmapConverter}}" />
-            </Border>
+            <ctr:DropShadowPanel>
+                <Border BorderBrush="Black" BorderThickness="0.4">
+                    <Image Source="{Binding Video.Thumbnail, Converter={StaticResource BitmapConverter}}" />
+                </Border>
+            </ctr:DropShadowPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="DetailItemTemplate" x:DataType="vm:VideoPackItemViewModel">
-            <StackPanel Margin="8">
+            <ctr:DropShadowPanel Color="Gray" OffsetX="16" OffsetY="16" OffsetZ="10" BlurRadius="12">
+                <StackPanel Padding="16" Background="White" Margin="16">
 
-                <Grid>
-                    <Image
-                        Source="{Binding Video.Thumbnail, Converter={StaticResource BitmapConverter}}" />
-                    <Button Command="{Binding PlayCommand}" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Button.Content>
-                            <SymbolIcon Symbol="Play">
-                                <SymbolIcon.Foreground>
-                                    <media:BackdropInvertBrush />
-                                </SymbolIcon.Foreground>
-                            </SymbolIcon>
-                        </Button.Content>
-                    </Button>
-                    <ctr:Loading IsLoading="{Binding IsBusy}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <Grid>
+                        <Image
+                            Source="{Binding Video.Thumbnail, Converter={StaticResource BitmapConverter}}" />
                         <Grid>
-                            <Border Background="White" Opacity="0.7"></Border>
-                            <ProgressRing Width="50" Height="50" IsActive="{Binding IsBusy}" />
+                            <Ellipse Fill="White" Height="40" Width="40" />
+                            <Button Command="{Binding PlayCommand}" Background="Transparent"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch">
+                                <Button.Content>
+                                    <SymbolIcon Symbol="Play">
+                                        <SymbolIcon.Foreground>
+                                            <media:BackdropInvertBrush />
+                                        </SymbolIcon.Foreground>
+                                    </SymbolIcon>
+                                </Button.Content>
+                            </Button>
                         </Grid>
-                    </ctr:Loading>
-                </Grid>
-                <RichTextBlock TextAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                        <ctr:Loading IsLoading="{Binding IsBusy}" VerticalContentAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <Border Background="White" Opacity="0.7"></Border>
+                                <ProgressRing Width="50" Height="50" IsActive="{Binding IsBusy}" />
+                            </Grid>
+                        </ctr:Loading>
+                    </Grid>
+                    <RichTextBlock TextAlignment="Center" HorizontalAlignment="Center" Margin="10">
 
-                    <Paragraph>
-                        <Run FontWeight="Bold" Text="Duration:" />
-                        <Run
-                            Text="{Binding Duration, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:g}'}" />
-                    </Paragraph>
+                        <Paragraph>
+                            <Run FontWeight="Bold" Text="Duration:" />
+                            <Run
+                                Text="{Binding Duration, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:g}'}" />
+                        </Paragraph>
 
-                </RichTextBlock>
-            </StackPanel>
+                    </RichTextBlock>
+                </StackPanel></ctr:DropShadowPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="PackTemplate" x:DataType="vm:VideoPackViewModel">
@@ -160,12 +169,24 @@
         </Grid>
 
         <ctr:MasterDetailsView Grid.Row="1" ItemsSource="{Binding VideoPacks}" SelectedItem="{Binding SelectedPack, Mode=TwoWay}"
-                               ItemTemplate="{StaticResource PackTemplate}">
+                               ItemTemplate="{StaticResource PackTemplate}" NoSelectionContent="Please, choose a flight">
+            <ctr:MasterDetailsView.NoSelectionContentTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </DataTemplate>
+            </ctr:MasterDetailsView.NoSelectionContentTemplate>
             <ctr:MasterDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="vm:VideoPackViewModel">
                     <ctr:AdaptiveGridView Margin="20" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource DetailItemTemplate}"
                                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                                          DesiredWidth="320" />
+                                          SelectionMode="None"
+                                          DesiredWidth="320">
+                        <ctr:AdaptiveGridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="MaxWidth" Value="400" />
+                            </Style>
+                        </ctr:AdaptiveGridView.ItemContainerStyle>
+                    </ctr:AdaptiveGridView>
                 </DataTemplate>
             </ctr:MasterDetailsView.DetailsTemplate>
         </ctr:MasterDetailsView>
