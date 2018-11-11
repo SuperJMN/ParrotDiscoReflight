@@ -183,9 +183,6 @@
     <Compile Include="Views\Dashboards\Parts\FlightDistanceIndicator.xaml.cs">
       <DependentUpon>FlightDistanceIndicator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Dashboards\Parts\Graphs.xaml.cs">
-      <DependentUpon>Graphs.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Dashboards\Parts\Guides.xaml.cs">
       <DependentUpon>Guides.xaml</DependentUpon>
     </Compile>
@@ -434,10 +431,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dashboards\Parts\FlightDistanceIndicator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Dashboards\Parts\Graphs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
