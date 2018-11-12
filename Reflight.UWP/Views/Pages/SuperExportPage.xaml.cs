@@ -23,8 +23,6 @@ namespace ParrotDiscoReflight.Views.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            
-
             var exportService = new ControlBasedExporter(RenderControl);
             var videoFile = await StorageFile.GetFileFromPathAsync("E:\\Local\\Parrot\\Disco_20181028174515+0100.mp4");
                 
@@ -39,10 +37,13 @@ namespace ParrotDiscoReflight.Views.Pages
             var output = await folderFromPathAsync.CreateFileAsync("output.mp4", CreationCollisionOption.ReplaceExisting);
             await exportService.Export(video, flight, output, status =>
             {
-                RenderControl.DataContext = new SimulationSimulationViewModel()
+                RenderControl.DataContext = new DefaultSimulationViewModel(new PresentationOptions()
                 {
-                    Status = new StatusViewModel(status),
-                    Units = UnitSource.UnitPacks.FirstOrDefault(),
+                    UnitPack = UnitSource.UnitPacks.FirstOrDefault(),
+                    Dashboard = null,
+                })
+                {
+                    Status = new StatusViewModel(status),                    
                 };
             });
 

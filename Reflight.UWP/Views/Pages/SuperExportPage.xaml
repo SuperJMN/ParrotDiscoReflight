@@ -15,7 +15,7 @@
 
     <Grid>
         <ContentControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" x:Name="RenderControl"
-                        d:DataContext="{d:DesignInstance viewModels:SimulationSimulationViewModel}">
+                        d:DataContext="{d:DesignInstance viewModels:DefaultSimulationViewModel}">
             <Grid>
 
                 <Grid.RowDefinitions>

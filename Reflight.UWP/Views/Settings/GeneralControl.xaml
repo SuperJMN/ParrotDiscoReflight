@@ -17,7 +17,7 @@
             <Setter Property="Margin" Value="20" />
         </Style>
 
-        
+
     </UserControl.Resources>
 
     <StackPanel Style="{StaticResource StackPanelStyle}" MaxWidth="800" HorizontalAlignment="Left">
@@ -30,7 +30,7 @@
                             <code:ValueDataTrigger DataValue="{Binding VideoFolder}" TriggerValue="{x:Null}" />
                         </VisualState.StateTriggers>
                         <VisualState.Setters>
-                            <Setter Target="DeleteButton.Visibility" Value="Collapsed" />                            
+                            <Setter Target="DeleteButton.Visibility" Value="Collapsed" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup.States>
@@ -64,7 +64,8 @@
 
                         <RichTextBlock VerticalAlignment="Center" x:Name="VideoFolder">
                             <Paragraph>
-                                <Run>Current folder:</Run> <Run FontWeight="Bold" Text="{Binding VideoFolder, TargetNullValue='(None)'}"></Run>
+                                <Run>Current folder:</Run>
+                                <Run FontWeight="Bold" Text="{Binding VideoFolder, TargetNullValue='(None)'}"></Run>
                             </Paragraph>
                         </RichTextBlock>
 
@@ -73,9 +74,9 @@
                                 <SymbolIcon Symbol="Clear" />
                             </Button.Content>
                         </Button>
-                           
+
                     </StackPanel>
-                    <TextBlock FontWeight="Light">Please, take into account that the corresponding videos are discovered by using their metadata (the Date Encoded, property)</TextBlock>                        
+                    <TextBlock FontWeight="Light">Please, take into account that the corresponding videos are discovered by using their metadata (the Date Encoded, property)</TextBlock>
                 </StackPanel>
 
             </controls:HeaderedContentControl.Content>
@@ -94,18 +95,6 @@
                     </Paragraph>
                 </RichTextBlock>
             </ComboBox.Header>
-        </ComboBox>
-        <ComboBox HorizontalAlignment="Left" DisplayMemberPath="Name" ItemsSource="{Binding VirtualDashboards}" SelectedItem="{Binding VirtualDashboard, Mode=TwoWay}">
-            <ComboBox.Header>
-                <RichTextBlock>
-                    <Paragraph FontWeight="Bold">
-                        Virtual Dashboard templates
-                    </Paragraph>
-                    <Paragraph>
-                        Choose the <Run FontWeight="SemiBold">Virtual Dashboard</Run> you want for playing your flights                        
-                    </Paragraph>
-                </RichTextBlock>
-            </ComboBox.Header>
-        </ComboBox>
+        </ComboBox>        
     </StackPanel>
 </UserControl>

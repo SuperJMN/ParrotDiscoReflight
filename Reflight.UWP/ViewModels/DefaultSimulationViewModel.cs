@@ -5,8 +5,13 @@ using ReactiveUI;
 
 namespace ParrotDiscoReflight.ViewModels
 {
-    public class SimulationSimulationViewModel : ReactiveObject, ISimulationViewModel
+    public class DefaultSimulationViewModel : ReactiveObject, ISimulationViewModel
     {
+        public DefaultSimulationViewModel(PresentationOptions presentationOptions)
+        {
+            PresentationOptions = presentationOptions;
+        }
+
         private StatusViewModel status;
         public UnitPack Units { get; set; }
 

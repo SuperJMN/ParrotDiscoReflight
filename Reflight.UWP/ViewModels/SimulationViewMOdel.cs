@@ -21,7 +21,7 @@ namespace ParrotDiscoReflight.ViewModels
             var obs = positionObservable.Select(pos => GetStatus(simulation, pos));
 
             Speed = new PlottableViewModel(obs.Select(x => new Point((x.TimeElapsed - simulation.Offset).TotalMilliseconds, x.Speed.L2Norm())), simulation.Statuses.Select(s => s.Speed.L2Norm()).ToList());
-            Altitude = new PlottableViewModel(obs.Select(x => new Point((x.TimeElapsed - simulation.Offset).TotalMilliseconds, x.Altitude)), simulation.Statuses.Select(s => s.Altitude).ToList());
+            Altitude = new PlottableViewModel(obs.Select(x => new Point((x.TimeElapsed - simulation.Offset).TotalMilliseconds, x.DronePosition.Altitude)), simulation.Statuses.Select(s => s.DronePosition.Altitude).ToList());
 
             status = obs
                 .Select(status => new StatusViewModel(status))

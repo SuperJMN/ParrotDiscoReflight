@@ -234,7 +234,7 @@
     <Compile Include="Code\LoadedMessage.cs" />
     <Compile Include="Code\Settings\ObservableSettings.cs" />
     <Compile Include="Code\Settings\DefaultSettingValueAttribute.cs" />
-    <Compile Include="ViewModels\SimulationSimulationViewModel.cs" />
+    <Compile Include="ViewModels\DefaultSimulationViewModel.cs" />
     <Compile Include="Code\SizeMessage.cs" />
     <Compile Include="Code\Units\FeetUnit.cs" />
     <Compile Include="Code\FileOpenCommands.cs" />
@@ -261,7 +261,6 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Code\Units\UnitPack.cs" />
     <Compile Include="Code\NavigationService.cs" />
-    <Compile Include="Code\StatusMixin.cs" />
     <Compile Include="Views\ManualPickControl.xaml.cs">
       <DependentUpon>ManualPickControl.xaml</DependentUpon>
     </Compile>
@@ -285,6 +284,9 @@
     </Compile>
     <Compile Include="Views\Settings\UserLoginControl.xaml.cs">
       <DependentUpon>UserLoginControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\VirtualDashboards.xaml.cs">
+      <DependentUpon>VirtualDashboards.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SimulationUnitSelectorControl.xaml.cs">
       <DependentUpon>SimulationUnitSelectorControl.xaml</DependentUpon>
@@ -542,6 +544,10 @@
     <Page Include="Views\Pages\SuperExportPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Settings\VirtualDashboards.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SimulationUnitSelectorControl.xaml">
       <SubType>Designer</SubType>

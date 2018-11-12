@@ -62,10 +62,7 @@ namespace Reflight.Core
 
                     return new Status
                     {
-                        Longitude = current.Longitude,
-                        Altitude = current.Altitude,
                         DronePosition = current.DronePosition,
-                        Latitude = current.Altitude,
                         ControllerPosition = current.ControllerPosition,
                         TimeElapsed = current.TimeElapsed,
                         AnglePsi = current.AnglePsi,

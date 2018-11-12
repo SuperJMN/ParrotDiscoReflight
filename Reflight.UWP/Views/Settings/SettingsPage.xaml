@@ -25,6 +25,11 @@
             <controls:TabViewItem Header="General">
                 <st:GeneralControl />
             </controls:TabViewItem>
+
+            <controls:TabViewItem Header="Virtual Dashboard">
+                <st:VirtualDashboards />
+            </controls:TabViewItem>
+
             <controls:TabViewItem Header="My.Parrot Account">
                 <st:MyParrotControl />
             </controls:TabViewItem>

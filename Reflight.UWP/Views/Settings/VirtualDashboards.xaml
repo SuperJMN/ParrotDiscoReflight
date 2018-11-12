@@ -1,0 +1,43 @@
+﻿<UserControl
+    x:Class="ParrotDiscoReflight.Views.Settings.VirtualDashboards"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ParrotDiscoReflight.Views.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:ParrotDiscoReflight.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
+
+    <Grid Margin="40" RowSpacing="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ComboBox HorizontalAlignment="Left" DisplayMemberPath="Name" ItemsSource="{Binding VirtualDashboards}"
+                  SelectedItem="{Binding VirtualDashboard, Mode=TwoWay}">
+            <ComboBox.Header>
+                <RichTextBlock>
+                    <Paragraph FontWeight="Bold">
+                        Virtual Dashboard templates
+                    </Paragraph>
+                    <Paragraph>
+                        Choose the
+                        <Run FontWeight="SemiBold">Virtual Dashboard</Run> you want for playing your flights
+                    </Paragraph>
+                </RichTextBlock>
+            </ComboBox.Header>
+        </ComboBox>
+        <Viewbox RequestedTheme="Dark" Stretch="Uniform" Grid.Row="1">
+            <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                Width="1920"
+                                Height="1080"
+                                Content="{Binding DashboardPreview}"
+                                ContentTemplateSelector="{StaticResource TemplateNameToTemplateConverter}" />
+            </Border>
+        </Viewbox>
+
+    </Grid>
+</UserControl>

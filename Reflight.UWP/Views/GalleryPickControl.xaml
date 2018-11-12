@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctr="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:vm="using:ParrotDiscoReflight.ViewModels"
-    xmlns:own="using:ParrotDiscoReflight"
     xmlns:code="using:ParrotDiscoReflight.Code"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"

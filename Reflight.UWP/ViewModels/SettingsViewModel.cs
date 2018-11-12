@@ -5,10 +5,12 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using GeoCoordinatePortable;
 using ParrotDiscoReflight.Code;
 using ParrotDiscoReflight.Code.Settings;
 using ParrotDiscoReflight.Code.Units;
 using ReactiveUI;
+using Reflight.Core;
 
 namespace ParrotDiscoReflight.ViewModels
 {
@@ -20,6 +22,7 @@ namespace ParrotDiscoReflight.ViewModels
         private UnitPack unitPack;
         private readonly ObservableAsPropertyHelper<string> username;
         private readonly ObservableAsPropertyHelper<string> password;
+        private readonly ObservableAsPropertyHelper<ISimulationViewModel> dashboardPreview;
 
         public SettingsViewModel(FileOpenCommands commands, IDialogService dialogService, IVirtualDashboardsRepository virtualDashboardsRepository)
         {
@@ -63,7 +66,35 @@ namespace ParrotDiscoReflight.ViewModels
 
             username = usernamesSequence.ToProperty(this, x => x.Username);
             password = passwordSequence.ToProperty(this, x => x.Password);
+
+            dashboardPreview =
+                this.WhenAnyValue(x => x.VirtualDashboard, x => x.UnitPack,
+                    (vd, up) => CreatePreviewViewModel(up, vd)).ToProperty(this, x => x.DashboardPreview);
         }
+
+        private static DefaultSimulationViewModel CreatePreviewViewModel(UnitPack up, VirtualDashboard vd)
+        {
+            var presentationOptions = new PresentationOptions {UnitPack = up, Dashboard = vd,};
+            return new DefaultSimulationViewModel(presentationOptions)
+            {
+                Status = new StatusViewModel(new Status()
+                {
+                    TimeElapsed = new TimeSpan(0, 0, 11, 28),
+                    Speed = new Vector(1, 2, 4),
+                    AnglePhi = 0.3,
+                    AnglePsi = 0.2,
+                    AngleTheta = 0.4,
+                    BatteryLevel = 0.75,
+                    PitotSpeed = 9,
+                    WifiStregth = -30,
+                    TotalDistance = 1234,
+                    ControllerPosition = new GeoCoordinate(0, 0, 0),
+                    DronePosition = new GeoCoordinate(0, 0, 123),                    
+                })
+            };
+        }
+
+        public ISimulationViewModel DashboardPreview => dashboardPreview.Value;
 
         private IObservable<string> GetUsernamesSequence()
         {

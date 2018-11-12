@@ -23,7 +23,7 @@
     </UserControl.Resources>
 
     <controls:HeaderedContentControl Header="Altitude" Style="{StaticResource BottomHeaderStyle}" HorizontalAlignment="Right">
-        <ctr:AnimatedRadialGauge Content="Speed"
+        <ctr:AnimatedRadialGauge
             AnimatableValue="{Binding Status.DronePosition.Altitude, Converter={StaticResource Altitude}}"
             Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
             TickSpacing="{Binding PresentationOptions.UnitPack.Altitude.Tick}"
