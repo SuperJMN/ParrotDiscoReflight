@@ -1,21 +1,59 @@
 ﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ctr="using:ParrotDiscoReflight.Controls">
 
-    <Style x:Key="RadialGaugeStyle" TargetType="controls:RadialGauge">
+    <Style x:Key="RadialGaugeStyle" TargetType="ctr:AnimatedRadialGauge">
         <Setter Property="ValueStringFormat" Value="F" />
 
-        <Setter Property="ScaleWidth" Value="10" />
+        <Setter Property="ScaleWidth" Value="20" />
+        <Setter Property="ScalePadding" Value="10" />
         <Setter Property="NeedleWidth" Value="4" />
         <Setter Property="NeedleLength" Value="100" />
         <Setter Property="TickLength" Value="5" />
         <Setter Property="TickWidth" Value="2" />
-        <Setter Property="ScalePadding" Value="15" />
+        <!--<Setter Property="ScalePadding" Value="15" />-->
         <Setter Property="TrailBrush" Value="CornflowerBlue" />
         <Setter Property="ScaleBrush" Value="LightBlue" />
         <Setter Property="ScaleTickBrush" Value="#44000000" />
         <Setter Property="ScaleTickWidth" Value="4" />
+        <Setter Property="NeedlePadding" Value="40" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ctr:AnimatedRadialGauge">
+                    <Viewbox>
+                        <Grid x:Name="PART_Container"
+                              Width="200"
+                              Height="200"
+                              Background="Transparent">
+
+                            <!--  Scale  -->
+                            <Path x:Name="PART_Scale"
+                                  Grid.RowSpan="2"
+                                  Stroke="{TemplateBinding ScaleBrush}"
+                                  StrokeThickness="{TemplateBinding ScaleWidth}" />
+
+                            <!--  Trail  -->
+                            <Path Grid.RowSpan="2" x:Name="PART_Trail"
+                                  Stroke="{TemplateBinding TrailBrush}"
+                                  StrokeThickness="{TemplateBinding ScaleWidth}" />
+
+                            <RichTextBlock VerticalAlignment="Center" TextAlignment="Center" Margin="0,10,0,0">
+                                <Paragraph>
+                                    <Run x:Name="ValueRun" FontSize="20" FontWeight="Extrabold" />
+                                    <Run Text="{TemplateBinding Unit}" />
+                                </Paragraph>
+                            </RichTextBlock>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock x:Name="PART_ValueText" FontSize="20" FontWeight="Extrabold" TextAlignment="Center" Text="{TemplateBinding Unit}" />
+                                <TextBlock Text="{TemplateBinding Unit}" TextAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                    </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="BottomHeaderStyle" TargetType="controls:HeaderedContentControl">
@@ -37,10 +75,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        <ContentPresenter HorizontalContentAlignment="Center" Grid.Row="1"
-                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                              Content="{TemplateBinding Header}" />
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <ContentPresenter HorizontalContentAlignment="Center" Grid.Row="1" Margin="0,-70,0,0"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          Content="{TemplateBinding Header}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

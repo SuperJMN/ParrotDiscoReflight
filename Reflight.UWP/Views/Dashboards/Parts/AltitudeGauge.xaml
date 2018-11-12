@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:code="using:ParrotDiscoReflight.Code"
+    xmlns:ctr="using:ParrotDiscoReflight.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400" d:DataContext="{d:DesignInstance code:ISimulationViewModel}">
@@ -22,8 +23,8 @@
     </UserControl.Resources>
 
     <controls:HeaderedContentControl Header="Altitude" Style="{StaticResource BottomHeaderStyle}" HorizontalAlignment="Right">
-        <controls:RadialGauge
-            Value="{Binding Status.DronePosition.Altitude, Converter={StaticResource Altitude}}"
+        <ctr:AnimatedRadialGauge Content="Speed"
+            AnimatableValue="{Binding Status.DronePosition.Altitude, Converter={StaticResource Altitude}}"
             Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
             TickSpacing="{Binding PresentationOptions.UnitPack.Altitude.Tick}"
             Maximum="{Binding PresentationOptions.UnitPack.Altitude.Maximum}"

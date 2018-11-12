@@ -120,6 +120,7 @@
     <Compile Include="Controls\LineGraph.xaml.cs">
       <DependentUpon>LineGraph.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AnimatedRadialGauge.cs" />
     <Compile Include="Controls\Renderer.cs" />
     <Compile Include="Controls\Plotter.xaml.cs">
       <DependentUpon>Plotter.xaml</DependentUpon>
@@ -370,6 +371,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AnimatedRadialGauge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\LineGraph.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -377,6 +382,10 @@
     <Page Include="Controls\Plotter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AnglesControl.xaml">
       <SubType>Designer</SubType>

@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:code="using:ParrotDiscoReflight.Code"
+    xmlns:controls1="using:ParrotDiscoReflight.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400" d:DataContext="{d:DesignInstance code:ISimulationViewModel}">
@@ -24,7 +25,7 @@
 
     <controls:HeaderedContentControl Style="{StaticResource BottomHeaderStyle}" Header="Speed">
         
-        <controls:RadialGauge Value="{Binding Status.Speed, Converter={StaticResource Speed}}"
+        <controls1:AnimatedRadialGauge AnimatableValue="{Binding Status.Speed, Converter={StaticResource Speed}}"
                               Minimum="0" TickSpacing="{Binding PresentationOptions.UnitPack.Speed.Tick}"
                               Maximum="{Binding PresentationOptions.UnitPack.Speed.Maximum}"
                               Unit="{Binding PresentationOptions.UnitPack.Speed.Abbreviation}" Style="{StaticResource RadialGaugeStyle}" />
