@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Reflight.Core
 {
@@ -14,14 +12,4 @@ namespace Reflight.Core
         public IEnumerable<double> Coordinates { get; }
         public static Vector Zero => new Vector(0,0,0);
     }
-
-    public static class VectorMixin
-    {
-        public static double L2Norm(this Vector self)
-        {
-            return Math.Sqrt(self.Coordinates.Sum(arg => Math.Pow(arg, 2)));
-        }
-    }
-
-    
 }

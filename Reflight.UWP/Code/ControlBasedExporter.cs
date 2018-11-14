@@ -168,9 +168,4 @@ namespace ParrotDiscoReflight.Code
             return file;
         }
     }
-
-    public interface IExporter
-    {
-        Task Export(Video video, Flight flight, StorageFile output, Action<Status> onNewStatus);
-    }
 }

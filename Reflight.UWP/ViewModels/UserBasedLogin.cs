@@ -8,7 +8,7 @@ namespace ParrotDiscoReflight.ViewModels
 
         private string username;
         private string password;
-        private readonly SettingsSaver settings;
+        private readonly ISettingsSaver settings;
 
         public UserBasedLogin()
         {

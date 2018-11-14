@@ -38,8 +38,8 @@ namespace ParrotDiscoReflight.ViewModels
         }
 
         public PresentationOptions PresentationOptions { get; }
-        public PlottableViewModel Speed { get; }
-        public PlottableViewModel Altitude { get; }
+        public IPlottableViewModel Speed { get; }
+        public IPlottableViewModel Altitude { get; }
         public TimeSpan FlightDuration => simulation.Flight.RunTime;
         public TimeSpan CapturedDuration => simulation.Video.RecordedInterval.Value.Duration.ToTimeSpan();
         public StatusViewModel Status => status.Value;

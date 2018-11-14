@@ -23,12 +23,9 @@
 
     </UserControl.Resources>
 
-    <controls:HeaderedContentControl Style="{StaticResource BottomHeaderStyle}" Header="Speed">
-        
-        <controls1:AnimatedRadialGauge AnimatableValue="{Binding Status.Speed, Converter={StaticResource Speed}}"
-                              Minimum="0" TickSpacing="{Binding PresentationOptions.UnitPack.Speed.Tick}"
-                              Maximum="{Binding PresentationOptions.UnitPack.Speed.Maximum}"
-                              Unit="{Binding PresentationOptions.UnitPack.Speed.Abbreviation}" Style="{StaticResource RadialGaugeStyle}" />
-    </controls:HeaderedContentControl>
-
+    <controls1:AnimatedRadialGauge AnimatableValue="{Binding Status.Speed, Converter={StaticResource Speed}}"
+                                   Minimum="0" TickSpacing="{Binding PresentationOptions.UnitPack.Speed.Tick}"
+                                   Maximum="{Binding PresentationOptions.UnitPack.Speed.Maximum}"
+                                   Unit="{Binding PresentationOptions.UnitPack.Speed.Abbreviation}" Style="{StaticResource RadialGaugeStyle}"
+                                   Label="Speed" />
 </UserControl>

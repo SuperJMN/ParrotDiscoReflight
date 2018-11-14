@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ParrotDiscoReflight.Code.Units;
 using Reflight.Core;
 
 namespace ParrotDiscoReflight.ViewModels

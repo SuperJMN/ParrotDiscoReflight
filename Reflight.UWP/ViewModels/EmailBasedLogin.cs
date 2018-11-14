@@ -11,7 +11,7 @@ namespace ParrotDiscoReflight.ViewModels
     {
         private readonly CredentialRetriever retriever;
         private readonly ObservableAsPropertyHelper<bool> isLogged;
-        private readonly SettingsSaver settings;
+        private readonly ISettingsSaver settings;
 
         public EmailBasedLogin(IDialogService dialogService)
         {

@@ -21,7 +21,7 @@
     <PackageCertificateKeyFile>SuppaFlight.UWP_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>18F8061F3F7D884324C5F814F60F2614B7F22092</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
@@ -102,6 +102,7 @@
   <ItemGroup>
     <Compile Include="Code\AngleRadianConverter.cs" />
     <Compile Include="Code\BitmapConverter.cs" />
+    <Compile Include="Code\IExporter.cs" />
     <Compile Include="Code\SimulationViewModelToDataTemplateConverter.cs" />
     <Compile Include="Code\ControlBasedExporter.cs" />
     <Compile Include="Code\MeasurementUnitConverter.cs" />
@@ -117,22 +118,28 @@
     <Compile Include="Code\PickerTemplateSelector.cs" />
     <Compile Include="Code\UnitConverter.cs" />
     <Compile Include="Code\CompositionRoot.cs" />
+    <Compile Include="Controls\ControlHelpers.cs" />
     <Compile Include="Controls\LineGraph.xaml.cs">
       <DependentUpon>LineGraph.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AnimatedRadialGauge.cs" />
+    <Compile Include="Controls\RadialGaugeAutomationPeer.cs" />
     <Compile Include="Controls\Renderer.cs" />
     <Compile Include="Controls\Plotter.xaml.cs">
       <DependentUpon>Plotter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Point.cs" />
+    <Compile Include="ViewModels\BasePlottableViewModel.cs" />
     <Compile Include="ViewModels\CredentialRetriever.cs" />
     <Compile Include="ViewModels\Credentials.cs" />
     <Compile Include="ViewModels\EmailBasedLogin.cs" />
     <Compile Include="ViewModels\IFlightSimulationPicker.cs" />
+    <Compile Include="ViewModels\IPlottableViewModel.cs" />
+    <Compile Include="ViewModels\ISettingsSaver.cs" />
     <Compile Include="ViewModels\IVirtualDashboardsRepository.cs" />
     <Compile Include="ViewModels\PlottableViewModel.cs" />
     <Compile Include="ViewModels\PresentationOptions.cs" />
+    <Compile Include="ViewModels\SamplePlottableViewModel.cs" />
     <Compile Include="ViewModels\SettingsSaver.cs" />
     <Compile Include="ViewModels\Simulation.cs" />
     <Compile Include="ViewModels\SimulationSeed.cs" />

@@ -22,13 +22,12 @@
 
     </UserControl.Resources>
 
-    <controls:HeaderedContentControl Header="Altitude" Style="{StaticResource BottomHeaderStyle}" HorizontalAlignment="Right">
-        <ctr:AnimatedRadialGauge
-            AnimatableValue="{Binding Status.DronePosition.Altitude, Converter={StaticResource Altitude}}"
-            Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
-            TickSpacing="{Binding PresentationOptions.UnitPack.Altitude.Tick}"
-            Maximum="{Binding PresentationOptions.UnitPack.Altitude.Maximum}"
-            Unit="{Binding PresentationOptions.UnitPack.Altitude.Abbreviation}"
-            Style="{StaticResource RadialGaugeStyle}" />
-    </controls:HeaderedContentControl>
+    <ctr:AnimatedRadialGauge
+        AnimatableValue="{Binding Status.DronePosition.Altitude, Converter={StaticResource Altitude}}"
+        Minimum="0" NeedleBrush="DarkRed" ScaleBrush="LightSalmon" TrailBrush="Red"
+        TickSpacing="{Binding PresentationOptions.UnitPack.Altitude.Tick}"
+        Maximum="{Binding PresentationOptions.UnitPack.Altitude.Maximum}"
+        Unit="{Binding PresentationOptions.UnitPack.Altitude.Abbreviation}"
+        Style="{StaticResource RadialGaugeStyle}" Label="Altitude" />
+
 </UserControl>

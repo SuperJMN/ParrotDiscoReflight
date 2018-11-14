@@ -7,8 +7,8 @@ namespace ParrotDiscoReflight.Code
     {
         StatusViewModel Status { get; }
         PresentationOptions PresentationOptions { get; }
-        PlottableViewModel Speed { get; }
-        PlottableViewModel Altitude { get; }
+        IPlottableViewModel Speed { get; }
+        IPlottableViewModel Altitude { get; }
         TimeSpan FlightDuration { get; }
         TimeSpan CapturedDuration { get; }
     }

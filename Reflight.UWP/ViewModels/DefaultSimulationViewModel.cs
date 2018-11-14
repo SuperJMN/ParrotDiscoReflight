@@ -22,8 +22,8 @@ namespace ParrotDiscoReflight.ViewModels
         }
 
         public PresentationOptions PresentationOptions { get; }
-        public PlottableViewModel Speed { get; set; }
-        public PlottableViewModel Altitude { get; }
+        public IPlottableViewModel Speed { get; set; }
+        public IPlottableViewModel Altitude { get; set; }
         public TimeSpan FlightDuration { get; }
         public TimeSpan CapturedDuration { get; }
     }
