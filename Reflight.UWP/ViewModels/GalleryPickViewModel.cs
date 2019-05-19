@@ -37,7 +37,8 @@ namespace ParrotDiscoReflight.ViewModels
                 {
                     var folder = await StorageFolder.GetFolderFromPathAsync(settingsViewModel.VideoFolder);
                     return await folder.GetFilesAsync();
-                }).Select(x => x.ToObservable())
+                }).OnErrorResumeNext(Observable.Empty<IReadOnlyList<StorageFile>>())
+                .Select(x => x.ToObservable())
                 .SelectMany(x => x)
                 .SelectMany(Video.Load)
                 .Where(x => x.RecordedInterval.HasValue)

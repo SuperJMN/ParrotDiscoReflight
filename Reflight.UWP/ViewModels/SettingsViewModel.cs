@@ -34,7 +34,7 @@ namespace ParrotDiscoReflight.ViewModels
             {
                 if (VideoFolderToken != null)
                 {
-                    StorageApplicationPermissions.FutureAccessList.Remove(VideoFolderToken);
+                    StorageApplicationPermissions.FutureAccessList.Clear();
                 }
 
                 var token = StorageApplicationPermissions.FutureAccessList.Add(x);
@@ -53,7 +53,8 @@ namespace ParrotDiscoReflight.ViewModels
 
             RemoveFolderCommand = ReactiveCommand.Create(() =>
             {
-                StorageApplicationPermissions.FutureAccessList.Remove(VideoFolderToken);
+                StorageApplicationPermissions.FutureAccessList.Clear();
+
                 VideoFolder = null;
                 VideoFolderToken = null;
             }, this.WhenAnyValue(x => x.VideoFolderToken, selector: s => s != null));
